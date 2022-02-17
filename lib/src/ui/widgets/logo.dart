@@ -14,7 +14,7 @@ class BHPLogo extends StatelessWidget {
   Widget build(BuildContext context) {
     return Center(
       child: Container(
-        height: height / 4,
+        height: height / 3.5,
         width: width / 2,
         decoration: const BoxDecoration(
           image: DecorationImage(

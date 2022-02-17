@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-const LIGHT_GREEN = Color.fromARGB(255, 13, 223, 238);
-const DARK_GREEN = Color.fromARGB(255, 11, 144, 221);
+const LIGHT_BLUE = Color.fromARGB(255, 13, 223, 238);
+const DARK_BLUE = Color.fromARGB(255, 11, 144, 221);
 
 const CRIMSON_RED = Color.fromRGBO(163, 35, 35, 1);
 const DARK_RED = Color.fromRGBO(124, 2, 2, 1);

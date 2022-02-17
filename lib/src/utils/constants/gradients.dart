@@ -5,7 +5,7 @@ const RED_GRADIENT = RadialGradient(
     center: Alignment.bottomRight, radius: 2, colors: [LIGHT_RED, DARK_RED]);
 
 const BLUE_GRADIENT = LinearGradient(
-    colors: [DARK_GREEN, LIGHT_GREEN],
+    colors: [DARK_BLUE, LIGHT_BLUE],
     begin: Alignment.topLeft,
     end: Alignment.bottomRight);
 
