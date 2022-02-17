@@ -4,12 +4,14 @@ class CustomTextWidget extends StatelessWidget {
   final String text;
   final double fontSize;
   final Function()? onTap;
+  final Color? color;
 
   const CustomTextWidget({
     Key? key,
     required this.text,
     this.onTap,
     this.fontSize = 20,
+    this.color,
   }) : super(key: key);
 
   @override
@@ -21,7 +23,7 @@ class CustomTextWidget extends StatelessWidget {
         textAlign: TextAlign.center,
         style: TextStyle(
           fontSize: fontSize,
-          color: Colors.grey[800],
+          color: color ?? Colors.grey[800],
           fontWeight: FontWeight.w500,
         ),
       ),

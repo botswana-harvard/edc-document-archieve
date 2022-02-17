@@ -73,6 +73,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
   void onButtonLoginTapped() {
     //TODO:
+    Navigator.popAndPushNamed(context, kBase);
   }
 
   void onForgotPasswordTapped() {

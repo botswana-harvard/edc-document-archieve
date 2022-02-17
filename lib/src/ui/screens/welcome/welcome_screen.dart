@@ -53,6 +53,6 @@ class WelcomeScreen extends StatelessWidget {
   }
 
   void onContinueButtonTapped(BuildContext context) {
-    Navigator.pushReplacementNamed(context, kLogin);
+    Navigator.pushNamed(context, kLogin);
   }
 }
