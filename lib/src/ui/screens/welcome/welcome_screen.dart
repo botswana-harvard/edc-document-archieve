@@ -1,5 +1,6 @@
 import 'package:edc_document_archieve/src/ui/widgets/animated_custom_button.dart';
-import 'package:edc_document_archieve/src/utils/constants.dart';
+import 'package:edc_document_archieve/src/ui/widgets/logo.dart';
+import 'package:edc_document_archieve/src/utils/constants/constants.dart';
 import 'package:flutter/material.dart';
 
 class WelcomeScreen extends StatelessWidget {
@@ -21,15 +22,9 @@ class WelcomeScreen extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Center(
-                  child: Container(
-                    height: parentHeight / 4,
-                    width: parentWidth / 2,
-                    decoration: const BoxDecoration(
-                        image: DecorationImage(
-                            fit: BoxFit.fill,
-                            image: AssetImage('assets/images/logo.png'))),
-                  ),
+                BHPLogo(
+                  height: parentHeight,
+                  width: parentWidth,
                 ),
                 Padding(
                   padding: const EdgeInsets.all(15.0),
@@ -45,12 +40,19 @@ class WelcomeScreen extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 100),
-                const AnimatedCustomButton(name: kContinue),
+                AnimatedCustomButton(
+                  name: kContinue,
+                  onTap: onContinueButtonTapped,
+                ),
               ],
             ),
           ),
         );
       },
     );
+  }
+
+  void onContinueButtonTapped(BuildContext context) {
+    Navigator.pushReplacementNamed(context, kLogin);
   }
 }

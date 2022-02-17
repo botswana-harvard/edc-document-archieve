@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
 
 class CustomLayoutBuilder extends StatelessWidget {
-  const CustomLayoutBuilder({Key? key}) : super(key: key);
+  final Widget child;
+  const CustomLayoutBuilder({Key? key, required this.child}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return LayoutBuilder(
       builder: (context, constraints) {
-        return Container();
+        double parentHeight = constraints.maxHeight;
+        double parentWidth = constraints.maxWidth;
+        return child;
       },
     );
   }
