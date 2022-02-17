@@ -41,6 +41,7 @@ class AnimatedCustomButton extends StatelessWidget {
             style: const TextStyle(
               fontSize: 20.0,
               fontWeight: FontWeight.bold,
+              fontFamily: 'RobotoSlab',
             ),
           ),
         ),

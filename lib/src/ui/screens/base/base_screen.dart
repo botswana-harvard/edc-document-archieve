@@ -32,14 +32,17 @@ class BaseScreen extends StatelessWidget {
             titleTextStyle: const TextStyle(
               color: DARK_BLUE,
               fontWeight: FontWeight.bold,
+              fontFamily: 'RobotoSlab',
             ),
             backgroundColor: Colors.white,
             automaticallyImplyLeading: false,
             elevation: 0,
+            leading: const Icon(Icons.archive_outlined),
           ),
           body: Container(
             color: Colors.white,
             height: parentHeight / 2,
+            width: parentWidth,
             margin: const EdgeInsets.symmetric(
               horizontal: 20,
               vertical: 100,

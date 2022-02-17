@@ -31,9 +31,11 @@ class CustomTextField extends StatelessWidget {
           onChanged: (value) => {},
           keyboardType: keyboardType,
           decoration: InputDecoration(
-            border: InputBorder.none,
-            labelText: labelText,
-          ),
+              border: InputBorder.none,
+              labelText: labelText,
+              labelStyle: const TextStyle(
+                fontFamily: 'RobotoSlab',
+              )),
         ),
       ),
     );

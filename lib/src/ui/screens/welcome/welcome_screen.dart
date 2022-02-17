@@ -34,7 +34,7 @@ class WelcomeScreen extends StatelessWidget {
                     style: const TextStyle(
                       color: Color(0xff828282),
                       fontSize: 36,
-                      fontFamily: "Roboto",
+                      fontFamily: "RobotoSlab",
                       fontWeight: FontWeight.w700,
                     ),
                   ),

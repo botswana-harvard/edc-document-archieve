@@ -25,6 +25,7 @@ class CustomTextWidget extends StatelessWidget {
           fontSize: fontSize,
           color: color ?? Colors.grey[800],
           fontWeight: FontWeight.w500,
+          fontFamily: 'RobotoSlab',
         ),
       ),
     );

@@ -37,8 +37,8 @@ class DefaultButton extends StatelessWidget {
             buttonName.titleCase,
             style: const TextStyle(
               color: WHITE_COLOR,
-              fontSize: 18,
-              fontFamily: 'Roboto',
+              fontSize: 20,
+              fontFamily: 'RobotoSlab',
             ),
           ),
         ),
