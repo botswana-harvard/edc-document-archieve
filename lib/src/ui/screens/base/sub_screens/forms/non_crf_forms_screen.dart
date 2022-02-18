@@ -1,9 +1,8 @@
 import 'package:edc_document_archieve/gen/assets.gen.dart';
 import 'package:edc_document_archieve/src/ui/widgets/custom_appbar.dart';
+import 'package:edc_document_archieve/src/ui/screens/base/sub_screens/forms/widgets/gallery_image.dart';
 import 'package:edc_document_archieve/src/utils/constants/constants.dart';
 import 'package:flutter/material.dart';
-
-import 'widgets/gallery_image.dart';
 
 class NonCRFormScreen extends StatelessWidget {
   static const String routeName = kNonCrfform;
