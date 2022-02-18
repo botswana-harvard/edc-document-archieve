@@ -1,7 +1,10 @@
+import 'package:edc_document_archieve/src/ui/screens/base/widgets/study_container.dart';
+import 'package:edc_document_archieve/src/ui/widgets/custom_appbar.dart';
 import 'package:edc_document_archieve/src/ui/widgets/custom_text.dart';
 import 'package:edc_document_archieve/src/utils/constants/colors.dart';
 import 'package:edc_document_archieve/src/utils/constants/constants.dart';
 import 'package:flutter/material.dart';
+import 'package:recase/recase.dart';
 
 class BaseScreen extends StatelessWidget {
   static const String routeName = kBase;
@@ -14,30 +17,10 @@ class BaseScreen extends StatelessWidget {
       builder: (context, constraints) {
         double parentHeight = constraints.maxHeight;
         double parentWidth = constraints.maxWidth;
-
         return Scaffold(
           backgroundColor: Colors.white,
-          appBar: AppBar(
-            actions: [
-              IconButton(
-                onPressed: () {},
-                icon: const Icon(
-                  Icons.settings_power_sharp,
-                  color: DARK_BLUE,
-                ),
-              )
-            ],
-            centerTitle: true,
-            title: Text(kAppName.toUpperCase()),
-            titleTextStyle: const TextStyle(
-              color: DARK_BLUE,
-              fontWeight: FontWeight.bold,
-              fontFamily: 'RobotoSlab',
-            ),
-            backgroundColor: Colors.white,
-            automaticallyImplyLeading: false,
-            elevation: 0,
-            leading: const Icon(Icons.archive_outlined),
+          appBar: CustomAppBar(
+            titleName: kAppName.toUpperCase(),
           ),
           body: Container(
             color: Colors.white,
@@ -63,57 +46,17 @@ class BaseScreen extends StatelessWidget {
                     color: Colors.black,
                   ),
                   const SizedBox(height: 30),
-                  Container(
-                    height: 70,
-                    padding: const EdgeInsets.all(10),
-                    margin: const EdgeInsets.symmetric(horizontal: 20),
-                    decoration: BoxDecoration(
-                      color: Colors.blue[300],
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: const [
-                        SizedBox(width: 10),
-                        Icon(
-                          Icons.folder,
-                          size: 40,
-                          color: Colors.white60,
-                        ),
-                        SizedBox(width: 30),
-                        CustomTextWidget(
-                          text: 'Flourish',
-                          fontSize: 20,
-                        ),
-                      ],
-                    ),
+                  CustomStudyCard(
+                    cardColor: Colors.blue[300],
+                    onTap: onStudySeleted,
+                    studyName: kFlourish.titleCase,
                   ),
                   const SizedBox(height: 30),
-                  Container(
-                    height: 70,
-                    padding: const EdgeInsets.all(10),
-                    margin: const EdgeInsets.symmetric(horizontal: 20),
-                    decoration: BoxDecoration(
-                      color: Colors.green[300],
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: const [
-                        SizedBox(width: 10),
-                        Icon(
-                          Icons.folder,
-                          size: 40,
-                          color: Colors.white60,
-                        ),
-                        SizedBox(width: 30),
-                        CustomTextWidget(
-                          text: 'Tshilo Dikotla',
-                          fontSize: 20,
-                        ),
-                      ],
-                    ),
-                  ),
+                  CustomStudyCard(
+                    cardColor: Colors.green[300],
+                    onTap: onStudySeleted,
+                    studyName: kTshiloDikotla.titleCase,
+                  )
                 ],
               ),
             ),
@@ -121,5 +64,9 @@ class BaseScreen extends StatelessWidget {
         );
       },
     );
+  }
+
+  void onStudySeleted(BuildContext context) {
+    Navigator.pushNamed(context, kPids);
   }
 }

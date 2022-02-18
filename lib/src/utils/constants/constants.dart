@@ -5,3 +5,6 @@ const String kEmail = 'email';
 const String kPassword = 'password';
 const String kBase = 'base';
 const String kAppName = 'document archiving';
+const String kTshiloDikotla = 'tshilo dikotla';
+const String kFlourish = 'flourish';
+const String kPids = 'pids';
