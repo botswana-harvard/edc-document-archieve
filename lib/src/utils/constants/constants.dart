@@ -8,3 +8,5 @@ const String kAppName = 'document archiving';
 const String kTshiloDikotla = 'tshilo dikotla';
 const String kFlourish = 'flourish';
 const String kPids = 'pids';
+const String kCrfform = 'crfform';
+const String kNonCrfform = 'noncrfform';

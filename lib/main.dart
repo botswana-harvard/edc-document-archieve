@@ -16,6 +16,7 @@ class MyApp extends StatelessWidget {
       title: 'EDC Document Archiving',
       theme: ThemeData(
         primarySwatch: Colors.lightBlue,
+        visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
       builder: (context, widget) => ResponsiveWrapper.builder(
           BouncingScrollWrapper.builder(context, widget!),

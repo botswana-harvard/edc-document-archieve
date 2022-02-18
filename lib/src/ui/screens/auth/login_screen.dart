@@ -2,9 +2,7 @@ import 'package:edc_document_archieve/src/ui/widgets/custom_text.dart';
 import 'package:edc_document_archieve/src/ui/widgets/custom_text_field.dart';
 import 'package:edc_document_archieve/src/ui/widgets/default_button.dart';
 import 'package:edc_document_archieve/src/ui/widgets/logo.dart';
-import 'package:edc_document_archieve/src/utils/constants/colors.dart';
 import 'package:edc_document_archieve/src/utils/constants/constants.dart';
-import 'package:edc_document_archieve/src/utils/constants/gradients.dart';
 import 'package:flutter/material.dart';
 import 'package:recase/recase.dart';
 

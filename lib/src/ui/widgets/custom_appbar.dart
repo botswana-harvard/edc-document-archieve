@@ -26,7 +26,7 @@ class CustomAppBar extends AppBar {
       color: DARK_BLUE,
       fontWeight: FontWeight.bold,
       fontFamily: 'RobotoSlab',
-      fontSize: 18);
+      fontSize: 17);
 
   @override
   List<Widget>? get actions => customAppBarButtons;
@@ -34,6 +34,13 @@ class CustomAppBar extends AppBar {
   List<Widget> get customAppBarButtons {
     List<Widget> temp = [];
     if (actionButtons.isNotEmpty) temp.addAll(actionButtons);
+    temp.add(IconButton(
+      onPressed: () {},
+      icon: const Icon(
+        Icons.home,
+        color: DARK_BLUE,
+      ),
+    ));
     temp.add(IconButton(
       onPressed: () {},
       icon: const Icon(
@@ -52,10 +59,4 @@ class CustomAppBar extends AppBar {
 
   @override
   double? get elevation => 0.1;
-
-  @override
-  Widget? get leading => const Icon(
-        Icons.home,
-        color: DARK_BLUE,
-      );
 }
