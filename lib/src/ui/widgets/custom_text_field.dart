@@ -22,7 +22,7 @@ class CustomTextField extends StatelessWidget {
       margin: margin,
       padding: const EdgeInsets.only(left: 20),
       decoration: BoxDecoration(
-        color: LIGHT_GREY_COLOR,
+        color: kLightGreyColor,
         borderRadius: BorderRadius.circular(16),
       ),
       child: Center(

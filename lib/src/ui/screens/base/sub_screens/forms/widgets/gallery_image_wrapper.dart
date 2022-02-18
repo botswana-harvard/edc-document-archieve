@@ -1,4 +1,4 @@
-import 'package:edc_document_archieve/src/core/models/gallery_Item.dart';
+import 'package:edc_document_archieve/src/core/models/gallery_item.dart';
 import 'package:flutter/material.dart';
 import 'package:photo_view/photo_view.dart';
 import 'package:photo_view/photo_view_gallery.dart';

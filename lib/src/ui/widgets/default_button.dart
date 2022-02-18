@@ -22,12 +22,12 @@ class DefaultButton extends StatelessWidget {
         width: double.infinity,
         height: 55,
         decoration: BoxDecoration(
-          gradient: BLUE_GRADIENT,
+          gradient: kBlueGradient,
           borderRadius: BorderRadius.circular(50),
           boxShadow: const [
             BoxShadow(
               blurRadius: 24,
-              color: BLUE_SHADOW,
+              color: kBlueShadow,
               offset: Offset(0, 16),
             )
           ],
@@ -36,7 +36,7 @@ class DefaultButton extends StatelessWidget {
           child: Text(
             buttonName.titleCase,
             style: const TextStyle(
-              color: WHITE_COLOR,
+              color: kWhiteColor,
               fontSize: 20,
               fontFamily: 'RobotoSlab',
             ),

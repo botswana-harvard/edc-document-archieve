@@ -32,7 +32,7 @@ class _PidsScreenState extends State<PidsScreen> {
             onPressed: () {},
             icon: const Icon(
               Icons.search,
-              color: DARK_BLUE,
+              color: kDarkBlue,
             ),
           ),
         ],
@@ -73,7 +73,7 @@ class _PidsScreenState extends State<PidsScreen> {
                         tileColor: Theme.of(context).canvasColor,
                         leading: const Icon(
                           Icons.folder,
-                          color: DARK_BLUE,
+                          color: kDarkBlue,
                         ),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(20.0),

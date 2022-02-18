@@ -2,7 +2,6 @@ import 'package:edc_document_archieve/src/ui/widgets/custom_text.dart';
 import 'package:edc_document_archieve/src/ui/widgets/custom_text_field.dart';
 import 'package:edc_document_archieve/src/utils/constants/back.dart';
 import 'package:edc_document_archieve/src/utils/constants/colors.dart';
-import 'package:edc_document_archieve/src/utils/constants/constants.dart';
 import 'package:flutter/material.dart';
 
 class CreatePidScreen extends StatefulWidget {
@@ -27,19 +26,19 @@ class _CreatePidScreenState extends State<CreatePidScreen> {
                   children: const [
                     Icon(
                       Icons.person,
-                      color: DARK_BLUE,
+                      color: kDarkBlue,
                     ),
                     Padding(
                       padding: EdgeInsets.all(8.0),
                       child: CustomTextWidget(
                         text: 'Add New PID',
-                        color: DARK_BLUE,
+                        color: kDarkBlue,
                       ),
                     ),
                   ],
                 ),
                 const Divider(
-                  color: DARK_BLUE,
+                  color: kDarkBlue,
                   height: 2,
                   indent: 2,
                   thickness: 2.3,
@@ -52,7 +51,7 @@ class _CreatePidScreenState extends State<CreatePidScreen> {
                 child: const CustomTextWidget(
                   text: 'Cancel',
                   fontSize: 16,
-                  color: DARK_ORANGE,
+                  color: kDarkRed,
                 ),
               ),
               TextButton(
@@ -60,7 +59,7 @@ class _CreatePidScreenState extends State<CreatePidScreen> {
                 child: const CustomTextWidget(
                   text: 'Save',
                   fontSize: 16,
-                  color: DARK_BLUE,
+                  color: kDarkBlue,
                 ),
               ),
             ],

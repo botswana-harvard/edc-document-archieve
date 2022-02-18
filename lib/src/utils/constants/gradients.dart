@@ -1,18 +1,10 @@
 import 'colors.dart';
 import 'package:flutter/material.dart';
 
-const RED_GRADIENT = RadialGradient(
-    center: Alignment.bottomRight, radius: 2, colors: [LIGHT_RED, DARK_RED]);
+const kRedGradient = RadialGradient(
+    center: Alignment.bottomRight, radius: 2, colors: [kLightRed, kDarkRed]);
 
-const BLUE_GRADIENT = LinearGradient(
-    colors: [DARK_BLUE, LIGHT_BLUE],
+const kBlueGradient = LinearGradient(
+    colors: [kDarkBlue, kLightBlue],
     begin: Alignment.topLeft,
     end: Alignment.bottomRight);
-
-const ORANGE_GRADIENT = LinearGradient(
-    colors: [DARK_ORANGE, PALE_ORANGE],
-    begin: Alignment.topLeft,
-    end: Alignment.bottomRight);
-
-const BRIGHT_ORANGE_GRADIENT =
-    LinearGradient(colors: [Color(0xFFD84708), Color(0xFFF77D48)]);

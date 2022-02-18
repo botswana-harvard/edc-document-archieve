@@ -23,7 +23,7 @@ class CustomAppBar extends AppBar {
 
   @override
   TextStyle? get titleTextStyle => const TextStyle(
-      color: DARK_BLUE,
+      color: kDarkBlue,
       fontWeight: FontWeight.bold,
       fontFamily: 'RobotoSlab',
       fontSize: 17);
@@ -38,14 +38,14 @@ class CustomAppBar extends AppBar {
       onPressed: () {},
       icon: const Icon(
         Icons.home,
-        color: DARK_BLUE,
+        color: kDarkBlue,
       ),
     ));
     temp.add(IconButton(
       onPressed: () {},
       icon: const Icon(
         Icons.settings_power_sharp,
-        color: DARK_BLUE,
+        color: kDarkBlue,
       ),
     ));
     return temp;

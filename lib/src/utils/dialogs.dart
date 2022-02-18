@@ -149,7 +149,7 @@ class Dialogs {
                             child: const Text(
                               "YES",
                               style: TextStyle(
-                                color: DARK_BLUE,
+                                color: kDarkBlue,
                               ),
                             ),
                           ),
