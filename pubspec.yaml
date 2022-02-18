@@ -1,5 +1,7 @@
 name: edc_document_archieve
-description: A new Flutter project.
+description: Electronic Data Capture Document Archiving Mobile.
+repository: https://github.com/botswana-harvard/edc-document-archieve.git
+homepage: https://github.com/botswana-harvard/edc-document-archieve.git
 
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.

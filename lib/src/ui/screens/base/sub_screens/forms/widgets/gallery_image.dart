@@ -1,6 +1,6 @@
 library galleryimage;
 
-import 'package:edc_document_archieve/src/core/gallery_Item_model.dart';
+import 'package:edc_document_archieve/src/core/models/gallery_Item.dart';
 import 'gallery_Item_thumbnail.dart';
 import 'gallery_image_wrapper.dart';
 import 'package:flutter/material.dart';
@@ -9,13 +9,14 @@ class GalleryImage extends StatefulWidget {
   final List<String> imageUrls;
   final String? titleGallery;
 
-  const GalleryImage({required this.imageUrls, this.titleGallery});
+  const GalleryImage({Key? key, required this.imageUrls, this.titleGallery})
+      : super(key: key);
   @override
   _GalleryImageState createState() => _GalleryImageState();
 }
 
 class _GalleryImageState extends State<GalleryImage> {
-  List<GalleryItemModel> galleryItems = <GalleryItemModel>[];
+  List<GalleryItem> galleryItems = <GalleryItem>[];
   @override
   void initState() {
     buildItemsList(widget.imageUrls);
@@ -100,10 +101,10 @@ class _GalleryImageState extends State<GalleryImage> {
 // clear and build list
   buildItemsList(List<String> items) {
     galleryItems.clear();
-    items.forEach((item) {
+    for (String item in items) {
       galleryItems.add(
-        GalleryItemModel(id: item, imageUrl: item),
+        GalleryItem(id: item, imageUrl: item),
       );
-    });
+    }
   }
 }

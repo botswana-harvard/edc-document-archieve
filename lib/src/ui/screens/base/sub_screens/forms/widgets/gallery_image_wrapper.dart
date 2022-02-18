@@ -1,4 +1,4 @@
-import 'package:edc_document_archieve/src/core/gallery_Item_model.dart';
+import 'package:edc_document_archieve/src/core/models/gallery_Item.dart';
 import 'package:flutter/material.dart';
 import 'package:photo_view/photo_view.dart';
 import 'package:photo_view/photo_view_gallery.dart';
@@ -9,7 +9,7 @@ class GalleryImageViewWrapper extends StatefulWidget {
   final BoxDecoration? backgroundDecoration;
   final int? initialIndex;
   final PageController pageController;
-  final List<GalleryItemModel> galleryItems;
+  final List<GalleryItem> galleryItems;
   final Axis scrollDirection;
   final String? titleGallery;
 
@@ -67,7 +67,7 @@ class _GalleryImageViewWrapperState extends State<GalleryImageViewWrapper> {
 
 // build image with zooming
   PhotoViewGalleryPageOptions _buildImage(BuildContext context, int index) {
-    final GalleryItemModel item = widget.galleryItems[index];
+    final GalleryItem item = widget.galleryItems[index];
     return PhotoViewGalleryPageOptions.customChild(
       child: Image.asset(item.imageUrl),
       initialScale: PhotoViewComputedScale.contained,

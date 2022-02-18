@@ -20,7 +20,7 @@ class CustomTextWidget extends StatelessWidget {
       onTap: onTap,
       child: Text(
         text,
-        textAlign: TextAlign.center,
+        textAlign: TextAlign.justify,
         style: TextStyle(
           fontSize: fontSize,
           color: color ?? Colors.grey[800],

@@ -1,3 +1,4 @@
+import 'package:edc_document_archieve/gen/assets.gen.dart';
 import 'package:edc_document_archieve/src/ui/widgets/custom_appbar.dart';
 import 'package:edc_document_archieve/src/utils/constants/constants.dart';
 import 'package:flutter/material.dart';
@@ -66,17 +67,17 @@ class NonCRFormScreen extends StatelessWidget {
                     color: Theme.of(context).canvasColor,
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
-                      children: const <Widget>[
-                        Text("Tap to show image"),
+                      children: <Widget>[
+                        const Text("Tap to show image"),
                         GalleryImage(
                           titleGallery: 'Uploaded Images',
                           imageUrls: [
-                            'assets/images/test/snapshot2.jpeg',
-                            'assets/images/test/snapshot3.jpeg',
-                            'assets/images/test/snapshot4.jpeg',
-                            'assets/images/test/snapshot5.jpeg',
-                            'assets/images/test/snapshot6.jpeg',
-                            'assets/images/test/snapshot7.jpeg',
+                            Assets.images.test.snapshot2.path,
+                            Assets.images.test.snapshot3.path,
+                            Assets.images.test.snapshot4.path,
+                            Assets.images.test.snapshot5.path,
+                            Assets.images.test.snapshot6.path,
+                            Assets.images.test.snapshot7.path,
                           ],
                         ),
                       ],

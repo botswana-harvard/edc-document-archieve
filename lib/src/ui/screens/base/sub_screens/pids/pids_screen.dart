@@ -1,3 +1,4 @@
+import 'package:edc_document_archieve/src/ui/screens/base/sub_screens/pids/sub_screens/create_pid_screen.dart';
 import 'package:edc_document_archieve/src/ui/widgets/custom_appbar.dart';
 import 'package:edc_document_archieve/src/utils/constants/colors.dart';
 import 'package:edc_document_archieve/src/utils/constants/constants.dart';
@@ -94,7 +95,7 @@ class _PidsScreenState extends State<PidsScreen> {
         itemCount: 100,
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
+        onPressed: showNewPidDialog,
         child: Icon(
           Icons.person_add,
           color: Colors.grey[800],
@@ -105,6 +106,15 @@ class _PidsScreenState extends State<PidsScreen> {
 
   void onFolderButtonTapped() {
     Navigator.pushNamed(context, kNonCrfform);
+  }
+
+  void showNewPidDialog() {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return const CreatePidScreen();
+      },
+    );
   }
 
   // void _scrollToSelectedContent({required GlobalKey expansionTileKey}) {

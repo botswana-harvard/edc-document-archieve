@@ -39,13 +39,11 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                   Container(margin: const EdgeInsets.only(top: 35)),
                   CustomTextField(
-                    textType: kEmail,
                     labelText: kEmail.titleCase,
                     keyboardType: TextInputType.emailAddress,
                   ),
                   Container(margin: const EdgeInsets.only(top: 20)),
                   CustomTextField(
-                    textType: kPassword.titleCase,
                     labelText: kPassword.titleCase,
                     obscure: true,
                   ),

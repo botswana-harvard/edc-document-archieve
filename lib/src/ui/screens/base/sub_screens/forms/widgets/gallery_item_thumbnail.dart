@@ -1,4 +1,4 @@
-import 'package:edc_document_archieve/src/core/gallery_Item_model.dart';
+import 'package:edc_document_archieve/src/core/models/gallery_Item.dart';
 import 'package:flutter/material.dart';
 
 // to show image in Row
@@ -6,7 +6,7 @@ class GalleryItemThumbnail extends StatelessWidget {
   const GalleryItemThumbnail({Key? key, required this.galleryItem, this.onTap})
       : super(key: key);
 
-  final GalleryItemModel galleryItem;
+  final GalleryItem galleryItem;
 
   final GestureTapCallback? onTap;
 

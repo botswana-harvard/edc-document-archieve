@@ -3,23 +3,23 @@ import 'package:flutter/material.dart';
 
 class CustomTextField extends StatelessWidget {
   final String labelText;
-  final String textType;
   final bool obscure;
   final TextInputType keyboardType;
+  final EdgeInsets margin;
 
   const CustomTextField({
     Key? key,
     required this.labelText,
-    required this.textType,
     this.obscure = false,
     this.keyboardType = TextInputType.text,
+    this.margin = const EdgeInsets.only(left: 30, right: 30),
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 70,
-      margin: const EdgeInsets.only(left: 30, right: 30),
+      height: 60,
+      margin: margin,
       padding: const EdgeInsets.only(left: 20),
       decoration: BoxDecoration(
         color: LIGHT_GREY_COLOR,

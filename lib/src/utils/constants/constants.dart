@@ -10,3 +10,4 @@ const String kFlourish = 'flourish';
 const String kPids = 'pids';
 const String kCrfform = 'crfform';
 const String kNonCrfform = 'noncrfform';
+const String kRobotoSlab = 'RobotoSlab';
