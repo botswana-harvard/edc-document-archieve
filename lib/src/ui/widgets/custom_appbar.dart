@@ -1,5 +1,7 @@
 import 'package:edc_document_archieve/src/utils/constants/colors.dart';
+import 'package:edc_document_archieve/src/utils/constants/constants.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class CustomAppBar extends AppBar {
   final String titleName;
@@ -34,15 +36,21 @@ class CustomAppBar extends AppBar {
   List<Widget> get customAppBarButtons {
     List<Widget> temp = [];
     if (actionButtons.isNotEmpty) temp.addAll(actionButtons);
+    if (Get.currentRoute != kBaseRoute) {
+      temp.add(IconButton(
+        onPressed: () {
+          Get.offAllNamed(kBaseRoute);
+        },
+        icon: const Icon(
+          Icons.home,
+          color: kDarkBlue,
+        ),
+      ));
+    }
     temp.add(IconButton(
-      onPressed: () {},
-      icon: const Icon(
-        Icons.home,
-        color: kDarkBlue,
-      ),
-    ));
-    temp.add(IconButton(
-      onPressed: () {},
+      onPressed: () {
+        Get.offAllNamed(kLoginRoute);
+      },
       icon: const Icon(
         Icons.settings_power_sharp,
         color: kDarkBlue,

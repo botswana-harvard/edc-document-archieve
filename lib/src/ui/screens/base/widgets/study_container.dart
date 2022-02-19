@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 class CustomStudyCard extends StatelessWidget {
   final String studyName;
   final Color? cardColor;
-  final Function(BuildContext context) onTap;
+  final Function() onTap;
   const CustomStudyCard({
     Key? key,
     required this.studyName,
@@ -15,7 +15,7 @@ class CustomStudyCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => onTap(context),
+      onTap: onTap,
       child: Container(
         height: 70,
         padding: const EdgeInsets.all(10),

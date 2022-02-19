@@ -3,9 +3,10 @@ import 'package:edc_document_archieve/src/ui/widgets/custom_appbar.dart';
 import 'package:edc_document_archieve/src/utils/constants/colors.dart';
 import 'package:edc_document_archieve/src/utils/constants/constants.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class PidsScreen extends StatefulWidget {
-  static const String routeName = kPids;
+  static const String routeName = kPidsRoute;
   const PidsScreen({Key? key}) : super(key: key);
 
   @override
@@ -105,27 +106,10 @@ class _PidsScreenState extends State<PidsScreen> {
   }
 
   void onFolderButtonTapped() {
-    Navigator.pushNamed(context, kNonCrfform);
+    Get.toNamed(kNonCrfformRoute);
   }
 
   void showNewPidDialog() {
-    showDialog(
-      context: context,
-      builder: (context) {
-        return const CreatePidScreen();
-      },
-    );
+    Get.dialog(const CreatePidScreen());
   }
-
-  // void _scrollToSelectedContent({required GlobalKey expansionTileKey}) {
-  //   final keyContext = expansionTileKey.currentContext;
-  //   if (keyContext != null) {
-  //     Future.delayed(const Duration(milliseconds: 200)).then((value) {
-  //       if (mounted) {
-  //         Scrollable.ensureVisible(keyContext,
-  //             duration: const Duration(milliseconds: 200));
-  //       }
-  //     });
-  //   }
-  // }
 }

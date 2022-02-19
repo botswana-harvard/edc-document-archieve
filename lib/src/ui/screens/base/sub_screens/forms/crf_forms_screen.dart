@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'widgets/gallery_image.dart';
 
 class CRFormScreen extends StatelessWidget {
-  static const String routeName = kCrfform;
+  static const String routeName = kCrfformRoute;
   const CRFormScreen({Key? key}) : super(key: key);
 
   @override

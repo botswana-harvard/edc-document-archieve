@@ -3,7 +3,7 @@ import 'package:recase/recase.dart';
 
 class AnimatedCustomButton extends StatelessWidget {
   final String name;
-  final Function(BuildContext context) onTap;
+  final Function() onTap;
 
   const AnimatedCustomButton({
     Key? key,
@@ -14,7 +14,7 @@ class AnimatedCustomButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => onTap(context),
+      onTap: onTap,
       child: Container(
         height: 70,
         width: MediaQuery.of(context).size.width / 1.2,

@@ -5,7 +5,7 @@ import 'package:edc_document_archieve/src/utils/constants/constants.dart';
 import 'package:flutter/material.dart';
 
 class NonCRFormScreen extends StatelessWidget {
-  static const String routeName = kNonCrfform;
+  static const String routeName = kNonCrfformRoute;
   const NonCRFormScreen({Key? key}) : super(key: key);
 
   @override

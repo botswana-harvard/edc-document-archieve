@@ -4,10 +4,11 @@ import 'package:edc_document_archieve/src/ui/widgets/default_button.dart';
 import 'package:edc_document_archieve/src/ui/widgets/logo.dart';
 import 'package:edc_document_archieve/src/utils/constants/constants.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:recase/recase.dart';
 
 class LoginScreen extends StatefulWidget {
-  static const String routeName = kLogin;
+  static const String routeName = kLoginRoute;
 
   const LoginScreen({Key? key}) : super(key: key);
 
@@ -68,11 +69,11 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   void onButtonLoginTapped() {
-    //TODO:
-    Navigator.popAndPushNamed(context, kBase);
+    /// TODO:
+    Get.offAndToNamed(kBaseRoute);
   }
 
   void onForgotPasswordTapped() {
-    //TODO:
+    /// TODO:
   }
 }

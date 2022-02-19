@@ -3,10 +3,11 @@ import 'package:edc_document_archieve/src/ui/widgets/custom_appbar.dart';
 import 'package:edc_document_archieve/src/ui/widgets/custom_text.dart';
 import 'package:edc_document_archieve/src/utils/constants/constants.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:recase/recase.dart';
 
 class BaseScreen extends StatelessWidget {
-  static const String routeName = kBase;
+  static const String routeName = kBaseRoute;
 
   const BaseScreen({Key? key}) : super(key: key);
 
@@ -65,7 +66,7 @@ class BaseScreen extends StatelessWidget {
     );
   }
 
-  void onStudySeleted(BuildContext context) {
-    Navigator.pushNamed(context, kPids);
+  void onStudySeleted() {
+    Get.toNamed(kPidsRoute);
   }
 }

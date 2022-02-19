@@ -2,8 +2,10 @@ import 'package:edc_document_archieve/src/ui/widgets/animated_custom_button.dart
 import 'package:edc_document_archieve/src/ui/widgets/logo.dart';
 import 'package:edc_document_archieve/src/utils/constants/constants.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class WelcomeScreen extends StatelessWidget {
+  static const String routeName = kWelcomeRoute;
   const WelcomeScreen({Key? key}) : super(key: key);
 
   @override
@@ -52,7 +54,7 @@ class WelcomeScreen extends StatelessWidget {
     );
   }
 
-  void onContinueButtonTapped(BuildContext context) {
-    Navigator.pushNamed(context, kLogin);
+  void onContinueButtonTapped() {
+    Get.toNamed(kLogin);
   }
 }

@@ -1,9 +1,13 @@
+import 'package:edc_document_archieve/src/config/injection.dart';
+import 'package:get/get.dart';
+
 import 'src/utils/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 import 'src/ui/screens/welcome/welcome_screen.dart';
 
 void main() {
+  configureInjection(Env.development);
   runApp(const MyApp());
 }
 
@@ -12,7 +16,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return GetMaterialApp(
       title: 'EDC Document Archiving',
       theme: ThemeData(
         primarySwatch: Colors.lightBlue,
@@ -32,7 +36,8 @@ class MyApp extends StatelessWidget {
           ],
           background: Container(color: const Color(0xFFF5F5F5))),
       home: const WelcomeScreen(),
-      routes: routes,
+      getPages: pages,
+      initialRoute: '/',
     );
   }
 }
