@@ -1,4 +1,3 @@
-import 'package:edc_document_archieve/gen/assets.gen.dart';
 import 'package:edc_document_archieve/gen/fonts.gen.dart';
 import 'package:flutter/material.dart';
 

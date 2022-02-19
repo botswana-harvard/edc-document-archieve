@@ -1,8 +1,7 @@
-import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
-void back(
-  BuildContext context, {
+void back({
   dynamic result,
 }) {
-  Navigator.pop(context, result);
+  Get.back(result: result);
 }

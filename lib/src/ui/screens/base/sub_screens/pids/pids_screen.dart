@@ -93,9 +93,9 @@ class _PidsScreenState extends State<PidsScreen> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: showNewPidDialog,
-        child: Icon(
+        child: const Icon(
           Icons.add,
-          color: Colors.grey[800],
+          color: kWhiteColor,
           size: 40,
         ),
       ),

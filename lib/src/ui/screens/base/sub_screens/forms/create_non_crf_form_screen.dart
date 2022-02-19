@@ -4,7 +4,6 @@ import 'package:edc_document_archieve/src/ui/widgets/custom_appbar.dart';
 import 'package:edc_document_archieve/src/ui/widgets/custom_text.dart';
 import 'package:edc_document_archieve/src/ui/widgets/custom_text_field.dart';
 import 'package:edc_document_archieve/src/ui/widgets/default_button.dart';
-import 'package:edc_document_archieve/src/ui/widgets/dropdown_field.dart';
 import 'package:edc_document_archieve/src/utils/constants/colors.dart';
 import 'package:edc_document_archieve/src/utils/constants/constants.dart';
 import 'package:flutter/material.dart';
@@ -43,8 +42,11 @@ class _CreateNonCRFormScreenState extends State<CreateNonCRFormScreen> {
                 children: [
                   const Center(child: CustomText(text: 'PID Details')),
                   const SizedBox(height: 30),
-                  const CustomTextField(
-                      labelText: '12334-33233-22', margin: EdgeInsets.all(5)),
+                  CustomTextField(
+                    labelText: '12334-33233-22',
+                    margin: 5,
+                    controller: TextEditingController(),
+                  ),
                   const SizedBox(height: 30),
                   const Padding(
                     padding: EdgeInsets.all(8.0),

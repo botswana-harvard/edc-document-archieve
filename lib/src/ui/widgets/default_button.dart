@@ -1,3 +1,4 @@
+import 'package:edc_document_archieve/src/ui/widgets/custom_text.dart';
 import 'package:edc_document_archieve/src/utils/constants/colors.dart';
 import 'package:edc_document_archieve/src/utils/constants/gradients.dart';
 import 'package:flutter/material.dart';
@@ -37,13 +38,8 @@ class DefaultButton extends StatelessWidget {
           ],
         ),
         child: Center(
-          child: Text(
-            buttonName.titleCase,
-            style: const TextStyle(
-              color: kWhiteColor,
-              fontSize: 20,
-              fontFamily: 'RobotoSlab',
-            ),
+          child: CustomText(
+            text: buttonName.titleCase,
           ),
         ),
       ),

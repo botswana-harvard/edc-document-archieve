@@ -1,3 +1,4 @@
+import 'package:edc_document_archieve/gen/fonts.gen.dart';
 import 'package:edc_document_archieve/src/ui/widgets/animated_custom_button.dart';
 import 'package:edc_document_archieve/src/ui/widgets/logo.dart';
 import 'package:edc_document_archieve/src/utils/constants/constants.dart';
@@ -25,8 +26,8 @@ class WelcomeScreen extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 BHPLogo(
-                  height: parentHeight,
-                  width: parentWidth,
+                  parentHeight: parentHeight,
+                  parentWidth: parentWidth,
                 ),
                 Padding(
                   padding: const EdgeInsets.all(15.0),
@@ -36,7 +37,7 @@ class WelcomeScreen extends StatelessWidget {
                     style: const TextStyle(
                       color: Color(0xff828282),
                       fontSize: 36,
-                      fontFamily: "RobotoSlab",
+                      fontFamily: FontFamily.robotoSlab,
                       fontWeight: FontWeight.w700,
                     ),
                   ),

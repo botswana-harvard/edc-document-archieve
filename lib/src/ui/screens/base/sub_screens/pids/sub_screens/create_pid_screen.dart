@@ -12,6 +12,14 @@ class CreatePidScreen extends StatefulWidget {
 }
 
 class _CreatePidScreenState extends State<CreatePidScreen> {
+  late TextEditingController pidController;
+
+  @override
+  void initState() {
+    pidController = TextEditingController();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return LayoutBuilder(
@@ -46,9 +54,9 @@ class _CreatePidScreenState extends State<CreatePidScreen> {
               ],
             ),
             actions: [
-              TextButton(
-                onPressed: () => back(context),
-                child: const CustomText(
+              const TextButton(
+                onPressed: back,
+                child: CustomText(
                   text: 'Cancel',
                   fontSize: 16,
                   color: kDarkRed,
@@ -67,19 +75,20 @@ class _CreatePidScreenState extends State<CreatePidScreen> {
             content: Builder(
               builder: (context) {
                 return SizedBox(
-                  height: parentHeight / 4,
+                  height: parentHeight / 6,
                   width: parentWidth,
                   child: Column(
-                    children: const [
-                      CustomText(
+                    children: [
+                      const CustomText(
                         text: 'Please note that the PID that is added must be '
                             'a valid pid from EDC',
                         fontSize: 14,
                       ),
-                      SizedBox(height: 30),
+                      const SizedBox(height: 30),
                       CustomTextField(
-                        labelText: 'Participant Identifier',
-                        margin: EdgeInsets.all(0),
+                        labelText: 'PID',
+                        margin: 0,
+                        controller: pidController,
                       ),
                     ],
                   ),

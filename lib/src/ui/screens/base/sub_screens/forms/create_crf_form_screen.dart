@@ -44,8 +44,11 @@ class _CreateCRFormScreenState extends State<CreateCRFormScreen> {
                 children: [
                   const Center(child: CustomText(text: 'PID Details')),
                   const SizedBox(height: 30),
-                  const CustomTextField(
-                      labelText: '12334-33233-22', margin: EdgeInsets.all(5)),
+                  CustomTextField(
+                    labelText: '12334-33233-22',
+                    margin: 5,
+                    controller: TextEditingController(),
+                  ),
                   const SizedBox(height: 30),
                   DropDownFormField(
                     dataSource: visitCodeChoice,
