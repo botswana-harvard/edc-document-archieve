@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 
-class CustomTextWidget extends StatelessWidget {
+class CustomText extends StatelessWidget {
   final String text;
   final double fontSize;
   final Function()? onTap;
   final Color? color;
 
-  const CustomTextWidget({
+  const CustomText({
     Key? key,
     required this.text,
     this.onTap,

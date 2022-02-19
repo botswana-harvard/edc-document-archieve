@@ -30,7 +30,7 @@ class _CreatePidScreenState extends State<CreatePidScreen> {
                     ),
                     Padding(
                       padding: EdgeInsets.all(8.0),
-                      child: CustomTextWidget(
+                      child: CustomText(
                         text: 'Add New PID',
                         color: kDarkBlue,
                       ),
@@ -48,7 +48,7 @@ class _CreatePidScreenState extends State<CreatePidScreen> {
             actions: [
               TextButton(
                 onPressed: () => back(context),
-                child: const CustomTextWidget(
+                child: const CustomText(
                   text: 'Cancel',
                   fontSize: 16,
                   color: kDarkRed,
@@ -56,7 +56,7 @@ class _CreatePidScreenState extends State<CreatePidScreen> {
               ),
               TextButton(
                 onPressed: () {},
-                child: const CustomTextWidget(
+                child: const CustomText(
                   text: 'Save',
                   fontSize: 16,
                   color: kDarkBlue,
@@ -71,7 +71,7 @@ class _CreatePidScreenState extends State<CreatePidScreen> {
                   width: parentWidth,
                   child: Column(
                     children: const [
-                      CustomTextWidget(
+                      CustomText(
                         text: 'Please note that the PID that is added must be '
                             'a valid pid from EDC',
                         fontSize: 14,

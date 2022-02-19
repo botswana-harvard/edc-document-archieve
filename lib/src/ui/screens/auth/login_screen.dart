@@ -35,7 +35,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     width: parentWidth,
                   ),
                   Container(margin: const EdgeInsets.only(top: 35)),
-                  const CustomTextWidget(
+                  const CustomText(
                     text: 'Log in to continue',
                   ),
                   Container(margin: const EdgeInsets.only(top: 35)),
@@ -49,7 +49,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     obscure: true,
                   ),
                   Container(margin: const EdgeInsets.only(top: 20)),
-                  CustomTextWidget(
+                  CustomText(
                     text: 'Forgot password? Click here to reset',
                     fontSize: 16,
                     onTap: onForgotPasswordTapped,

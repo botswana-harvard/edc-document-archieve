@@ -34,7 +34,7 @@ class CustomStudyCard extends StatelessWidget {
               color: Colors.white60,
             ),
             const SizedBox(width: 30),
-            CustomTextWidget(
+            CustomText(
               text: studyName,
               fontSize: 20,
             ),

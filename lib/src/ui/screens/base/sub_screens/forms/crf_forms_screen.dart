@@ -2,6 +2,7 @@ import 'package:edc_document_archieve/gen/assets.gen.dart';
 import 'package:edc_document_archieve/src/ui/widgets/custom_appbar.dart';
 import 'package:edc_document_archieve/src/utils/constants/constants.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 import 'widgets/gallery_image.dart';
 
@@ -123,7 +124,7 @@ class CRFormScreen extends StatelessWidget {
     );
   }
 
-  void onFolderButtonTapped(BuildContext context) {
-    //TODO
+  void onFolderButtonTapped() {
+    Get.toNamed(kCreateCRFormRoute);
   }
 }

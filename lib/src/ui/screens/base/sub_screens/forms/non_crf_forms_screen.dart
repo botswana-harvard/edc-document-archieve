@@ -3,6 +3,7 @@ import 'package:edc_document_archieve/src/ui/widgets/custom_appbar.dart';
 import 'package:edc_document_archieve/src/ui/screens/base/sub_screens/forms/widgets/gallery_image.dart';
 import 'package:edc_document_archieve/src/utils/constants/constants.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class NonCRFormScreen extends StatelessWidget {
   static const String routeName = kNonCrfformRoute;
@@ -87,7 +88,7 @@ class NonCRFormScreen extends StatelessWidget {
             ),
           ),
           floatingActionButton: FloatingActionButton(
-            onPressed: () {},
+            onPressed: onFolderButtonTapped,
             backgroundColor: Colors.grey[600],
             child: const Icon(
               Icons.add_a_photo,
@@ -99,7 +100,7 @@ class NonCRFormScreen extends StatelessWidget {
     );
   }
 
-  void onFolderButtonTapped(BuildContext context) {
-    //TODO
+  void onFolderButtonTapped() {
+    Get.toNamed(kCreateNonCRFormRoute);
   }
 }

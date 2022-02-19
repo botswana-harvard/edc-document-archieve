@@ -40,7 +40,7 @@ class BaseScreen extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   const SizedBox(height: 40),
-                  const CustomTextWidget(
+                  const CustomText(
                     text: 'Select Study',
                     fontSize: 30,
                     color: Colors.black,
