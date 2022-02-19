@@ -56,7 +56,7 @@ class _PidsScreenState extends State<PidsScreen> {
             padding: const EdgeInsets.all(10),
             child: ExpansionTile(
               leading: const Icon(
-                Icons.person,
+                Icons.folder,
                 size: 30,
               ),
               title: const Text(
@@ -72,10 +72,6 @@ class _PidsScreenState extends State<PidsScreen> {
                       height: 80,
                       child: ListTile(
                         tileColor: Theme.of(context).canvasColor,
-                        leading: const Icon(
-                          Icons.folder,
-                          color: kDarkBlue,
-                        ),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(20.0),
                         ),
@@ -98,8 +94,9 @@ class _PidsScreenState extends State<PidsScreen> {
       floatingActionButton: FloatingActionButton(
         onPressed: showNewPidDialog,
         child: Icon(
-          Icons.person_add,
+          Icons.add,
           color: Colors.grey[800],
+          size: 40,
         ),
       ),
     );

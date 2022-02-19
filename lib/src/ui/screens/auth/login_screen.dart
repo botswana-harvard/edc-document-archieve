@@ -2,6 +2,7 @@ import 'package:edc_document_archieve/src/ui/widgets/custom_text.dart';
 import 'package:edc_document_archieve/src/ui/widgets/custom_text_field.dart';
 import 'package:edc_document_archieve/src/ui/widgets/default_button.dart';
 import 'package:edc_document_archieve/src/ui/widgets/logo.dart';
+import 'package:edc_document_archieve/src/utils/constants/colors.dart';
 import 'package:edc_document_archieve/src/utils/constants/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -34,9 +35,10 @@ class _LoginScreenState extends State<LoginScreen> {
                     height: parentHeight,
                     width: parentWidth,
                   ),
-                  Container(margin: const EdgeInsets.only(top: 35)),
+                  Container(margin: const EdgeInsets.only(top: 15)),
                   const CustomText(
                     text: 'Log in to continue',
+                    fontWeight: FontWeight.bold,
                   ),
                   Container(margin: const EdgeInsets.only(top: 35)),
                   CustomTextField(
@@ -53,6 +55,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     text: 'Forgot password? Click here to reset',
                     fontSize: 16,
                     onTap: onForgotPasswordTapped,
+                    color: kDarkRed,
                   ),
                   Container(margin: const EdgeInsets.only(top: 30)),
                   DefaultButton(
