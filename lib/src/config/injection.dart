@@ -6,9 +6,3 @@ final getIt = GetIt.instance;
 @injectableInit
 void configureInjection(String environment) =>
     $initGetIt(getIt, environment: environment);
-
-class Env {
-  static const production = 'production';
-  static const testing = 'testing';
-  static const development = 'development';
-}

@@ -1,5 +1,6 @@
 import 'package:edc_document_archieve/src/config/injection.dart';
 import 'package:get/get.dart';
+import 'package:injectable/injectable.dart';
 
 import 'src/utils/routes.dart';
 import 'package:flutter/material.dart';
@@ -7,7 +8,7 @@ import 'package:responsive_framework/responsive_framework.dart';
 import 'src/ui/screens/welcome/welcome_screen.dart';
 
 void main() {
-  configureInjection(Env.development);
+  configureInjection(Environment.dev);
   runApp(const MyApp());
 }
 
