@@ -21,3 +21,10 @@ const String kBaseUrl = '';
 const String kAppStorageBox = 'appStorageBox';
 const String kUserAccountsBox = 'userAccountsBox';
 const String kCookies = 'cookies';
+
+const String kEmailNullError = 'Please Enter your email';
+const String kInvalidEmailError = 'Please Enter Valid Email';
+const String kPassNullError = 'Please Enter your password';
+const String kShortPassError = 'Password is too short, '
+    'must be of 8 characters and above';
+const String kMatchPassError = 'Password doesn\'t match with confirm password';

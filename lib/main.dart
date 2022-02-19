@@ -1,5 +1,4 @@
 import 'package:edc_document_archieve/gen/assets.gen.dart';
-import 'package:edc_document_archieve/gen/fonts.gen.dart';
 import 'package:edc_document_archieve/src/config/injector.dart';
 import 'package:edc_document_archieve/src/services/local_storage_service.dart';
 import 'package:edc_document_archieve/src/ui/widgets/splash_screen.dart';
