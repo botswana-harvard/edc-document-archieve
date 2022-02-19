@@ -1,6 +1,7 @@
 import 'package:edc_document_archieve/gen/assets.gen.dart';
 import 'package:edc_document_archieve/src/ui/widgets/custom_appbar.dart';
 import 'package:edc_document_archieve/src/ui/screens/base/sub_screens/forms/widgets/gallery_image.dart';
+import 'package:edc_document_archieve/src/utils/constants/colors.dart';
 import 'package:edc_document_archieve/src/utils/constants/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -89,7 +90,7 @@ class NonCRFormScreen extends StatelessWidget {
           ),
           floatingActionButton: FloatingActionButton(
             onPressed: onFolderButtonTapped,
-            backgroundColor: Colors.grey[600],
+            backgroundColor: kDarkBlue,
             child: const Icon(
               Icons.add_a_photo,
               color: Colors.white,

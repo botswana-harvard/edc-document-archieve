@@ -5,12 +5,16 @@ import 'package:recase/recase.dart';
 
 class DefaultButton extends StatelessWidget {
   final String buttonName;
-  final Function() onTap;
+  final VoidCallback onTap;
+  final EdgeInsets? margin;
+  final double borderRadius;
 
   const DefaultButton({
     Key? key,
     required this.buttonName,
     required this.onTap,
+    this.margin = const EdgeInsets.only(left: 30, right: 30),
+    this.borderRadius = 50,
   }) : super(key: key);
 
   @override
@@ -18,12 +22,12 @@ class DefaultButton extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        margin: const EdgeInsets.only(left: 30, right: 30),
+        margin: margin,
         width: double.infinity,
         height: 55,
         decoration: BoxDecoration(
           gradient: kBlueGradient,
-          borderRadius: BorderRadius.circular(50),
+          borderRadius: BorderRadius.circular(borderRadius),
           boxShadow: const [
             BoxShadow(
               blurRadius: 24,

@@ -1,5 +1,7 @@
 import 'package:edc_document_archieve/gen/assets.gen.dart';
 import 'package:edc_document_archieve/src/ui/widgets/custom_appbar.dart';
+import 'package:edc_document_archieve/src/ui/widgets/custom_text.dart';
+import 'package:edc_document_archieve/src/utils/constants/colors.dart';
 import 'package:edc_document_archieve/src/utils/constants/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -33,27 +35,18 @@ class CRFormScreen extends StatelessWidget {
                   backgroundColor: Theme.of(context).cardColor,
                   pinned: true,
                   floating: true,
-                  title: const Text(
-                    'Lab Results Forms',
-                    style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                    ),
+                  title: const CustomText(
+                    text: 'Lab Results Forms',
+                    fontWeight: FontWeight.bold,
                   ),
                   bottom: PreferredSize(
                     preferredSize: Size(parentWidth, parentHeight / 18),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
-                        const Icon(Icons.person),
+                        const Icon(Icons.calendar_today_outlined),
                         const SizedBox(width: 10),
-                        const Text(
-                          '12234-1221-3312',
-                          style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
+                        const CustomText(text: '12123-212-12', fontSize: 16),
                         TextButton(
                             onPressed: () {}, child: const Text('Sync Data')),
                       ],
@@ -69,22 +62,12 @@ class CRFormScreen extends StatelessWidget {
                       color: Theme.of(context).canvasColor,
                       child: ExpansionTile(
                         title: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                'Visit $index',
-                                style: const TextStyle(
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                              Text(
-                                'Timepoint $index',
-                                style: const TextStyle(
-                                  fontSize: 16,
-                                ),
-                              )
-                            ]),
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            CustomText(text: 'Visit $index', fontSize: 18),
+                            CustomText(text: 'Timepoint $index', fontSize: 16),
+                          ],
+                        ),
                         children: [
                           Column(
                             mainAxisAlignment: MainAxisAlignment.center,
@@ -112,8 +95,8 @@ class CRFormScreen extends StatelessWidget {
             ),
           ),
           floatingActionButton: FloatingActionButton(
-            onPressed: () {},
-            backgroundColor: Colors.grey[600],
+            onPressed: onFolderButtonTapped,
+            backgroundColor: kDarkBlue,
             child: const Icon(
               Icons.add_a_photo,
               color: Colors.white,

@@ -1,3 +1,5 @@
+import 'package:edc_document_archieve/gen/assets.gen.dart';
+import 'package:edc_document_archieve/gen/fonts.gen.dart';
 import 'package:flutter/material.dart';
 
 class CustomText extends StatelessWidget {
@@ -5,6 +7,7 @@ class CustomText extends StatelessWidget {
   final double fontSize;
   final Function()? onTap;
   final Color? color;
+  final FontWeight fontWeight;
 
   const CustomText({
     Key? key,
@@ -12,6 +15,7 @@ class CustomText extends StatelessWidget {
     this.onTap,
     this.fontSize = 20,
     this.color,
+    this.fontWeight = FontWeight.w500,
   }) : super(key: key);
 
   @override
@@ -24,8 +28,8 @@ class CustomText extends StatelessWidget {
         style: TextStyle(
           fontSize: fontSize,
           color: color ?? Colors.grey[800],
-          fontWeight: FontWeight.w500,
-          fontFamily: 'RobotoSlab',
+          fontWeight: fontWeight,
+          fontFamily: FontFamily.robotoSlab,
         ),
       ),
     );

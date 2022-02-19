@@ -2,12 +2,14 @@ import 'package:edc_document_archieve/src/utils/constants/colors.dart';
 import 'package:edc_document_archieve/src/utils/constants/constants.dart';
 import 'package:flutter/material.dart';
 
+typedef ValueSetter<T> = void Function(T? value);
+
 class DropDownFormField extends StatelessWidget {
   final String titleText;
   final String hintText;
   final dynamic value;
   final List dataSource;
-  final Function(String? value) onChanged;
+  final ValueSetter<String> onChanged;
 
   const DropDownFormField({
     Key? key,
@@ -36,7 +38,7 @@ class DropDownFormField extends StatelessWidget {
             decoration: InputDecoration(
               enabledBorder: OutlineInputBorder(
                 borderSide: const BorderSide(
-                  color: kLightBlue,
+                  color: kDarkBlue,
                   width: 0.0,
                 ),
                 borderRadius: BorderRadius.circular(10),
@@ -45,13 +47,13 @@ class DropDownFormField extends StatelessWidget {
               contentPadding: const EdgeInsets.fromLTRB(8, 8, 8, 0),
               labelText: titleText,
               labelStyle: const TextStyle(
-                color: kLightBlue,
+                color: kDarkBlue,
               ),
               hintText: hintText,
               filled: false,
               border: const OutlineInputBorder(
                 borderSide: BorderSide(
-                  color: kLightBlue,
+                  color: kDarkBlue,
                   width: 0.0,
                 ),
               ),
@@ -65,14 +67,14 @@ class DropDownFormField extends StatelessWidget {
                   decoration: const BoxDecoration(
                     border: Border(
                       bottom: BorderSide(
-                        color: Colors.transparent,
-                        width: 0.0,
+                        color: kDarkBlue,
+                        width: 1.0,
                       ),
                     ),
                   ),
                 ),
                 value: value,
-                focusColor: kLightBlue,
+                focusColor: kDarkBlue,
                 isDense: false,
                 isExpanded: true,
                 onChanged: (String? newValue) {

@@ -106,7 +106,7 @@ class _PidsScreenState extends State<PidsScreen> {
   }
 
   void onFolderButtonTapped() {
-    Get.toNamed(kNonCrfformRoute);
+    Get.toNamed(kCrfformRoute);
   }
 
   void showNewPidDialog() {
