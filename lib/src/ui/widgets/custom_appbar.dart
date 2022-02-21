@@ -1,3 +1,5 @@
+import 'package:edc_document_archieve/src/config/injector.dart';
+import 'package:edc_document_archieve/src/services/bloc/authentication_bloc.dart';
 import 'package:edc_document_archieve/src/utils/constants/colors.dart';
 import 'package:edc_document_archieve/src/utils/constants/constants.dart';
 import 'package:flutter/material.dart';
@@ -36,7 +38,7 @@ class CustomAppBar extends AppBar {
   List<Widget> get customAppBarButtons {
     List<Widget> temp = [];
     if (actionButtons.isNotEmpty) temp.addAll(actionButtons);
-    if (Get.currentRoute != kBaseRoute) {
+    if (Get.currentRoute != kAuthWrapperRoute) {
       temp.add(IconButton(
         onPressed: () {
           Get.offAllNamed(kBaseRoute);
@@ -49,6 +51,8 @@ class CustomAppBar extends AppBar {
     }
     temp.add(IconButton(
       onPressed: () {
+        Injector.resolve<AuthenticationBloc>()
+            .add(AuthenticationLogoutRequested());
         Get.offAllNamed(kLoginRoute);
       },
       icon: const Icon(

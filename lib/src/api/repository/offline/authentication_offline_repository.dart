@@ -24,8 +24,11 @@ class AuthenticationOfflineRepository extends LocalStorageRepository
   set authStatus(AuthenticationStatus status) => _authStatus = status;
 
   @override
-  void logOut() {
-    // TODO: implement logOut
+  Future<void> logOut() async {
+    //Get the last user logged in
+    await userAccountsBox.delete(kLastUserLoggedIn);
+    //Change auth status to un authenticated
+    authStatus = AuthenticationStatus.unauthenticated;
   }
 
   @override

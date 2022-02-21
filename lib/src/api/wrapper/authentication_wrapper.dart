@@ -23,8 +23,8 @@ class AuthenticationWrapper implements AuthenticationProvider {
   set authStatus(AuthenticationStatus status) => _authStatus = status;
 
   @override
-  void logOut() {
-    // TODO: implement logOut
+  Future<void> logOut() async {
+    await _offlineRepository.logOut();
   }
 
   @override
