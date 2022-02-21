@@ -39,6 +39,7 @@ class AuthenticationOfflineRepository extends LocalStorageRepository
 
     //check if the user exists in Hive database, if exists verify password
     if (user != null && user.password == password) {
+      await userAccountsBox.put(kLastUserLoggedIn, user.email);
       authStatus = AuthenticationStatus.authenticated;
       logger.wtf('Authenticated...');
     } else {
@@ -59,9 +60,11 @@ class AuthenticationOfflineRepository extends LocalStorageRepository
     throw UnimplementedError();
   }
 
+  @override
   UserAccount? lastUserAccountLoggedIn() {
-    //Get user from Hive database
-    UserAccount? user = userAccountsBox.get(kLastUserLoggedIn);
+    //Get last logged in user from Hive database
+    String email = userAccountsBox.get(kLastUserLoggedIn);
+    UserAccount? user = userAccountsBox.get(email);
     return user;
   }
 }
