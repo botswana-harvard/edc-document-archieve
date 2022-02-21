@@ -1,11 +1,10 @@
 import 'dart:async';
 
-import 'package:dio/dio.dart';
-import 'package:edc_document_archieve/src/api/repository/online/base_repository.dart';
+import 'package:edc_document_archieve/src/api/repository/online/base_online_repository.dart';
 import 'package:edc_document_archieve/src/providers/authentication_provider.dart';
 import 'package:edc_document_archieve/src/utils/enums.dart';
 
-class AuthenticationRepository extends BaseRepository
+class AuthenticationOnlineRepository extends BaseOnlineRepository
     implements AuthenticationProvider {
   @override
   AuthenticationStatus authStatus = AuthenticationStatus.unknown;

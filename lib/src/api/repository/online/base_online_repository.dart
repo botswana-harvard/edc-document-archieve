@@ -4,7 +4,7 @@ import 'package:edc_document_archieve/src/utils/constants/constants.dart';
 import 'package:edc_document_archieve/src/utils/debugLog.dart';
 import 'package:flutter/material.dart';
 
-abstract class BaseRepository {
+abstract class BaseOnlineRepository {
   late Dio _dio;
 
   ///
@@ -12,7 +12,7 @@ abstract class BaseRepository {
 
   ///
 
-  BaseRepository() {
+  BaseOnlineRepository() {
     /// dio base settings
     BaseOptions options = BaseOptions(
       receiveTimeout: 60000,
