@@ -18,6 +18,6 @@ class AuthWrapperScreen extends StatelessWidget {
     if (lastUserAccountLoggedIn == null) {
       return const WelcomeScreen();
     }
-    return const BaseScreen();
+    return BaseScreen();
   }
 }

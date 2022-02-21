@@ -12,7 +12,7 @@ import 'package:get/get.dart';
 
 Map<String, Widget Function(BuildContext)> routes = {
   LoginScreen.routeName: (_) => const LoginScreen(),
-  BaseScreen.routeName: (_) => const BaseScreen(),
+  BaseScreen.routeName: (_) => BaseScreen(),
   PidsScreen.routeName: (_) => const PidsScreen(),
   CRFormScreen.routeName: (_) => const CRFormScreen(),
   NonCRFormScreen.routeName: (_) => const NonCRFormScreen(),
@@ -20,7 +20,7 @@ Map<String, Widget Function(BuildContext)> routes = {
 
 List<GetPage<dynamic>> pages = [
   GetPage(name: LoginScreen.routeName, page: () => const LoginScreen()),
-  GetPage(name: BaseScreen.routeName, page: () => const BaseScreen()),
+  GetPage(name: BaseScreen.routeName, page: () => BaseScreen()),
   GetPage(name: PidsScreen.routeName, page: () => const PidsScreen()),
   GetPage(name: CRFormScreen.routeName, page: () => const CRFormScreen()),
   GetPage(name: NonCRFormScreen.routeName, page: () => const NonCRFormScreen()),

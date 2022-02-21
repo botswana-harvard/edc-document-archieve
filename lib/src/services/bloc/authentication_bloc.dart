@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
+import 'package:bloc_concurrency/bloc_concurrency.dart';
 import 'package:edc_document_archieve/src/core/models/user_account.dart';
 import 'package:edc_document_archieve/src/providers/authentication_provider.dart';
 import 'package:edc_document_archieve/src/utils/enums.dart';
@@ -14,8 +15,14 @@ class AuthenticationBloc
     required AuthenticationProvider authenticationRepository,
   })  : _authenticationRepository = authenticationRepository,
         super(const AuthenticationState.unknown()) {
-    on<AuthenticationLogoutRequested>(_onAuthenticationLogoutRequested);
-    on<AuthenticationLoginSubmitted>(_onLoginSubmitted);
+    on<AuthenticationLogoutRequested>(
+      _onAuthenticationLogoutRequested,
+      transformer: sequential(),
+    );
+    on<AuthenticationLoginSubmitted>(
+      _onLoginSubmitted,
+      transformer: sequential(),
+    );
   }
 
   final AuthenticationProvider _authenticationRepository;
