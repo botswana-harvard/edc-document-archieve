@@ -27,7 +27,7 @@ abstract class BaseOnlineRepository {
   @protected
   Future<Response> getRequest(
     String path, {
-    required Map<String, dynamic> headers,
+    Map<String, dynamic>? headers,
   }) async {
     late Response response;
 
@@ -52,9 +52,9 @@ abstract class BaseOnlineRepository {
   @protected
   Future<Response> postRequest(
     String path, {
-    required Map<String, dynamic> data,
-    required Map<String, dynamic> headers,
-    required String contentType,
+    Map<String, dynamic>? data,
+    Map<String, dynamic>? headers,
+    String? contentType,
     // bool setFormUrlEncodedContentType = false,
   }) async {
     late Response response;

@@ -13,8 +13,15 @@ class _$Injector extends Injector {
     container
       ..registerFactory((c) => AuthenticationBloc(
           authenticationRepository: c<AuthenticationProvider>()))
-      ..registerFactory<AuthenticationProvider>(
-          (c) => AuthenticationOnlineRepository())
-      ..registerSingleton((c) => AuthenticationOnlineRepository());
+      ..registerFactory<AuthenticationProvider>((c) => AuthenticationWrapper());
+  }
+
+  @override
+  void _configureAppServiceModuleSingletons() {
+    final KiwiContainer container = KiwiContainer();
+    container
+      ..registerSingleton((c) => AuthenticationOfflineRepository())
+      ..registerSingleton((c) => AuthenticationOnlineRepository())
+      ..registerSingleton((c) => AuthenticationWrapper());
   }
 }

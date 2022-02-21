@@ -58,12 +58,12 @@ class CustomTextField extends StatelessWidget {
           },
           keyboardType: keyboardType,
           decoration: InputDecoration(
-            border: InputBorder.none,
-            labelText: labelText,
-            labelStyle: const TextStyle(
-              fontFamily: FontFamily.robotoSlab,
-            ),
-          ),
+              border: InputBorder.none,
+              labelText: labelText,
+              labelStyle: const TextStyle(
+                fontFamily: FontFamily.robotoSlab,
+              ),
+              contentPadding: const EdgeInsets.all(10)),
         ),
       ),
     );

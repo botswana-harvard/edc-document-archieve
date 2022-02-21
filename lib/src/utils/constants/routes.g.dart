@@ -8,3 +8,4 @@ const String kNonCrfformRoute = '/noncrfform';
 const String kBaseRoute = '/base';
 const String kCreateCRFormRoute = '/createcrform';
 const String kCreateNonCRFormRoute = '/createnoncrform';
+const String kAuthWrapperRoute = '/authwrapper';

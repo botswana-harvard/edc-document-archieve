@@ -1,21 +1,26 @@
 import 'package:edc_document_archieve/src/api/repository/offline/authentication_offline_repository.dart';
 import 'package:edc_document_archieve/src/api/repository/online/authentication_online_repository.dart';
 import 'package:edc_document_archieve/src/config/injector.dart';
+import 'package:edc_document_archieve/src/core/models/user_account.dart';
 import 'package:edc_document_archieve/src/providers/authentication_provider.dart';
 import 'package:edc_document_archieve/src/utils/enums.dart';
 
 class AuthenticationWrapper implements AuthenticationProvider {
-  late AuthenticationOfflineRepository _offlineRepository;
-  late AuthenticationOnlineRepository _onlineRepository;
-
   AuthenticationWrapper() {
     _offlineRepository = Injector.resolve<AuthenticationOfflineRepository>();
     _onlineRepository = Injector.resolve<AuthenticationOnlineRepository>();
+    _authStatus = AuthenticationStatus.unknown;
   }
-  @override
-  AuthenticationStatus get authStatus => AuthenticationStatus.unknown;
 
-  set authStatus(AuthenticationStatus status) => authStatus = status;
+  late AuthenticationOfflineRepository _offlineRepository;
+  late AuthenticationOnlineRepository _onlineRepository;
+  late AuthenticationStatus _authStatus;
+
+  @override
+  AuthenticationStatus get authStatus => _authStatus;
+
+  @override
+  set authStatus(AuthenticationStatus status) => _authStatus = status;
 
   @override
   void logOut() {
@@ -42,5 +47,10 @@ class AuthenticationWrapper implements AuthenticationProvider {
   Future<void> verifyEmail({required String email}) {
     // TODO: implement verifyEmail
     throw UnimplementedError();
+  }
+
+  @override
+  UserAccount? lastUserAccountLoggedIn() {
+    return _offlineRepository.lastUserAccountLoggedIn();
   }
 }

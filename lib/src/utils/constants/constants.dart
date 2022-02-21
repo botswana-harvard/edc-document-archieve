@@ -28,3 +28,4 @@ const String kPassNullError = 'Please Enter your password';
 const String kShortPassError = 'Password is too short, '
     'must be of 8 characters and above';
 const String kMatchPassError = 'Password doesn\'t match with confirm password';
+const String kLastUserLoggedIn = 'lastUserAccountLoggedIn';

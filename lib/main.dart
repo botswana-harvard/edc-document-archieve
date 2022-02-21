@@ -1,13 +1,14 @@
 import 'package:edc_document_archieve/gen/assets.gen.dart';
 import 'package:edc_document_archieve/src/config/injector.dart';
 import 'package:edc_document_archieve/src/api/repository/offline/local_storage_repository.dart';
+
+import 'package:edc_document_archieve/src/ui/screens/auth/auth_wrapper_screen.dart';
 import 'package:edc_document_archieve/src/ui/widgets/splash_screen.dart';
 import 'package:edc_document_archieve/src/utils/constants/constants.dart';
 import 'package:get/get.dart';
 import 'package:edc_document_archieve/src/utils/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:responsive_framework/responsive_framework.dart';
-import 'src/ui/screens/welcome/welcome_screen.dart';
 
 Future<void> main() async {
   Injector.setup();
@@ -43,16 +44,17 @@ class MyApp extends StatelessWidget {
         ),
       ),
       home: SplashScreen.timer(
-          routeName: kWelcomeRoute,
-          seconds: 5,
-          navigateAfterSeconds: const WelcomeScreen(),
-          title: 'Document Archive Mobile',
-          image: Image.asset(Assets.images.logo.path),
-          backgroundColor: Colors.white,
-          styleTextUnderTheLoader: const TextStyle(),
-          photoSize: 100.0,
-          loaderColor: Colors.red,
-          loadingText: const Text('Getting ready')),
+        routeName: kAuthWrapperRoute,
+        seconds: 5,
+        navigateAfterSeconds: const AuthWrapperScreen(),
+        title: 'Document Archive Mobile',
+        image: Image.asset(Assets.images.logo.path),
+        backgroundColor: Colors.white,
+        styleTextUnderTheLoader: const TextStyle(),
+        photoSize: 100.0,
+        loaderColor: Colors.red,
+        loadingText: const Text('Getting ready'),
+      ),
       getPages: pages,
       initialRoute: '/',
     );
