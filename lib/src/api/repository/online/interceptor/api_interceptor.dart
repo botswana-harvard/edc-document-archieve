@@ -2,8 +2,8 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:dio/dio.dart';
-import 'package:edc_document_archieve/src/services/local_storage_service.dart';
-import 'package:edc_document_archieve/src/utils/constants/constants.dart';
+import 'package:edc_document_archieve/src/api/repository/offline/app_storage_repository.dart';
+import 'package:edc_document_archieve/src/api/repository/offline/local_storage_repository.dart';
 import 'package:edc_document_archieve/src/utils/debugLog.dart';
 
 const String _loginUrl = '';
@@ -16,7 +16,7 @@ final List<String> customCookieUrls = [
 ];
 
 class ApiInterceptor extends Interceptor {
-  LocalStorageService _localStorageService = LocalStorageService();
+  final AppStorageRepository _localStorageService = AppStorageRepository();
 
   String userAgent =
       "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0";

@@ -1,6 +1,6 @@
 import 'package:edc_document_archieve/gen/assets.gen.dart';
 import 'package:edc_document_archieve/src/config/injector.dart';
-import 'package:edc_document_archieve/src/services/local_storage_service.dart';
+import 'package:edc_document_archieve/src/api/repository/offline/local_storage_repository.dart';
 import 'package:edc_document_archieve/src/ui/widgets/splash_screen.dart';
 import 'package:edc_document_archieve/src/utils/constants/constants.dart';
 import 'package:get/get.dart';
@@ -9,9 +9,9 @@ import 'package:flutter/material.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 import 'src/ui/screens/welcome/welcome_screen.dart';
 
-void main() {
+Future<void> main() async {
   Injector.setup();
-  LocalStorageService.setupLocalStorage();
+  await LocalStorageRepository.setupLocalStorage();
   runApp(const MyApp());
 }
 

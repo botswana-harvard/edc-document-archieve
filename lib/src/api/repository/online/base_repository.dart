@@ -1,10 +1,10 @@
 import 'package:dio/dio.dart';
-import 'package:edc_document_archieve/src/api/interceptor/api_interceptor.dart';
+import 'package:edc_document_archieve/src/api/repository/online/interceptor/api_interceptor.dart';
 import 'package:edc_document_archieve/src/utils/constants/constants.dart';
 import 'package:edc_document_archieve/src/utils/debugLog.dart';
 import 'package:flutter/material.dart';
 
-abstract class BaseAPI {
+abstract class BaseRepository {
   late Dio _dio;
 
   ///
@@ -12,7 +12,7 @@ abstract class BaseAPI {
 
   ///
 
-  BaseAPI() {
+  BaseRepository() {
     /// dio base settings
     BaseOptions options = BaseOptions(
       receiveTimeout: 60000,

@@ -1,6 +1,6 @@
-import 'package:edc_document_archieve/src/api/auth_api.dart';
-import 'package:edc_document_archieve/src/api/repository/auth_repository.dart';
-import 'package:edc_document_archieve/src/services/auth_service.dart';
+import 'package:edc_document_archieve/src/api/repository/authentication_repository.dart';
+import 'package:edc_document_archieve/src/providers/authentication_provider.dart';
+import 'package:edc_document_archieve/src/services/bloc/authentication_bloc.dart';
 import 'package:kiwi/kiwi.dart';
 
 part 'injector.g.dart';
@@ -13,9 +13,9 @@ abstract class Injector {
     _configureAuthServiceModuleFactories();
   }
 
-  @Register.factory(AuthService)
-  @Register.factory(AuthRepository, from: AuthAPI)
-  @Register.singleton(AuthAPI)
+  @Register.factory(AuthenticationBloc)
+  @Register.factory(AuthenticationProvider, from: AuthenticationRepository)
+  @Register.singleton(AuthenticationRepository)
   void _configureAuthServiceModuleFactories();
 
   static final resolve = container.resolve;
