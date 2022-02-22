@@ -1,7 +1,7 @@
 import 'package:edc_document_archieve/src/core/models/study_document.dart';
 import 'package:hive/hive.dart';
 import 'package:json_annotation/json_annotation.dart';
-part 'participant_crf.g.dart';
+part 'gen/participant_crf.g.dart';
 
 @JsonSerializable(explicitToJson: true)
 @HiveType(typeId: 1)

@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'participant_non_crf.dart';
+part of '../participant_non_crf.dart';
 
 // **************************************************************************
 // TypeAdapterGenerator
