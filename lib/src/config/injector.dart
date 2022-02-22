@@ -1,3 +1,4 @@
+import 'package:edc_document_archieve/src/services/app_service.dart';
 import 'package:kiwi/kiwi.dart';
 import 'index.dart';
 
@@ -9,11 +10,11 @@ abstract class Injector {
   void _configure() {
     container = KiwiContainer();
 
-    configureDAServiceModuleFactories();
-    configureAuthServiceModuleFactories();
+    _configureDAServiceModuleFactories();
+    _configureAuthServiceModuleFactories();
 
-    configureDAServiceModuleSingletons();
-    configureAuthServiceModuleSingletons();
+    _configureDAServiceModuleSingletons();
+    _configureAuthServiceModuleSingletons();
   }
 
   static final resolve = container.resolve;
@@ -24,19 +25,19 @@ abstract class Injector {
 
   @Register.factory(DocumentArchieveBloc)
   @Register.factory(DocumentArchieveProvider, from: DocumentArchieveWrapper)
-  void configureDAServiceModuleFactories();
+  void _configureDAServiceModuleFactories();
 
   @Register.factory(AuthenticationBloc)
   @Register.factory(AuthenticationProvider, from: AuthenticationWrapper)
-  void configureAuthServiceModuleFactories();
+  void _configureAuthServiceModuleFactories();
 
   @Register.singleton(AuthenticationOfflineRepository)
   @Register.singleton(AuthenticationOnlineRepository)
   @Register.singleton(AuthenticationWrapper)
-  void configureAuthServiceModuleSingletons();
+  void _configureAuthServiceModuleSingletons();
 
   @Register.singleton(DocumentArchieveOffLineRepository)
   @Register.singleton(DocumentArchieveOnLineRepository)
   @Register.singleton(DocumentArchieveWrapper)
-  void configureDAServiceModuleSingletons();
+  void _configureDAServiceModuleSingletons();
 }

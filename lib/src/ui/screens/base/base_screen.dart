@@ -1,6 +1,5 @@
-import 'dart:math';
-
 import 'package:edc_document_archieve/src/config/injector.dart';
+import 'package:edc_document_archieve/src/services/app_service.dart';
 import 'package:edc_document_archieve/src/services/bloc/document_archive_bloc.dart';
 import 'package:edc_document_archieve/src/services/bloc/events/document_archive_event.dart';
 import 'package:edc_document_archieve/src/services/bloc/states/document_archive_state.dart';
@@ -8,14 +7,15 @@ import 'package:edc_document_archieve/src/ui/screens/base/widgets/study_containe
 import 'package:edc_document_archieve/src/ui/widgets/custom_appbar.dart';
 import 'package:edc_document_archieve/src/ui/widgets/custom_text.dart';
 import 'package:edc_document_archieve/src/utils/constants/constants.dart';
-import 'package:edc_document_archieve/src/utils/debugLog.dart';
 import 'package:edc_document_archieve/src/utils/dialogs.dart';
 import 'package:edc_document_archieve/src/utils/enums.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
+import 'package:provider/provider.dart';
 import 'package:recase/recase.dart';
 
+// ignore: must_be_immutable
 class BaseScreen extends StatelessWidget {
   static const String routeName = kBaseRoute;
 
@@ -24,9 +24,13 @@ class BaseScreen extends StatelessWidget {
   late List<String>? availableStudies = [];
   final DocumentArchieveBloc _documentArchieveBloc =
       Injector.resolve<DocumentArchieveBloc>();
+  late AppService _appService;
 
   @override
   Widget build(BuildContext context) {
+    //
+    _appService = Provider.of<AppService>(context);
+    //
     return BlocConsumer<DocumentArchieveBloc, DocumentArchieveState>(
       bloc: _documentArchieveBloc,
       builder: (BuildContext context, DocumentArchieveState state) {
@@ -68,12 +72,12 @@ class BaseScreen extends StatelessWidget {
                       const SizedBox(height: 30),
                       ...availableStudies!
                           .map(
-                            (element) => Column(
+                            (studyName) => Column(
                               children: [
                                 CustomStudyCard(
                                   cardColor: Colors.lightBlue[300],
-                                  onTap: onStudySeleted,
-                                  studyName: element.titleCase,
+                                  onTap: () => onStudySeleted(studyName),
+                                  studyName: studyName.titleCase,
                                 ),
                                 const SizedBox(height: 30),
                               ],
@@ -89,7 +93,6 @@ class BaseScreen extends StatelessWidget {
         );
       },
       listener: (BuildContext context, DocumentArchieveState state) {
-        logger.e(state);
         switch (state.status) {
           case DocumentArchieveStatus.success:
             Dialogs.closeLoadingDialog(context);
@@ -108,7 +111,8 @@ class BaseScreen extends StatelessWidget {
     );
   }
 
-  void onStudySeleted() {
+  void onStudySeleted(String studySelected) {
+    _appService.selectedStudy = studySelected;
     Get.toNamed(kPidsRoute);
   }
 }

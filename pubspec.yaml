@@ -45,12 +45,12 @@ dependencies:
   logger: ^1.1.0
   kiwi: ^4.0.2
   path_provider: ^2.0.9
-  formz: ^0.4.1
   bloc: ^8.0.2
   flutter_bloc: ^8.0.1
   equatable: ^2.0.3
   bloc_concurrency: ^0.2.0
   crypto: ^3.0.1
+  provider: ^6.0.2
 
 dev_dependencies:
   flutter_test:

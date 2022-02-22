@@ -1,9 +1,12 @@
+import 'package:edc_document_archieve/src/config/injector.dart';
+import 'package:edc_document_archieve/src/services/app_service.dart';
 import 'package:edc_document_archieve/src/ui/screens/base/sub_screens/pids/sub_screens/create_pid_screen.dart';
 import 'package:edc_document_archieve/src/ui/widgets/custom_appbar.dart';
 import 'package:edc_document_archieve/src/utils/constants/colors.dart';
 import 'package:edc_document_archieve/src/utils/constants/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:provider/provider.dart';
 
 class PidsScreen extends StatefulWidget {
   static const String routeName = kPidsRoute;
@@ -14,6 +17,14 @@ class PidsScreen extends StatefulWidget {
 }
 
 class _PidsScreenState extends State<PidsScreen> {
+  late final AppService _appService;
+
+  @override
+  void didChangeDependencies() {
+    _appService = Provider.of(context);
+    super.didChangeDependencies();
+  }
+
   @override
   Widget build(BuildContext context) {
     List<String> forms = [
@@ -26,7 +37,7 @@ class _PidsScreenState extends State<PidsScreen> {
     return Scaffold(
       backgroundColor: Theme.of(context).cardColor,
       appBar: CustomAppBar(
-        titleName: 'Flourish Study',
+        titleName: _appService.selectedStudy,
         implyLeading: true,
         actionButtons: [
           IconButton(

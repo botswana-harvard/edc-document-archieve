@@ -8,7 +8,7 @@ part of 'injector.dart';
 
 class _$Injector extends Injector {
   @override
-  void configureDAServiceModuleFactories() {
+  void _configureDAServiceModuleFactories() {
     final KiwiContainer container = KiwiContainer();
     container
       ..registerFactory((c) => DocumentArchieveBloc(
@@ -18,7 +18,7 @@ class _$Injector extends Injector {
   }
 
   @override
-  void configureAuthServiceModuleFactories() {
+  void _configureAuthServiceModuleFactories() {
     final KiwiContainer container = KiwiContainer();
     container
       ..registerFactory((c) => AuthenticationBloc(
@@ -27,7 +27,7 @@ class _$Injector extends Injector {
   }
 
   @override
-  void configureAuthServiceModuleSingletons() {
+  void _configureAuthServiceModuleSingletons() {
     final KiwiContainer container = KiwiContainer();
     container
       ..registerSingleton((c) => AuthenticationOfflineRepository())
@@ -36,7 +36,7 @@ class _$Injector extends Injector {
   }
 
   @override
-  void configureDAServiceModuleSingletons() {
+  void _configureDAServiceModuleSingletons() {
     final KiwiContainer container = KiwiContainer();
     container
       ..registerSingleton((c) => DocumentArchieveOffLineRepository())
