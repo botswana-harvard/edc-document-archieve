@@ -2,6 +2,7 @@ import 'package:edc_document_archieve/src/api/repository/offline/local_storage_r
 import 'package:edc_document_archieve/src/core/models/study_document.dart';
 import 'package:edc_document_archieve/src/providers/document_archieve_provider.dart';
 import 'package:edc_document_archieve/src/utils/constants/constants.dart';
+import 'package:edc_document_archieve/src/utils/debugLog.dart';
 
 class DocumentArchieveOffLineRepository extends LocalStorageRepository
     implements DocumentArchieveProvider {
@@ -36,8 +37,9 @@ class DocumentArchieveOffLineRepository extends LocalStorageRepository
   @override
   Future<List<StudyDocument>> getAllForms(String studyName) async {
     String key = '${studyName}_forms';
-    List<StudyDocument>? forms = appStorageBox.get(key);
-    if (forms != null && forms.isNotEmpty) {
+    List<StudyDocument> forms = appStorageBox
+        .get(key, defaultValue: <StudyDocument>[]).cast<StudyDocument>();
+    if (forms.isNotEmpty) {
       return forms;
     }
     // List<Map<String, dynamic>> listForms = [
@@ -58,8 +60,9 @@ class DocumentArchieveOffLineRepository extends LocalStorageRepository
   @override
   Future<List<String>> getAllParticipants(String studyName) async {
     String key = '${studyName}_pids';
-    List<String>? participants = appStorageBox.get(key);
-    if (participants != null && participants.isNotEmpty) {
+    List<String> participants =
+        appStorageBox.get(key, defaultValue: <String>[]).cast<String>();
+    if (participants.isNotEmpty) {
       return participants;
     }
     return [];
@@ -67,8 +70,10 @@ class DocumentArchieveOffLineRepository extends LocalStorageRepository
 
   @override
   Future<List<String>> getAllStudies() async {
-    List<String>? studies = appStorageBox.get(kStudies);
-    if (studies != null && studies.isNotEmpty) {
+    List<String> studies =
+        appStorageBox.get(kStudies, defaultValue: <String>[]).cast<String>();
+    ;
+    if (studies.isNotEmpty) {
       return studies;
     }
     return [];
