@@ -1,14 +1,40 @@
 import 'package:edc_document_archieve/gen/assets.gen.dart';
+import 'package:edc_document_archieve/src/config/injector.dart';
+import 'package:edc_document_archieve/src/core/models/study_document.dart';
+import 'package:edc_document_archieve/src/services/app_service.dart';
+import 'package:edc_document_archieve/src/services/bloc/document_archive_bloc.dart';
 import 'package:edc_document_archieve/src/ui/widgets/custom_appbar.dart';
 import 'package:edc_document_archieve/src/ui/screens/base/sub_screens/forms/widgets/gallery_image.dart';
 import 'package:edc_document_archieve/src/utils/constants/colors.dart';
 import 'package:edc_document_archieve/src/utils/constants/constants.dart';
+import 'package:expansion_tile_card/expansion_tile_card.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:provider/provider.dart';
+import 'package:recase/recase.dart';
 
-class NonCRFormScreen extends StatelessWidget {
+class NonCRFormScreen extends StatefulWidget {
   static const String routeName = kNonCrfformRoute;
   const NonCRFormScreen({Key? key}) : super(key: key);
+
+  @override
+  State<NonCRFormScreen> createState() => _NonCRFormScreenState();
+}
+
+class _NonCRFormScreenState extends State<NonCRFormScreen> {
+  late String _studyName;
+  late StudyDocument _documentForm;
+  late String _pid;
+  late AppService _appService;
+
+  @override
+  void didChangeDependencies() {
+    _appService = context.watch<AppService>();
+    _studyName = _appService.selectedStudy;
+    _documentForm = _appService.selectedStudyDocument;
+    _pid = _appService.selectedPid;
+    super.didChangeDependencies();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +45,7 @@ class NonCRFormScreen extends StatelessWidget {
         return Scaffold(
           backgroundColor: Theme.of(context).cardColor,
           appBar: CustomAppBar(
-            titleName: 'Flourish Study',
+            titleName: '${_studyName.titleCase} Study',
             implyLeading: true,
           ),
           body: Container(
@@ -33,9 +59,9 @@ class NonCRFormScreen extends StatelessWidget {
                   backgroundColor: Theme.of(context).cardColor,
                   pinned: true,
                   floating: true,
-                  title: const Text(
-                    'Omang Forms',
-                    style: TextStyle(
+                  title: Text(
+                    _documentForm.name.titleCase,
+                    style: const TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.bold,
                     ),
@@ -47,9 +73,9 @@ class NonCRFormScreen extends StatelessWidget {
                       children: [
                         const Icon(Icons.person),
                         const SizedBox(width: 10),
-                        const Text(
-                          '12234-1221-3312',
-                          style: TextStyle(
+                        Text(
+                          _pid,
+                          style: const TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.bold,
                           ),

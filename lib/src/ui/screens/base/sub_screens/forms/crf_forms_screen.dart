@@ -44,7 +44,7 @@ class _CRFormScreenState extends State<CRFormScreen> {
         return Scaffold(
           backgroundColor: Theme.of(context).cardColor,
           appBar: CustomAppBar(
-            titleName: _studyName.titleCase,
+            titleName: '${_studyName.titleCase} Study',
             implyLeading: true,
           ),
           body: Container(
