@@ -33,3 +33,5 @@ const String kLastUserLoggedIn = 'lastUserAccountLoggedIn';
 const String kParticipants = 'participants';
 const String kStudies = 'studies';
 const String kForms = 'forms';
+const String kCrfForm = 'crf';
+const String kNonCrfForm = 'non_crf';

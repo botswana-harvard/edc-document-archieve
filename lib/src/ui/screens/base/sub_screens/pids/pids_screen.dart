@@ -154,7 +154,16 @@ class _PidsScreenState extends State<PidsScreen> {
   }
 
   void onFolderButtonTapped(StudyDocument document) {
-    Get.toNamed(kCrfformRoute);
+    _appService.selectedStudyDocument = document;
+    switch (document.type) {
+      case kCrfForm:
+        Get.toNamed(kCrfformRoute);
+        break;
+      case kNonCrfForm:
+        Get.toNamed(kNonCrfformRoute);
+        break;
+      default:
+    }
   }
 
   void showNewPidDialog() {
