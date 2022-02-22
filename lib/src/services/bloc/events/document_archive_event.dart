@@ -9,4 +9,18 @@ abstract class DocumentArchieveEvent<T> extends Equatable {
 
 class DocumentArchieveLoaded extends DocumentArchieveEvent {}
 
-class DocumentArchieveSelected extends DocumentArchieveEvent {}
+class DocumentArchieveStudySelected extends DocumentArchieveEvent {}
+
+class DocumentArchievePidsRequested<String> extends DocumentArchieveEvent {
+  final String studySelected;
+
+  const DocumentArchievePidsRequested({required this.studySelected});
+}
+
+class DocumentArchieveStudiesRequested extends DocumentArchieveEvent {}
+
+class DocumentArchievePidCreated<String> extends DocumentArchieveEvent {
+  final String pid;
+
+  const DocumentArchievePidCreated({required this.pid});
+}

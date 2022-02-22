@@ -1,8 +1,13 @@
+import 'package:edc_document_archieve/src/config/injector.dart';
+import 'package:edc_document_archieve/src/services/app_service.dart';
+import 'package:edc_document_archieve/src/services/bloc/document_archive_bloc.dart';
 import 'package:edc_document_archieve/src/ui/widgets/custom_text.dart';
 import 'package:edc_document_archieve/src/ui/widgets/custom_text_field.dart';
 import 'package:edc_document_archieve/src/utils/constants/back.dart';
 import 'package:edc_document_archieve/src/utils/constants/colors.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get/get.dart';
 
 class CreatePidScreen extends StatefulWidget {
   const CreatePidScreen({Key? key}) : super(key: key);
@@ -13,11 +18,20 @@ class CreatePidScreen extends StatefulWidget {
 
 class _CreatePidScreenState extends State<CreatePidScreen> {
   late TextEditingController pidController;
+  late GlobalKey<FormState> _formKey;
+  late AppService _appService;
 
   @override
   void initState() {
     pidController = TextEditingController();
+    _formKey = GlobalKey<FormState>();
     super.initState();
+  }
+
+  @override
+  void didChangeDependencies() {
+    _appService = context.read<AppService>();
+    super.didChangeDependencies();
   }
 
   @override
@@ -63,7 +77,7 @@ class _CreatePidScreenState extends State<CreatePidScreen> {
                 ),
               ),
               TextButton(
-                onPressed: () {},
+                onPressed: onAddPidButtonPressed,
                 child: const CustomText(
                   text: 'Save',
                   fontSize: 16,
@@ -85,10 +99,13 @@ class _CreatePidScreenState extends State<CreatePidScreen> {
                         fontSize: 14,
                       ),
                       const SizedBox(height: 30),
-                      CustomTextField(
-                        labelText: 'PID',
-                        margin: 0,
-                        controller: pidController,
+                      Form(
+                        key: _formKey,
+                        child: CustomTextField(
+                          labelText: 'PID',
+                          margin: 0,
+                          controller: pidController,
+                        ),
                       ),
                     ],
                   ),
@@ -97,5 +114,13 @@ class _CreatePidScreenState extends State<CreatePidScreen> {
             ));
       },
     );
+  }
+
+  void onAddPidButtonPressed() {
+    if (_formKey.currentState!.validate()) {
+      String pid = pidController.text.trim();
+      _appService.addPid(pid);
+      Get.back();
+    }
   }
 }

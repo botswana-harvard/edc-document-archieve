@@ -35,7 +35,7 @@ class BaseScreen extends StatelessWidget {
       bloc: _documentArchieveBloc,
       builder: (BuildContext context, DocumentArchieveState state) {
         if (availableStudies == null || availableStudies!.isEmpty) {
-          _documentArchieveBloc.add(DocumentArchieveSelected());
+          _documentArchieveBloc.getDocumentArchieveStudy();
         }
         return LayoutBuilder(
           builder: (context, constraints) {

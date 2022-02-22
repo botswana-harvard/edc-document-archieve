@@ -29,3 +29,7 @@ const String kShortPassError = 'Password is too short, '
     'must be of 8 characters and above';
 const String kMatchPassError = 'Password doesn\'t match with confirm password';
 const String kLastUserLoggedIn = 'lastUserAccountLoggedIn';
+
+const String kParticipants = 'participants';
+const String kStudies = 'studies';
+const String kForms = 'forms';

@@ -49,7 +49,7 @@ class CustomTextField extends StatelessWidget {
                   value: value,
                 );
               default:
-                logger.e(labelText.titleCase);
+                logger.e(value);
                 if (value == null || value.isEmpty) {
                   return 'This filed is required';
                 }

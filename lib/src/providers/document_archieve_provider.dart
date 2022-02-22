@@ -3,18 +3,21 @@ abstract class DocumentArchieveProvider {
   Future<List<String>> getAllStudies();
 
   // Get all PIDs from edc API
-  Future<List<String>> getAllParticipants();
+  Future<List<String>> getAllParticipants(String studyName);
 
   //
-  Future<List<String>> getAllForms();
+  Future<List<String>> getAllForms(String studyName);
 
-  Future<List<String>> getAllVisits();
+  Future<List<String>> getAllVisits(String studyName);
 
-  Future<List<String>> getAllTimePoints();
+  Future<List<String>> getAllTimePoints(String studyName);
 
-  Future<void> addParticipantIdentifier();
+  Future<void> addParticipantIdentifier({
+    required String studyName,
+    required String pid,
+  });
 
-  Future<void> addParticipantCrfForm();
+  Future<void> addParticipantCrfForm(String studyName);
 
-  Future<void> addParticipantNonCrfForm();
+  Future<void> addParticipantNonCrfForm(String studyName);
 }

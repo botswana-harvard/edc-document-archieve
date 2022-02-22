@@ -10,7 +10,7 @@ class DocumentArchieveState<T> extends Equatable {
   const DocumentArchieveState.error()
       : this._(status: DocumentArchieveStatus.error);
 
-  const DocumentArchieveState.loaded(T data)
+  const DocumentArchieveState.loaded({T? data})
       : this._(status: DocumentArchieveStatus.success, data: data);
 
   const DocumentArchieveState.loading()

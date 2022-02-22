@@ -11,34 +11,39 @@ class DocumentArchieveWrapper implements DocumentArchieveProvider {
 
   late DocumentArchieveOffLineRepository _offlineRepository;
   late DocumentArchieveOnLineRepository _onlineRepository;
+  late List<String>? participants;
+  late List<String>? forms;
+  late List<String>? studies;
 
   @override
-  Future<void> addParticipantCrfForm() {
+  Future<void> addParticipantCrfForm(String studyName) {
     // TODO: implement addParticipantCrfForm
     throw UnimplementedError();
   }
 
   @override
-  Future<void> addParticipantIdentifier() {
-    // TODO: implement addParticipantIdentifier
-    throw UnimplementedError();
+  Future<void> addParticipantIdentifier(
+      {required String studyName, required String pid}) async {
+    await _offlineRepository.addParticipantIdentifier(
+      studyName: studyName,
+      pid: pid,
+    );
   }
 
   @override
-  Future<void> addParticipantNonCrfForm() {
+  Future<void> addParticipantNonCrfForm(String studyName) {
     // TODO: implement addParticipantNonCrfForm
     throw UnimplementedError();
   }
 
   @override
-  Future<List<String>> getAllForms() {
-    // TODO: implement getAllForms
-    throw UnimplementedError();
+  Future<List<String>> getAllForms(String studyName) async {
+    return await _offlineRepository.getAllForms(studyName);
   }
 
   @override
-  Future<List<String>> getAllParticipants() async {
-    return await _offlineRepository.getAllParticipants();
+  Future<List<String>> getAllParticipants(String studyName) async {
+    return await _offlineRepository.getAllParticipants(studyName);
   }
 
   @override
@@ -47,13 +52,13 @@ class DocumentArchieveWrapper implements DocumentArchieveProvider {
   }
 
   @override
-  Future<List<String>> getAllTimePoints() {
+  Future<List<String>> getAllTimePoints(String studyName) {
     // TODO: implement getAllTimePoints
     throw UnimplementedError();
   }
 
   @override
-  Future<List<String>> getAllVisits() {
+  Future<List<String>> getAllVisits(String studyName) {
     // TODO: implement getAllVisits
     throw UnimplementedError();
   }
