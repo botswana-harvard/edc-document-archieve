@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'participant_crf.dart';
+part of '../participant_crf.dart';
 
 // **************************************************************************
 // TypeAdapterGenerator
@@ -8,7 +8,7 @@ part of 'participant_crf.dart';
 
 class ParticipantCrfAdapter extends TypeAdapter<ParticipantCrf> {
   @override
-  final int typeId = 3;
+  final int typeId = 1;
 
   @override
   ParticipantCrf read(BinaryReader reader) {

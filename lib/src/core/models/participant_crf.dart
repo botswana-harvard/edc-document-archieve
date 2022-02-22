@@ -4,7 +4,7 @@ import 'package:json_annotation/json_annotation.dart';
 part 'participant_crf.g.dart';
 
 @JsonSerializable(explicitToJson: true)
-@HiveType(typeId: 3)
+@HiveType(typeId: 1)
 class ParticipantCrf extends HiveObject {
   @HiveField(1)
   late String pid;

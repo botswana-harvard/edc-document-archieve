@@ -1,6 +1,6 @@
 import 'package:hive/hive.dart';
 import 'package:json_annotation/json_annotation.dart';
-part 'study_document.g.dart';
+part 'gen/study_document.g.dart';
 
 @JsonSerializable(explicitToJson: true)
 @HiveType(typeId: 2)
