@@ -1,16 +1,39 @@
 import 'package:edc_document_archieve/gen/assets.gen.dart';
+import 'package:edc_document_archieve/src/core/models/study_document.dart';
+import 'package:edc_document_archieve/src/services/app_service.dart';
 import 'package:edc_document_archieve/src/ui/widgets/custom_appbar.dart';
 import 'package:edc_document_archieve/src/ui/widgets/custom_text.dart';
 import 'package:edc_document_archieve/src/utils/constants/colors.dart';
 import 'package:edc_document_archieve/src/utils/constants/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:provider/provider.dart';
+import 'package:recase/recase.dart';
 
 import 'widgets/gallery_image.dart';
 
-class CRFormScreen extends StatelessWidget {
+class CRFormScreen extends StatefulWidget {
   static const String routeName = kCrfformRoute;
   const CRFormScreen({Key? key}) : super(key: key);
+
+  @override
+  State<CRFormScreen> createState() => _CRFormScreenState();
+}
+
+class _CRFormScreenState extends State<CRFormScreen> {
+  late String _studyName;
+  late StudyDocument _documentForm;
+  late String _pid;
+  late AppService _appService;
+
+  @override
+  void didChangeDependencies() {
+    _appService = context.watch<AppService>();
+    _studyName = _appService.selectedStudy;
+    _documentForm = _appService.selectedStudyDocument;
+    _pid = _appService.selectedPid;
+    super.didChangeDependencies();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +44,7 @@ class CRFormScreen extends StatelessWidget {
         return Scaffold(
           backgroundColor: Theme.of(context).cardColor,
           appBar: CustomAppBar(
-            titleName: 'Flourish Study',
+            titleName: _studyName.titleCase,
             implyLeading: true,
           ),
           body: Container(
@@ -35,8 +58,8 @@ class CRFormScreen extends StatelessWidget {
                   backgroundColor: Theme.of(context).cardColor,
                   pinned: true,
                   floating: true,
-                  title: const CustomText(
-                    text: 'Lab Results Forms',
+                  title: CustomText(
+                    text: _documentForm.name.titleCase,
                     fontWeight: FontWeight.bold,
                   ),
                   bottom: PreferredSize(
@@ -46,7 +69,7 @@ class CRFormScreen extends StatelessWidget {
                       children: [
                         const Icon(Icons.calendar_today_outlined),
                         const SizedBox(width: 10),
-                        const CustomText(text: '12123-212-12', fontSize: 16),
+                        CustomText(text: _pid, fontSize: 16),
                         TextButton(
                             onPressed: () {}, child: const Text('Sync Data')),
                       ],

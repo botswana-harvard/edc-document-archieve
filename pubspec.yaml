@@ -51,6 +51,7 @@ dependencies:
   bloc_concurrency: ^0.2.0
   crypto: ^3.0.1
   provider: ^6.0.2
+  expansion_tile_card: ^2.0.0
 
 dev_dependencies:
   flutter_test:

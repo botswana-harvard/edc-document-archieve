@@ -10,6 +10,7 @@ import 'package:edc_document_archieve/src/utils/constants/constants.dart';
 import 'package:edc_document_archieve/src/utils/debugLog.dart';
 import 'package:edc_document_archieve/src/utils/dialogs.dart';
 import 'package:edc_document_archieve/src/utils/enums.dart';
+import 'package:expansion_tile_card/expansion_tile_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
@@ -30,13 +31,12 @@ class _PidsScreenState extends State<PidsScreen> {
   late DocumentArchieveBloc _archieveBloc;
 
   late List<StudyDocument> studyDocuments;
-  late List<String> pids;
+  late List<String> pids = [];
+  late List<GlobalKey<ExpansionTileCardState>> cardKeyList = [];
 
   @override
   void initState() {
     _archieveBloc = Injector.resolve<DocumentArchieveBloc>();
-    studyDocuments = [];
-    pids = [];
     super.initState();
   }
 
@@ -44,8 +44,7 @@ class _PidsScreenState extends State<PidsScreen> {
   void didChangeDependencies() {
     _appService = context.watch<AppService>();
     _archieveBloc.getDocumentArchievePids(
-      selectedStudy: _appService.selectedStudy,
-    );
+        selectedStudy: _appService.selectedStudy);
     super.didChangeDependencies();
   }
 
@@ -101,9 +100,24 @@ class _PidsScreenState extends State<PidsScreen> {
               );
             },
             itemBuilder: (context, index) {
+              cardKeyList
+                  .add(GlobalKey<ExpansionTileCardState>(debugLabel: '$index'));
               return Container(
                 padding: const EdgeInsets.all(10),
-                child: ExpansionTile(
+                child: ExpansionTileCard(
+                  key: cardKeyList[index],
+                  onExpansionChanged: (value) {
+                    if (value) {
+                      _appService.selectedPid = pids[index];
+                      Future.delayed(const Duration(milliseconds: 500), () {
+                        for (var i = 0; i < cardKeyList.length; i++) {
+                          if (index != i) {
+                            cardKeyList[i].currentState?.collapse();
+                          }
+                        }
+                      });
+                    }
+                  },
                   leading: const Icon(
                     Icons.folder,
                     size: 30,

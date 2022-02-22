@@ -6,14 +6,22 @@ import 'package:flutter/material.dart';
 class AppService with ChangeNotifier {
   late String _selectedStudy;
   late StudyDocument _studyDocument;
+  late String _selectedPid;
 
   //define Getters
   String get selectedStudy => _selectedStudy;
+  String get selectedPid => _selectedPid;
   StudyDocument get selectedStudyDocument => _studyDocument;
 
   //define Setters
   set selectedStudy(String selectedStudy) {
     _selectedStudy = selectedStudy;
+    notifyListeners();
+  }
+
+  //define Setters
+  set selectedPid(String pid) {
+    _selectedPid = pid;
     notifyListeners();
   }
 
