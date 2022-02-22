@@ -110,7 +110,7 @@ class _LoginScreenState extends State<LoginScreen> {
             Dialogs.showLoadingDialog(context, message: 'Logging in...');
             break;
           case AuthenticationStatus.authenticated:
-            Get.offAndToNamed(kBaseRoute);
+            Get.toNamed(kBaseRoute);
             break;
           case AuthenticationStatus.unauthenticated:
             Get.showSnackbar(const GetSnackBar(
