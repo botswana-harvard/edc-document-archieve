@@ -1,3 +1,5 @@
+import 'package:edc_document_archieve/src/core/models/study_document.dart';
+
 abstract class DocumentArchieveProvider {
   //Get all available studies to choose from
   Future<List<String>> getAllStudies();
@@ -6,7 +8,7 @@ abstract class DocumentArchieveProvider {
   Future<List<String>> getAllParticipants(String studyName);
 
   //
-  Future<List<String>> getAllForms(String studyName);
+  Future<List<StudyDocument>> getAllForms(String studyName);
 
   Future<List<String>> getAllVisits(String studyName);
 

@@ -1,6 +1,7 @@
 import 'package:edc_document_archieve/src/api/repository/offline/document_archieve_offline_repository.dart';
 import 'package:edc_document_archieve/src/api/repository/online/document_archieve_online_repository.dart';
 import 'package:edc_document_archieve/src/config/injector.dart';
+import 'package:edc_document_archieve/src/core/models/study_document.dart';
 import 'package:edc_document_archieve/src/providers/document_archieve_provider.dart';
 
 class DocumentArchieveWrapper implements DocumentArchieveProvider {
@@ -37,7 +38,7 @@ class DocumentArchieveWrapper implements DocumentArchieveProvider {
   }
 
   @override
-  Future<List<String>> getAllForms(String studyName) async {
+  Future<List<StudyDocument>> getAllForms(String studyName) async {
     return await _offlineRepository.getAllForms(studyName);
   }
 

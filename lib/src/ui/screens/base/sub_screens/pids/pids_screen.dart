@@ -1,4 +1,5 @@
 import 'package:edc_document_archieve/src/config/injector.dart';
+import 'package:edc_document_archieve/src/core/models/study_document.dart';
 import 'package:edc_document_archieve/src/services/app_service.dart';
 import 'package:edc_document_archieve/src/services/bloc/document_archive_bloc.dart';
 import 'package:edc_document_archieve/src/services/bloc/states/document_archive_state.dart';
@@ -28,13 +29,13 @@ class _PidsScreenState extends State<PidsScreen> {
   late AppService _appService;
   late DocumentArchieveBloc _archieveBloc;
 
-  late List<String> forms;
+  late List<StudyDocument> studyDocuments;
   late List<String> pids;
 
   @override
   void initState() {
     _archieveBloc = Injector.resolve<DocumentArchieveBloc>();
-    forms = [];
+    studyDocuments = [];
     pids = [];
     super.initState();
   }
@@ -60,7 +61,7 @@ class _PidsScreenState extends State<PidsScreen> {
           case DocumentArchieveStatus.success:
             if (state.data != null) {
               pids = state.data[kParticipants].reversed.toList();
-              forms = state.data[kForms];
+              studyDocuments = state.data[kForms];
             }
             Dialogs.closeLoadingDialog(context);
             break;
@@ -115,7 +116,7 @@ class _PidsScreenState extends State<PidsScreen> {
                     ),
                   ),
                   children: [
-                    ...forms.map((form) => Container(
+                    ...studyDocuments.map((studyDocument) => Container(
                           padding: const EdgeInsets.all(10),
                           height: 80,
                           child: ListTile(
@@ -125,12 +126,12 @@ class _PidsScreenState extends State<PidsScreen> {
                             ),
                             focusColor: Colors.white,
                             style: ListTileStyle.list,
-                            title: Text(form),
+                            title: Text(studyDocument.name),
                             trailing: const Icon(
                               Icons.arrow_forward_ios,
                               size: 16,
                             ),
-                            onTap: onFolderButtonTapped,
+                            onTap: () => onFolderButtonTapped(studyDocument),
                           ),
                         )),
                   ],
@@ -152,7 +153,7 @@ class _PidsScreenState extends State<PidsScreen> {
     );
   }
 
-  void onFolderButtonTapped() {
+  void onFolderButtonTapped(StudyDocument document) {
     Get.toNamed(kCrfformRoute);
   }
 

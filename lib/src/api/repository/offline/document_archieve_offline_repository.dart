@@ -1,4 +1,5 @@
 import 'package:edc_document_archieve/src/api/repository/offline/local_storage_repository.dart';
+import 'package:edc_document_archieve/src/core/models/study_document.dart';
 import 'package:edc_document_archieve/src/providers/document_archieve_provider.dart';
 import 'package:edc_document_archieve/src/utils/constants/constants.dart';
 
@@ -33,12 +34,24 @@ class DocumentArchieveOffLineRepository extends LocalStorageRepository
   }
 
   @override
-  Future<List<String>> getAllForms(String studyName) async {
+  Future<List<StudyDocument>> getAllForms(String studyName) async {
     String key = '${studyName}_forms';
-    List<String>? forms = appStorageBox.get(key);
+    List<StudyDocument>? forms = appStorageBox.get(key);
     if (forms != null && forms.isNotEmpty) {
       return forms;
     }
+    // List<Map<String, dynamic>> listForms = [
+    //   {
+    //     'name': 'Lab Results',
+    //     'type': 'crf',
+    //   },
+    //   {'name': 'Omang Forms', 'type': 'non_crf'},
+    //   {'name': 'Clinician Notes', 'type': 'crf'},
+    //   {'name': 'Speciment Forms', 'type': 'crf'}
+    // ];
+    // List<StudyDocument> studyDocs =
+    //     listForms.map((json) => StudyDocument.fromJson(json)).toList();
+    // await appStorageBox.put(key, studyDocs);
     return [];
   }
 

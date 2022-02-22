@@ -1,5 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:bloc_concurrency/bloc_concurrency.dart';
+import 'package:edc_document_archieve/src/core/models/study_document.dart';
 import 'package:edc_document_archieve/src/providers/document_archieve_provider.dart';
 import 'package:edc_document_archieve/src/services/bloc/events/document_archive_event.dart';
 import 'package:edc_document_archieve/src/services/bloc/states/document_archive_state.dart';
@@ -56,7 +57,7 @@ class DocumentArchieveBloc
       String studySelected) async {
     List<String> pids =
         await documentArchieveRepository.getAllParticipants(studySelected);
-    List<String> forms =
+    List<StudyDocument> forms =
         await documentArchieveRepository.getAllForms(studySelected);
 
     Map<String, dynamic> data = {
