@@ -1,3 +1,5 @@
+import 'package:edc_document_archieve/src/core/models/participant_crf.dart';
+import 'package:edc_document_archieve/src/core/models/participant_non_crf.dart';
 import 'package:edc_document_archieve/src/core/models/study_document.dart';
 
 abstract class DocumentArchieveProvider {
@@ -22,4 +24,8 @@ abstract class DocumentArchieveProvider {
   Future<void> addParticipantCrfForm(String studyName);
 
   Future<void> addParticipantNonCrfForm(String studyName);
+
+  Future<List<ParticipantCrf>> getCrForms({required String pid});
+
+  Future<List<ParticipantNonCrf>> getNonCrForms({required String pid});
 }

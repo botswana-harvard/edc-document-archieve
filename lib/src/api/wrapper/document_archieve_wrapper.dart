@@ -1,6 +1,8 @@
 import 'package:edc_document_archieve/src/api/repository/offline/document_archieve_offline_repository.dart';
 import 'package:edc_document_archieve/src/api/repository/online/document_archieve_online_repository.dart';
 import 'package:edc_document_archieve/src/config/injector.dart';
+import 'package:edc_document_archieve/src/core/models/participant_crf.dart';
+import 'package:edc_document_archieve/src/core/models/participant_non_crf.dart';
 import 'package:edc_document_archieve/src/core/models/study_document.dart';
 import 'package:edc_document_archieve/src/providers/document_archieve_provider.dart';
 
@@ -61,6 +63,17 @@ class DocumentArchieveWrapper implements DocumentArchieveProvider {
   @override
   Future<List<String>> getAllVisits(String studyName) {
     // TODO: implement getAllVisits
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<List<ParticipantCrf>> getCrForms({required String pid}) async {
+    return await _offlineRepository.getCrForms(pid: pid);
+  }
+
+  @override
+  Future<List<ParticipantNonCrf>> getNonCrForms({required String pid}) {
+    // TODO: implement getNonCrForms
     throw UnimplementedError();
   }
 }

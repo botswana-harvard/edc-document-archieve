@@ -24,3 +24,12 @@ class DocumentArchievePidCreated<String> extends DocumentArchieveEvent {
 
   const DocumentArchievePidCreated({required this.pid});
 }
+
+class DocumentArchieveVisitRequested extends DocumentArchieveEvent {}
+
+class DocumentArchieveFormRequested extends DocumentArchieveEvent {
+  final String pid;
+  final String form;
+
+  const DocumentArchieveFormRequested({required this.pid, required this.form});
+}

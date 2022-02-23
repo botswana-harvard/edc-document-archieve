@@ -1,10 +1,13 @@
 import 'package:bloc/bloc.dart';
 import 'package:bloc_concurrency/bloc_concurrency.dart';
+import 'package:edc_document_archieve/src/core/models/participant_crf.dart';
+import 'package:edc_document_archieve/src/core/models/participant_non_crf.dart';
 import 'package:edc_document_archieve/src/core/models/study_document.dart';
 import 'package:edc_document_archieve/src/providers/document_archieve_provider.dart';
 import 'package:edc_document_archieve/src/services/bloc/events/document_archive_event.dart';
 import 'package:edc_document_archieve/src/services/bloc/states/document_archive_state.dart';
 import 'package:edc_document_archieve/src/utils/constants/constants.dart';
+import 'package:edc_document_archieve/src/utils/debugLog.dart';
 
 class DocumentArchieveBloc
     extends Bloc<DocumentArchieveEvent, DocumentArchieveState> {
@@ -16,6 +19,11 @@ class DocumentArchieveBloc
     );
     on<DocumentArchievePidsRequested>(
       _onDocumentArchievePidsRequested,
+      transformer: sequential(),
+    );
+
+    on<DocumentArchieveFormRequested>(
+      _onDocumentArchieveFormRequested,
       transformer: sequential(),
     );
   }
@@ -38,6 +46,27 @@ class DocumentArchieveBloc
     emit(const DocumentArchieveState<Map<String, dynamic>>.loading());
     Map<String, dynamic> data = await getParticipantsForms(event.studySelected);
     emit(DocumentArchieveState<Map<String, dynamic>>.loaded(data: data));
+  }
+
+  Future<void> _onDocumentArchieveFormRequested(
+    DocumentArchieveFormRequested event,
+    Emitter<DocumentArchieveState> emit,
+  ) async {
+    emit(const DocumentArchieveState<Map<String, dynamic>>.loading());
+    String form = event.form;
+    switch (form) {
+      case kCrfForm:
+        List<ParticipantCrf> data =
+            await documentArchieveRepository.getCrForms(pid: event.pid);
+        return emit(
+            DocumentArchieveState<List<ParticipantCrf>>.loaded(data: data));
+      case kNonCrfForm:
+        List<ParticipantNonCrf> data =
+            await documentArchieveRepository.getNonCrForms(pid: event.pid);
+        return emit(
+            DocumentArchieveState<List<ParticipantNonCrf>>.loaded(data: data));
+      default:
+    }
   }
 
   void getDocumentArchievePids({required String selectedStudy}) {
@@ -65,5 +94,9 @@ class DocumentArchieveBloc
       kParticipants: pids,
     };
     return data;
+  }
+
+  void getParticipantForms({required String pid, required String form}) {
+    add(DocumentArchieveFormRequested(pid: pid, form: form));
   }
 }

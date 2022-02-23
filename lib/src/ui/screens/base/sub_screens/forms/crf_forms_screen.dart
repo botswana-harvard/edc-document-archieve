@@ -1,4 +1,6 @@
 import 'package:edc_document_archieve/gen/assets.gen.dart';
+import 'package:edc_document_archieve/src/config/injector.dart';
+import 'package:edc_document_archieve/src/core/models/participant_crf.dart';
 import 'package:edc_document_archieve/src/core/models/study_document.dart';
 import 'package:edc_document_archieve/src/services/app_service.dart';
 import 'package:edc_document_archieve/src/services/bloc/document_archive_bloc.dart';
@@ -8,6 +10,8 @@ import 'package:edc_document_archieve/src/ui/widgets/custom_appbar.dart';
 import 'package:edc_document_archieve/src/ui/widgets/custom_text.dart';
 import 'package:edc_document_archieve/src/utils/constants/colors.dart';
 import 'package:edc_document_archieve/src/utils/constants/constants.dart';
+import 'package:edc_document_archieve/src/utils/dialogs.dart';
+import 'package:edc_document_archieve/src/utils/enums.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
@@ -26,6 +30,8 @@ class _CRFormScreenState extends State<CRFormScreen> {
   late StudyDocument _documentForm;
   late String _pid;
   late AppService _appService;
+  late DocumentArchieveBloc _archieveBloc;
+  late List<ParticipantCrf> _partcipantCrf = [];
 
   @override
   void didChangeDependencies() {
@@ -33,14 +39,26 @@ class _CRFormScreenState extends State<CRFormScreen> {
     _studyName = _appService.selectedStudy;
     _documentForm = _appService.selectedStudyDocument;
     _pid = _appService.selectedPid;
+    _archieveBloc = Injector.resolve<DocumentArchieveBloc>();
+    _archieveBloc.getParticipantForms(pid: _pid, form: _documentForm.type);
     super.didChangeDependencies();
   }
 
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<DocumentArchieveBloc, DocumentArchieveState>(
-      listener: (context, state) {
-        // TODO: implement listener
+      bloc: _archieveBloc,
+      listener: (BuildContext context, DocumentArchieveState state) {
+        switch (state.status) {
+          case DocumentArchieveStatus.loading:
+            Dialogs.showLoadingDialog(context);
+            break;
+          case DocumentArchieveStatus.success:
+            Dialogs.closeLoadingDialog(context);
+            _partcipantCrf = state.data;
+            break;
+          default:
+        }
       },
       builder: (context, state) {
         return LayoutBuilder(
@@ -87,6 +105,9 @@ class _CRFormScreenState extends State<CRFormScreen> {
                     ),
                     SliverList(
                       delegate: SliverChildBuilderDelegate((context, index) {
+                        String visit = _partcipantCrf[index].visit;
+                        String timepoint = _partcipantCrf[index].timepoint;
+                        List<String> uploads = _partcipantCrf[index].uploads;
                         return Container(
                           padding: const EdgeInsets.all(10),
                           color: Theme.of(context).canvasColor,
@@ -94,9 +115,9 @@ class _CRFormScreenState extends State<CRFormScreen> {
                             title: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                CustomText(text: 'Visit $index', fontSize: 18),
+                                CustomText(text: 'Visit $visit', fontSize: 18),
                                 CustomText(
-                                    text: 'Timepoint $index', fontSize: 16),
+                                    text: 'Timepoint $timepoint', fontSize: 16),
                               ],
                             ),
                             children: [
@@ -106,21 +127,14 @@ class _CRFormScreenState extends State<CRFormScreen> {
                                   const Text("Tap to show image"),
                                   GalleryImage(
                                     titleGallery: 'Uploaded Images',
-                                    imageUrls: [
-                                      Assets.images.test.snapshot2.path,
-                                      Assets.images.test.snapshot3.path,
-                                      Assets.images.test.snapshot4.path,
-                                      Assets.images.test.snapshot5.path,
-                                      Assets.images.test.snapshot6.path,
-                                      Assets.images.test.snapshot7.path,
-                                    ],
+                                    imageUrls: uploads,
                                   ),
                                 ],
                               ),
                             ],
                           ),
                         );
-                      }, childCount: 5),
+                      }, childCount: _partcipantCrf.length),
                     ),
                   ],
                 ),
