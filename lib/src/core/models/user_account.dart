@@ -3,7 +3,7 @@ import 'package:json_annotation/json_annotation.dart';
 part 'gen/user_account.g.dart';
 
 @JsonSerializable(explicitToJson: true)
-@HiveType(typeId: 3)
+@HiveType(typeId: 1)
 class UserAccount extends HiveObject {
   @HiveField(0)
   late String id;

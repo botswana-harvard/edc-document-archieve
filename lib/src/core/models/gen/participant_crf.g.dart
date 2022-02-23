@@ -8,7 +8,7 @@ part of '../participant_crf.dart';
 
 class ParticipantCrfAdapter extends TypeAdapter<ParticipantCrf> {
   @override
-  final int typeId = 1;
+  final int typeId = 3;
 
   @override
   ParticipantCrf read(BinaryReader reader) {
