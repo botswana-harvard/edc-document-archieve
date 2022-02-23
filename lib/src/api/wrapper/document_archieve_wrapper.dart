@@ -72,7 +72,7 @@ class DocumentArchieveWrapper implements DocumentArchieveProvider {
   }
 
   @override
-  Future<List<ParticipantNonCrf>> getNonCrForms({required String pid}) {
+  Future<ParticipantNonCrf> getNonCrForms({required String pid}) {
     // TODO: implement getNonCrForms
     throw UnimplementedError();
   }
