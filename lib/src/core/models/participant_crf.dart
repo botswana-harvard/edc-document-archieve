@@ -1,11 +1,12 @@
 import 'package:edc_document_archieve/src/core/models/study_document.dart';
+import 'package:equatable/equatable.dart';
 import 'package:hive/hive.dart';
 import 'package:json_annotation/json_annotation.dart';
 part 'gen/participant_crf.g.dart';
 
 @JsonSerializable(explicitToJson: true)
 @HiveType(typeId: 3)
-class ParticipantCrf extends HiveObject {
+class ParticipantCrf extends HiveObject with EquatableMixin {
   @HiveField(1)
   late String pid;
 
@@ -33,4 +34,8 @@ class ParticipantCrf extends HiveObject {
       _$ParticipantCrfFromJson(data);
 
   Map<String, dynamic> toJson() => _$ParticipantCrfToJson(this);
+
+  @override
+  // TODO: implement props
+  List<Object?> get props => [pid, visit, timepoint];
 }

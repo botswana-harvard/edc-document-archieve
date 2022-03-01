@@ -10,6 +10,7 @@ import 'package:edc_document_archieve/src/ui/widgets/custom_appbar.dart';
 import 'package:edc_document_archieve/src/ui/widgets/custom_text.dart';
 import 'package:edc_document_archieve/src/utils/constants/colors.dart';
 import 'package:edc_document_archieve/src/utils/constants/constants.dart';
+import 'package:edc_document_archieve/src/utils/debugLog.dart';
 import 'package:edc_document_archieve/src/utils/dialogs.dart';
 import 'package:edc_document_archieve/src/utils/enums.dart';
 import 'package:flutter/material.dart';
@@ -108,6 +109,7 @@ class _CRFormScreenState extends State<CRFormScreen> {
                         String visit = _partcipantCrf[index].visit;
                         String timepoint = _partcipantCrf[index].timepoint;
                         List<String> uploads = _partcipantCrf[index].uploads;
+                        logger.w(uploads);
                         return Container(
                           padding: const EdgeInsets.all(10),
                           color: Theme.of(context).canvasColor,
@@ -123,11 +125,11 @@ class _CRFormScreenState extends State<CRFormScreen> {
                             children: [
                               Column(
                                 mainAxisAlignment: MainAxisAlignment.center,
-                                children: const <Widget>[
-                                  Text("Tap to show image"),
+                                children: <Widget>[
+                                  const Text("Tap to show image"),
                                   GalleryImage(
                                     titleGallery: 'Uploaded Images',
-                                    imageUrls: [],
+                                    imageUrls: uploads,
                                   ),
                                 ],
                               ),

@@ -19,9 +19,10 @@ class DocumentArchieveWrapper implements DocumentArchieveProvider {
   late List<String>? studies;
 
   @override
-  Future<void> addParticipantCrfForm(String studyName) {
-    // TODO: implement addParticipantCrfForm
-    throw UnimplementedError();
+  Future<void> addParticipantCrfForm({
+    required ParticipantCrf crf,
+  }) async {
+    await _offlineRepository.addParticipantCrfForm(crf: crf);
   }
 
   @override

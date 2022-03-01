@@ -5,12 +5,26 @@ import 'package:edc_document_archieve/src/core/models/participant_non_crf.dart';
 import 'package:edc_document_archieve/src/core/models/study_document.dart';
 import 'package:edc_document_archieve/src/providers/document_archieve_provider.dart';
 import 'package:edc_document_archieve/src/utils/constants/constants.dart';
+import 'package:edc_document_archieve/src/utils/debugLog.dart';
 
 class DocumentArchieveOffLineRepository extends LocalStorageRepository
     implements DocumentArchieveProvider {
   @override
-  Future<void> addParticipantCrfForm(String studyName) {
-    throw UnimplementedError();
+  Future<void> addParticipantCrfForm({
+    required ParticipantCrf crf,
+  }) async {
+    String key = '${crf.pid}_crfs';
+    List<ParticipantCrf> crfs = appStorageBox
+        .get(key, defaultValue: <ParticipantCrf>[]).cast<ParticipantCrf>();
+    try {
+      ParticipantCrf exist = crfs.firstWhere((form) => crf == form);
+    } on StateError catch (e) {
+      logger.e(e);
+      crfs.add(crf);
+    }
+
+    await appStorageBox.delete(key);
+    await appStorageBox.put(key, crfs);
   }
 
   @override

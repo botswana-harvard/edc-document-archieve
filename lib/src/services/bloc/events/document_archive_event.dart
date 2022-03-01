@@ -1,3 +1,5 @@
+import 'package:edc_document_archieve/src/core/models/participant_crf.dart';
+import 'package:edc_document_archieve/src/core/models/study_document.dart';
 import 'package:equatable/equatable.dart';
 
 abstract class DocumentArchieveEvent<T> extends Equatable {
@@ -32,4 +34,9 @@ class DocumentArchieveFormRequested extends DocumentArchieveEvent {
   final String form;
 
   const DocumentArchieveFormRequested({required this.pid, required this.form});
+}
+
+class DocumentArchieveCrfFormAdded extends DocumentArchieveEvent {
+  final ParticipantCrf participantCrf;
+  const DocumentArchieveCrfFormAdded({required this.participantCrf});
 }

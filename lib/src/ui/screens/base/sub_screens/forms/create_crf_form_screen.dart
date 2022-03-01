@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:edc_document_archieve/src/config/injector.dart';
 import 'package:edc_document_archieve/src/core/data/dummy_data.dart';
 import 'package:edc_document_archieve/src/services/app_service.dart';
@@ -12,6 +14,9 @@ import 'package:edc_document_archieve/src/ui/widgets/dropdown_field.dart';
 import 'package:edc_document_archieve/src/utils/constants/colors.dart';
 import 'package:edc_document_archieve/src/utils/constants/constants.dart';
 import 'package:edc_document_archieve/src/utils/debugLog.dart';
+import 'package:edc_document_archieve/src/utils/dialogs.dart';
+import 'package:edc_document_archieve/src/utils/enums.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
@@ -35,6 +40,7 @@ class _CreateCRFormScreenState extends State<CreateCRFormScreen> {
   String? selectedTimePoint;
   List<XFile>? _imageFileList = [];
   final ImagePicker _picker = ImagePicker();
+  final GlobalKey<FormState> _key = GlobalKey<FormState>();
 
   @override
   void initState() {
@@ -71,7 +77,12 @@ class _CreateCRFormScreenState extends State<CreateCRFormScreen> {
           body: BlocConsumer<DocumentArchieveBloc, DocumentArchieveState>(
             bloc: _archieveBloc,
             listener: (context, state) {
-              // TODO: implement listener
+              switch (state.status) {
+                case DocumentArchieveStatus.loading:
+                  Dialogs.showLoadingDialog(context);
+                  break;
+                default:
+              }
             },
             builder: (context, state) {
               return SingleChildScrollView(
@@ -93,18 +104,25 @@ class _CreateCRFormScreenState extends State<CreateCRFormScreen> {
                         readOnly: true,
                       ),
                       const SizedBox(height: 30),
-                      DropDownFormField(
-                        dataSource: visitCodeChoice,
-                        onChanged: onDropdownVisitCodeChanged,
-                        titleText: kVisitCode.titleCase,
-                        value: selectedVisitCode,
-                      ),
-                      const SizedBox(height: 30),
-                      DropDownFormField(
-                        dataSource: timepointChoice,
-                        onChanged: onDropdownTimePointChanged,
-                        titleText: kTimePoint.titleCase,
-                        value: selectedTimePoint,
+                      Form(
+                        key: _key,
+                        child: Column(
+                          children: [
+                            DropDownFormField(
+                              dataSource: visitCodeChoice,
+                              onChanged: onDropdownVisitCodeChanged,
+                              titleText: kVisitCode.titleCase,
+                              value: selectedVisitCode,
+                            ),
+                            const SizedBox(height: 30),
+                            DropDownFormField(
+                              dataSource: timepointChoice,
+                              onChanged: onDropdownTimePointChanged,
+                              titleText: kTimePoint.titleCase,
+                              value: selectedTimePoint,
+                            ),
+                          ],
+                        ),
                       ),
                       const SizedBox(height: 30),
                       Padding(
@@ -183,7 +201,18 @@ class _CreateCRFormScreenState extends State<CreateCRFormScreen> {
     );
   }
 
-  void onUploadButtonTapped() {}
+  void onUploadButtonTapped() {
+    if (_key.currentState!.validate() && _imageFileList!.isNotEmpty) {
+      List<String> images = _imageFileList!.map((e) => e.path).toList();
+      _archieveBloc.addCrfDocument(
+        pid: selectedPid,
+        visitCode: selectedVisitCode!,
+        timePoint: selectedTimePoint!,
+        uploads: images,
+        studyDocument: _appService.selectedStudyDocument,
+      );
+    }
+  }
 
   void _onImageButtonPressed(ImageSource source) async {
     switch (source) {

@@ -88,7 +88,7 @@ class _CreateNonCRFormScreenState extends State<CreateNonCRFormScreen> {
                     ),
                   ),
                   const SizedBox(height: 10),
-                  const Expanded(
+                  Expanded(
                     child: GalleryImage(
                       titleGallery: 'Uploaded Images',
                       imageUrls: [],

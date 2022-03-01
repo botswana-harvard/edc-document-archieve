@@ -18,13 +18,8 @@ class _GalleryImageState extends State<GalleryImage> {
   List<GalleryItem> galleryItems = <GalleryItem>[];
 
   @override
-  void didUpdateWidget(covariant GalleryImage oldWidget) {
-    buildItemsList(widget.imageUrls);
-    super.didUpdateWidget(oldWidget);
-  }
-
-  @override
   Widget build(BuildContext context) {
+    buildItemsList(widget.imageUrls);
     return Padding(
       padding: const EdgeInsets.all(10),
       child: galleryItems.isEmpty

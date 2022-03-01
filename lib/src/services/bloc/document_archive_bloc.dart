@@ -26,6 +26,11 @@ class DocumentArchieveBloc
       _onDocumentArchieveFormRequested,
       transformer: sequential(),
     );
+
+    on<DocumentArchieveCrfFormAdded>(
+      _onDocumentArchieveCrfFormAdded,
+      transformer: sequential(),
+    );
   }
 
   final DocumentArchieveProvider documentArchieveRepository;
@@ -70,6 +75,16 @@ class DocumentArchieveBloc
     }
   }
 
+  Future<void> _onDocumentArchieveCrfFormAdded(
+    DocumentArchieveCrfFormAdded event,
+    Emitter<DocumentArchieveState> emit,
+  ) async {
+    emit(const DocumentArchieveState<Map<String, dynamic>>.loading());
+    ParticipantCrf crf = event.participantCrf;
+    await documentArchieveRepository.addParticipantCrfForm(crf: crf);
+    emit(const DocumentArchieveState.loaded());
+  }
+
   void getDocumentArchievePids({required String selectedStudy}) {
     add(DocumentArchievePidsRequested(studySelected: selectedStudy));
   }
@@ -99,5 +114,22 @@ class DocumentArchieveBloc
 
   void getParticipantForms({required String pid, required String form}) {
     add(DocumentArchieveFormRequested(pid: pid, form: form));
+  }
+
+  void addCrfDocument({
+    required String pid,
+    required String visitCode,
+    required String timePoint,
+    required List<String> uploads,
+    required StudyDocument studyDocument,
+  }) {
+    ParticipantCrf crf = ParticipantCrf.fromJson({
+      'pid': pid,
+      'visit': visitCode,
+      'timepoint': timePoint,
+      'uploads': uploads,
+      'document': studyDocument.toJson()
+    });
+    add(DocumentArchieveCrfFormAdded(participantCrf: crf));
   }
 }
