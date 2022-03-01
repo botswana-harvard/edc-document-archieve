@@ -60,4 +60,24 @@ class AppService with ChangeNotifier {
     _selectedImages!.add(xFile);
     notifyListeners();
   }
+
+  void notifyWidgetListeners() {
+    notifyListeners();
+  }
+
+  // Future<void> onUploadButtonTapped({
+  //   required String pid,
+  //   required String visitCode,
+  //   required String timePoint,
+  //   required List<String> uploads,
+  //   required StudyDocument studyDocument,
+  // }) async {
+  //   Injector.resolve<DocumentArchieveBloc>().addCrfDocument(
+  //     pid: selectedPid,
+  //     visitCode: visitCode,
+  //     timePoint: timePoint,
+  //     uploads: uploads,
+  //     studyDocument: selectedStudyDocument,
+  //   );
+  // }
 }

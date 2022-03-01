@@ -109,7 +109,6 @@ class _CRFormScreenState extends State<CRFormScreen> {
                         String visit = _partcipantCrf[index].visit;
                         String timepoint = _partcipantCrf[index].timepoint;
                         List<String> uploads = _partcipantCrf[index].uploads;
-                        logger.w(uploads);
                         return Container(
                           padding: const EdgeInsets.all(10),
                           color: Theme.of(context).canvasColor,

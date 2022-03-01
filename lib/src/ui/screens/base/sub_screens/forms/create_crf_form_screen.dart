@@ -11,6 +11,7 @@ import 'package:edc_document_archieve/src/ui/widgets/custom_text.dart';
 import 'package:edc_document_archieve/src/ui/widgets/custom_text_field.dart';
 import 'package:edc_document_archieve/src/ui/widgets/default_button.dart';
 import 'package:edc_document_archieve/src/ui/widgets/dropdown_field.dart';
+import 'package:edc_document_archieve/src/utils/constants/back.dart';
 import 'package:edc_document_archieve/src/utils/constants/colors.dart';
 import 'package:edc_document_archieve/src/utils/constants/constants.dart';
 import 'package:edc_document_archieve/src/utils/debugLog.dart';
@@ -80,6 +81,11 @@ class _CreateCRFormScreenState extends State<CreateCRFormScreen> {
               switch (state.status) {
                 case DocumentArchieveStatus.loading:
                   Dialogs.showLoadingDialog(context);
+                  break;
+                case DocumentArchieveStatus.success:
+                  Dialogs.closeLoadingDialog(context);
+                  _appService.notifyWidgetListeners();
+                  back();
                   break;
                 default:
               }

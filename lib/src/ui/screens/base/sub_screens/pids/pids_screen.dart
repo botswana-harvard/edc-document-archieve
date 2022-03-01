@@ -7,20 +7,18 @@ import 'package:edc_document_archieve/src/ui/screens/base/sub_screens/pids/sub_s
 import 'package:edc_document_archieve/src/ui/widgets/custom_appbar.dart';
 import 'package:edc_document_archieve/src/utils/constants/colors.dart';
 import 'package:edc_document_archieve/src/utils/constants/constants.dart';
-import 'package:edc_document_archieve/src/utils/debugLog.dart';
 import 'package:edc_document_archieve/src/utils/dialogs.dart';
 import 'package:edc_document_archieve/src/utils/enums.dart';
 import 'package:expansion_tile_card/expansion_tile_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
-import 'package:provider/provider.dart';
 
 // ignore: must_be_immutable
 class PidsScreen extends StatefulWidget {
   static const String routeName = kPidsRoute;
 
-  PidsScreen({Key? key}) : super(key: key);
+  const PidsScreen({Key? key}) : super(key: key);
 
   @override
   State<PidsScreen> createState() => _PidsScreenState();
