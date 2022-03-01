@@ -1,10 +1,15 @@
 import 'dart:io';
 
 import 'package:edc_document_archieve/src/core/models/gallery_item.dart';
+import 'package:edc_document_archieve/src/services/app_service.dart';
+import 'package:edc_document_archieve/src/utils/constants/back.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:photo_view/photo_view.dart';
 import 'package:photo_view/photo_view_gallery.dart';
+import 'package:provider/provider.dart';
 
 // to view image in full screen
 class GalleryImageViewWrapper extends StatefulWidget {
@@ -37,6 +42,14 @@ class _GalleryImageViewWrapperState extends State<GalleryImageViewWrapper> {
   final minScale = PhotoViewComputedScale.contained * 0.8;
   final maxScale = PhotoViewComputedScale.covered * 8;
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+  late AppService _appService;
+
+  @override
+  void didChangeDependencies() {
+    _appService = context.watch<AppService>();
+    super.didChangeDependencies();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -45,7 +58,12 @@ class _GalleryImageViewWrapperState extends State<GalleryImageViewWrapper> {
         title: Text(widget.titleGallery ?? 'Galley'),
         actions: [
           IconButton(
-            onPressed: () {},
+            onPressed: () {
+              int index = widget.initialIndex ?? 0;
+              String imageUrl = widget.galleryItems[index].imageUrl;
+              _appService.removeSelectedImage(imageUrl);
+              back();
+            },
             icon: const Icon(Icons.delete),
           ),
         ],
