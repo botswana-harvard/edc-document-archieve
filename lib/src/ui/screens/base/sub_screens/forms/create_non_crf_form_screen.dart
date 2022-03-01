@@ -159,7 +159,6 @@ class _CreateNonCRFormScreenState extends State<CreateNonCRFormScreen> {
           List<XFile>? pickedFileList = await _picker.pickMultiImage(
             imageQuality: 50,
           );
-
           _appService.selectedImages = pickedFileList;
         } catch (e) {
           logger.e(e);
