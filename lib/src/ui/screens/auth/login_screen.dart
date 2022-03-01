@@ -28,6 +28,8 @@ class _LoginScreenState extends State<LoginScreen> {
   late TextEditingController passwordController;
   late GlobalKey<FormState> _formKey;
   late AuthenticationBloc _authenticationBloc;
+  late FocusNode _emailFocusNode;
+  late FocusNode _passwordFocusNode;
 
   @override
   void initState() {
@@ -35,6 +37,8 @@ class _LoginScreenState extends State<LoginScreen> {
     passwordController = TextEditingController();
     _formKey = GlobalKey<FormState>();
     _authenticationBloc = Injector.resolve<AuthenticationBloc>();
+    _emailFocusNode = FocusNode();
+    _passwordFocusNode = FocusNode();
     super.initState();
   }
 
@@ -59,7 +63,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 child: SingleChildScrollView(
                   child: Form(
                     key: _formKey,
-                    autovalidateMode: AutovalidateMode.always,
+                    // autovalidateMode: AutovalidateMode.always,
                     child: Column(
                       children: <Widget>[
                         Container(margin: const EdgeInsets.only(top: 35)),
@@ -77,12 +81,14 @@ class _LoginScreenState extends State<LoginScreen> {
                           labelText: kEmail.titleCase,
                           keyboardType: TextInputType.emailAddress,
                           controller: emailController,
+                          focusNode: _emailFocusNode,
                         ),
                         Container(margin: const EdgeInsets.only(top: 20)),
                         CustomTextField(
                           labelText: kPassword.titleCase,
                           obscure: true,
                           controller: passwordController,
+                          focusNode: _passwordFocusNode,
                         ),
                         Container(margin: const EdgeInsets.only(top: 20)),
                         CustomText(
@@ -128,6 +134,11 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   Future<void> onButtonLoginTapped() async {
+    //unfocus keyboard when clicking login button
+    _emailFocusNode.unfocus();
+    _passwordFocusNode.unfocus();
+
+    //check if the input values are not none
     if (_formKey.currentState!.validate()) {
       String email = emailController.text.trim();
       String password = passwordController.text.trim();

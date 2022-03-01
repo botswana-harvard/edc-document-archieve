@@ -1,4 +1,7 @@
+import 'dart:io';
+
 import 'package:edc_document_archieve/src/core/models/gallery_item.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:photo_view/photo_view.dart';
 import 'package:photo_view/photo_view_gallery.dart';
@@ -69,7 +72,9 @@ class _GalleryImageViewWrapperState extends State<GalleryImageViewWrapper> {
   PhotoViewGalleryPageOptions _buildImage(BuildContext context, int index) {
     final GalleryItem item = widget.galleryItems[index];
     return PhotoViewGalleryPageOptions.customChild(
-      child: Image.asset(item.imageUrl),
+      child: kIsWeb
+          ? Image.network(item.imageUrl)
+          : Image.file(File(item.imageUrl)),
       initialScale: PhotoViewComputedScale.contained,
       minScale: minScale,
       maxScale: maxScale,

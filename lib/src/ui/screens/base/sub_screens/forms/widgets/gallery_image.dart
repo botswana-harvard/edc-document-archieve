@@ -1,4 +1,5 @@
 import 'package:edc_document_archieve/src/core/models/gallery_item.dart';
+import 'package:edc_document_archieve/src/utils/debugLog.dart';
 
 import 'gallery_Item_thumbnail.dart';
 import 'gallery_image_wrapper.dart';
@@ -16,40 +17,44 @@ class GalleryImage extends StatefulWidget {
 
 class _GalleryImageState extends State<GalleryImage> {
   List<GalleryItem> galleryItems = <GalleryItem>[];
+
   @override
-  void initState() {
+  void didUpdateWidget(covariant GalleryImage oldWidget) {
     buildItemsList(widget.imageUrls);
-    super.initState();
+    super.didUpdateWidget(oldWidget);
   }
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-        padding: const EdgeInsets.all(10),
-        child: galleryItems.isEmpty
-            ? const SizedBox.shrink()
-            : GridView.builder(
-                primary: false,
-                itemCount: galleryItems.length > 3 ? 3 : galleryItems.length,
-                padding: const EdgeInsets.all(0),
-                semanticChildCount: 1,
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 3, mainAxisSpacing: 0, crossAxisSpacing: 5),
-                shrinkWrap: true,
-                itemBuilder: (BuildContext context, int index) {
-                  return ClipRRect(
-                      borderRadius: const BorderRadius.all(Radius.circular(8)),
-                      // if have less than 4 image w build GalleryItemThumbnail
-                      // if have mor than 4 build image number 3 with number for other images
-                      child: galleryItems.length > 3 && index == 2
-                          ? buildImageNumbers(index)
-                          : GalleryItemThumbnail(
-                              galleryItem: galleryItems[index],
-                              onTap: () {
-                                openImageFullScreen(index);
-                              },
-                            ));
-                }));
+      padding: const EdgeInsets.all(10),
+      child: galleryItems.isEmpty
+          ? const SizedBox.shrink()
+          : GridView.builder(
+              primary: false,
+              itemCount: galleryItems.length > 3 ? 3 : galleryItems.length,
+              padding: const EdgeInsets.all(0),
+              semanticChildCount: 1,
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 3, mainAxisSpacing: 0, crossAxisSpacing: 5),
+              shrinkWrap: true,
+              itemBuilder: (BuildContext context, int index) {
+                return ClipRRect(
+                  borderRadius: const BorderRadius.all(Radius.circular(8)),
+                  // if have less than 4 image w build GalleryItemThumbnail
+                  // if have mor than 4 build image number 3 with number for other images
+                  child: galleryItems.length > 3 && index == 2
+                      ? buildImageNumbers(index)
+                      : GalleryItemThumbnail(
+                          galleryItem: galleryItems[index],
+                          onTap: () {
+                            openImageFullScreen(index);
+                          },
+                        ),
+                );
+              },
+            ),
+    );
   }
 
 // build image with number for other images

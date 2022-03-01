@@ -7,7 +7,7 @@ typedef ValueSetter<T> = void Function(T? value);
 class DropDownFormField extends StatelessWidget {
   final String titleText;
   final String hintText;
-  final dynamic value;
+  final String? value;
   final List dataSource;
   final ValueSetter<String> onChanged;
 

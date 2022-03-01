@@ -12,6 +12,8 @@ class CustomTextField extends StatelessWidget {
   final TextInputType keyboardType;
   final double margin;
   late TextEditingController controller;
+  late FocusNode? focusNode;
+  late bool readOnly;
 
   CustomTextField({
     Key? key,
@@ -20,12 +22,14 @@ class CustomTextField extends StatelessWidget {
     this.obscure = false,
     this.keyboardType = TextInputType.text,
     this.margin = 30,
+    this.focusNode,
+    this.readOnly = false,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 65,
+      height: 70,
       margin: EdgeInsets.symmetric(horizontal: margin),
       padding: const EdgeInsets.only(left: 20),
       decoration: BoxDecoration(
@@ -36,6 +40,8 @@ class CustomTextField extends StatelessWidget {
         child: TextFormField(
           obscureText: obscure,
           controller: controller,
+          focusNode: focusNode,
+          readOnly: readOnly,
           validator: (value) {
             switch (labelText.toLowerCase()) {
               case kEmail:

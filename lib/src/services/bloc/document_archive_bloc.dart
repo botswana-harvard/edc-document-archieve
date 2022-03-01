@@ -54,7 +54,6 @@ class DocumentArchieveBloc
   ) async {
     emit(const DocumentArchieveState<Map<String, dynamic>>.loading());
     String form = event.form;
-    logger.e(form);
     switch (form) {
       case kCrfForm:
         List<ParticipantCrf> data =
