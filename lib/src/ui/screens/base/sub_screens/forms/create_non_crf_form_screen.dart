@@ -1,4 +1,11 @@
+import 'dart:io';
+
 import 'package:edc_document_archieve/gen/assets.gen.dart';
+import 'package:edc_document_archieve/src/config/injector.dart';
+import 'package:edc_document_archieve/src/core/models/participant_non_crf.dart';
+import 'package:edc_document_archieve/src/core/models/study_document.dart';
+import 'package:edc_document_archieve/src/services/app_service.dart';
+import 'package:edc_document_archieve/src/services/bloc/document_archive_bloc.dart';
 import 'package:edc_document_archieve/src/ui/screens/base/sub_screens/forms/widgets/gallery_image.dart';
 import 'package:edc_document_archieve/src/ui/widgets/custom_appbar.dart';
 import 'package:edc_document_archieve/src/ui/widgets/custom_text.dart';
@@ -6,7 +13,10 @@ import 'package:edc_document_archieve/src/ui/widgets/custom_text_field.dart';
 import 'package:edc_document_archieve/src/ui/widgets/default_button.dart';
 import 'package:edc_document_archieve/src/utils/constants/colors.dart';
 import 'package:edc_document_archieve/src/utils/constants/constants.dart';
+import 'package:edc_document_archieve/src/utils/debugLog.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:provider/provider.dart';
 import 'package:recase/recase.dart';
 
 class CreateNonCRFormScreen extends StatefulWidget {
@@ -19,6 +29,23 @@ class CreateNonCRFormScreen extends StatefulWidget {
 }
 
 class _CreateNonCRFormScreenState extends State<CreateNonCRFormScreen> {
+  late StudyDocument _documentForm;
+  late String _pid;
+  late AppService _appService;
+  late DocumentArchieveBloc _archieveBloc;
+  List<XFile>? _imageFileList = [];
+  final ImagePicker _picker = ImagePicker();
+
+  @override
+  void didChangeDependencies() {
+    _appService = context.watch<AppService>();
+    _documentForm = _appService.selectedStudyDocument;
+    _pid = _appService.selectedPid;
+    _archieveBloc = Injector.resolve<DocumentArchieveBloc>();
+    _imageFileList = _appService.selectedImages;
+    super.didChangeDependencies();
+  }
+
   @override
   Widget build(BuildContext context) {
     return LayoutBuilder(
@@ -27,7 +54,7 @@ class _CreateNonCRFormScreenState extends State<CreateNonCRFormScreen> {
         double parentWidth = constraints.maxWidth;
         return Scaffold(
           appBar: CustomAppBar(
-            titleName: 'Upload Omang Document',
+            titleName: 'Upload ${_documentForm.name}',
             implyLeading: true,
           ),
           body: SingleChildScrollView(
@@ -43,15 +70,17 @@ class _CreateNonCRFormScreenState extends State<CreateNonCRFormScreen> {
                   const Center(child: CustomText(text: 'PID Details')),
                   const SizedBox(height: 30),
                   CustomTextField(
-                    labelText: '12334-33233-22',
+                    labelText: _pid,
                     margin: 5,
                     controller: TextEditingController(),
+                    readOnly: true,
+                    focusNode: FocusNode(),
                   ),
                   const SizedBox(height: 30),
-                  const Padding(
-                    padding: EdgeInsets.all(8.0),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
                     child: CustomText(
-                      text: 'Upload Document From',
+                      text: 'Upload ${_documentForm.name} From',
                       fontSize: 16,
                     ),
                   ),
@@ -59,23 +88,33 @@ class _CreateNonCRFormScreenState extends State<CreateNonCRFormScreen> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
-                      Chip(
-                        avatar: const Icon(
-                          Icons.photo_library_rounded,
-                          color: kDarkBlue,
+                      InkWell(
+                        onTap: () {
+                          _onImageButtonPressed(ImageSource.gallery);
+                        },
+                        child: Chip(
+                          avatar: const Icon(
+                            Icons.photo_library_rounded,
+                            color: kDarkBlue,
+                          ),
+                          label: CustomText(
+                              text: kGallery.titleCase, fontSize: 17),
+                          materialTapTargetSize: MaterialTapTargetSize.padded,
                         ),
-                        label:
-                            CustomText(text: kGallery.titleCase, fontSize: 17),
-                        materialTapTargetSize: MaterialTapTargetSize.padded,
                       ),
-                      Chip(
-                        avatar: const Icon(
-                          Icons.add_a_photo_outlined,
-                          color: kDarkBlue,
+                      InkWell(
+                        onTap: () {
+                          _onImageButtonPressed(ImageSource.camera);
+                        },
+                        child: Chip(
+                          avatar: const Icon(
+                            Icons.add_a_photo_outlined,
+                            color: kDarkBlue,
+                          ),
+                          label:
+                              CustomText(text: kCamera.titleCase, fontSize: 17),
+                          materialTapTargetSize: MaterialTapTargetSize.padded,
                         ),
-                        label:
-                            CustomText(text: kCamera.titleCase, fontSize: 17),
-                        materialTapTargetSize: MaterialTapTargetSize.padded,
                       ),
                     ],
                   ),
@@ -91,7 +130,7 @@ class _CreateNonCRFormScreenState extends State<CreateNonCRFormScreen> {
                   Expanded(
                     child: GalleryImage(
                       titleGallery: 'Uploaded Images',
-                      imageUrls: [],
+                      imageUrls: _imageFileList!.map((e) => e.path).toList(),
                     ),
                   )
                 ],
@@ -112,4 +151,34 @@ class _CreateNonCRFormScreenState extends State<CreateNonCRFormScreen> {
   void onDropdownFiledChanged(String? value) {}
 
   void onUploadButtonTapped() {}
+
+  void _onImageButtonPressed(ImageSource source) async {
+    switch (source) {
+      case ImageSource.gallery:
+        try {
+          List<XFile>? pickedFileList = await _picker.pickMultiImage(
+            imageQuality: 50,
+          );
+
+          _appService.selectedImages = pickedFileList;
+        } catch (e) {
+          logger.e(e);
+        }
+        break;
+      case ImageSource.camera:
+        try {
+          final XFile? pickedFile = await _picker.pickImage(
+            source: source,
+            imageQuality: 50,
+          );
+          if (pickedFile != null) {
+            _appService.addSelectedImage(pickedFile);
+          }
+        } catch (e) {
+          logger.e(e);
+        }
+        break;
+      default:
+    }
+  }
 }
