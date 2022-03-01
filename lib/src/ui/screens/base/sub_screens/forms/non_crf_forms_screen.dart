@@ -30,6 +30,7 @@ class _NonCRFormScreenState extends State<NonCRFormScreen> {
   late AppService _appService;
   late DocumentArchieveBloc _archieveBloc;
   late ParticipantNonCrf? _participantNonCrf;
+  List<String> uploads = [];
 
   @override
   void didChangeDependencies() {
@@ -38,7 +39,7 @@ class _NonCRFormScreenState extends State<NonCRFormScreen> {
     _documentForm = _appService.selectedStudyDocument;
     _pid = _appService.selectedPid;
     _archieveBloc = Injector.resolve<DocumentArchieveBloc>();
-    _archieveBloc.getParticipantForms(form: _documentForm.name, pid: _pid);
+    _archieveBloc.getParticipantForms(form: _documentForm.type, pid: _pid);
     super.didChangeDependencies();
   }
 
@@ -58,6 +59,9 @@ class _NonCRFormScreenState extends State<NonCRFormScreen> {
               case DocumentArchieveStatus.success:
                 Dialogs.closeLoadingDialog(context);
                 _participantNonCrf = state.data;
+                if (_participantNonCrf != null) {
+                  uploads = _participantNonCrf!.uploads;
+                }
                 break;
               default:
             }
@@ -120,9 +124,7 @@ class _NonCRFormScreenState extends State<NonCRFormScreen> {
                             const Text("Tap to show image"),
                             GalleryImage(
                               titleGallery: 'Uploaded Images',
-                              imageUrls: _participantNonCrf != null
-                                  ? _participantNonCrf.uploads
-                                  : [],
+                              imageUrls: uploads,
                             ),
                           ],
                         ),

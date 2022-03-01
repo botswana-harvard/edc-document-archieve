@@ -33,7 +33,7 @@ class AuthenticationWrapper implements AuthenticationProvider {
     authStatus = _offlineRepository.authStatus;
     if (authStatus != AuthenticationStatus.authenticated) {
       await _onlineRepository.login(email: email, password: password);
-      authStatus = _onlineRepository.authStatus;
+      _authStatus = _onlineRepository.authStatus;
     }
   }
 

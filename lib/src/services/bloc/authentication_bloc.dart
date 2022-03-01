@@ -47,6 +47,7 @@ class AuthenticationBloc
         emit(const AuthenticationState.authenticated());
         break;
       default:
+        emit(const AuthenticationState.unauthenticated());
     }
   }
 

@@ -50,7 +50,7 @@ class MyApp extends StatelessWidget {
         home: SplashScreen.timer(
           routeName: kAuthWrapperRoute,
           seconds: 2,
-          navigateAfterSeconds: const AuthWrapperScreen(),
+          navigateAfterSeconds: AuthWrapperScreen(),
           title: 'Document Archive Mobile',
           image: Image.asset(Assets.images.logo.path),
           backgroundColor: Colors.white,

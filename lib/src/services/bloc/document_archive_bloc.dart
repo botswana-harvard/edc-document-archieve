@@ -54,6 +54,7 @@ class DocumentArchieveBloc
   ) async {
     emit(const DocumentArchieveState<Map<String, dynamic>>.loading());
     String form = event.form;
+    logger.e(form);
     switch (form) {
       case kCrfForm:
         List<ParticipantCrf> data =
@@ -61,8 +62,9 @@ class DocumentArchieveBloc
         return emit(
             DocumentArchieveState<List<ParticipantCrf>>.loaded(data: data));
       case kNonCrfForm:
-        ParticipantNonCrf data =
+        ParticipantNonCrf? data =
             await documentArchieveRepository.getNonCrForms(pid: event.pid);
+        logger.e(data?.uploads);
         return emit(
             DocumentArchieveState<ParticipantNonCrf>.loaded(data: data));
       default:

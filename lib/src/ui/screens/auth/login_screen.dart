@@ -6,6 +6,7 @@ import 'package:edc_document_archieve/src/ui/widgets/default_button.dart';
 import 'package:edc_document_archieve/src/ui/widgets/logo.dart';
 import 'package:edc_document_archieve/src/utils/constants/colors.dart';
 import 'package:edc_document_archieve/src/utils/constants/constants.dart';
+import 'package:edc_document_archieve/src/utils/debugLog.dart';
 import 'package:edc_document_archieve/src/utils/dialogs.dart';
 import 'package:edc_document_archieve/src/utils/enums.dart';
 import 'package:flutter/material.dart';
@@ -41,10 +42,10 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget build(BuildContext context) {
     return BlocConsumer<AuthenticationBloc, AuthenticationState>(
       bloc: _authenticationBloc,
-      buildWhen: (AuthenticationState previous, AuthenticationState current) {
-        if (previous != current) return true;
-        return false;
-      },
+      // buildWhen: (AuthenticationState previous, AuthenticationState current) {
+      //   if (previous != current) return true;
+      //   return false;
+      // },
       builder: (BuildContext context, AuthenticationState state) {
         return Scaffold(
           body: LayoutBuilder(
@@ -58,6 +59,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 child: SingleChildScrollView(
                   child: Form(
                     key: _formKey,
+                    autovalidateMode: AutovalidateMode.always,
                     child: Column(
                       children: <Widget>[
                         Container(margin: const EdgeInsets.only(top: 35)),
@@ -104,7 +106,6 @@ class _LoginScreenState extends State<LoginScreen> {
         );
       },
       listener: (BuildContext context, AuthenticationState state) {
-        Dialogs.closeLoadingDialog(context);
         switch (state.status) {
           case AuthenticationStatus.loading:
             Dialogs.showLoadingDialog(context, message: 'Logging in...');
@@ -113,8 +114,11 @@ class _LoginScreenState extends State<LoginScreen> {
             Get.toNamed(kBaseRoute);
             break;
           case AuthenticationStatus.unauthenticated:
+            Dialogs.closeLoadingDialog(context);
             Get.showSnackbar(const GetSnackBar(
               title: 'Error',
+              message: 'Incorrect email or password.',
+              duration: Duration(seconds: 2),
             ));
             break;
           default:

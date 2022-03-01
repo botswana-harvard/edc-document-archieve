@@ -40,7 +40,7 @@ class AuthenticationOfflineRepository extends LocalStorageRepository
     //encrypt the input password and compare with the users password
     Digest hashedPassword = hasher.convert(bytes);
 
-    //check if the user exists in Hive database, if exists verify password
+    // check if the user exists in Hive database, if exists verify password
     if (user != null && user.password == password) {
       await userAccountsBox.put(kLastUserLoggedIn, user.email);
       authStatus = AuthenticationStatus.authenticated;

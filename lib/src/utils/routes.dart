@@ -16,10 +16,7 @@ List<GetPage<dynamic>> pages = [
   GetPage(name: CRFormScreen.routeName, page: () => const CRFormScreen()),
   GetPage(name: NonCRFormScreen.routeName, page: () => const NonCRFormScreen()),
   GetPage(name: WelcomeScreen.routeName, page: () => const WelcomeScreen()),
-  GetPage(
-    name: AuthWrapperScreen.routeName,
-    page: () => const AuthWrapperScreen(),
-  ),
+  GetPage(name: AuthWrapperScreen.routeName, page: () => AuthWrapperScreen()),
   GetPage(
     name: CreateCRFormScreen.routeName,
     page: () => const CreateCRFormScreen(),

@@ -72,8 +72,7 @@ class DocumentArchieveWrapper implements DocumentArchieveProvider {
   }
 
   @override
-  Future<ParticipantNonCrf> getNonCrForms({required String pid}) {
-    // TODO: implement getNonCrForms
-    throw UnimplementedError();
+  Future<ParticipantNonCrf?> getNonCrForms({required String pid}) async {
+    return await _offlineRepository.getNonCrForms(pid: pid);
   }
 }

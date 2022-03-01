@@ -37,7 +37,9 @@ class CustomAppBar extends AppBar {
 
   List<Widget> get customAppBarButtons {
     List<Widget> temp = [];
-    if (actionButtons.isNotEmpty) temp.addAll(actionButtons);
+    if (actionButtons.isNotEmpty) {
+      temp.addAll(actionButtons);
+    }
     if (Get.currentRoute != kAuthWrapperRoute &&
         Get.currentRoute != kBaseRoute) {
       temp.add(IconButton(

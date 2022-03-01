@@ -19,7 +19,7 @@ class AuthenticationOnlineRepository extends BaseOnlineRepository
   Future<void> login({required String email, required String password}) async {
     await Future.delayed(
       const Duration(milliseconds: 300),
-      () => authStatus = AuthenticationStatus.authenticated,
+      () => authStatus = AuthenticationStatus.unauthenticated,
     );
   }
 

@@ -125,9 +125,9 @@ class DocumentArchieveOffLineRepository extends LocalStorageRepository
   }
 
   @override
-  Future<ParticipantNonCrf> getNonCrForms({required String pid}) async {
+  Future<ParticipantNonCrf?> getNonCrForms({required String pid}) async {
     String key = '${pid}_non_crfs';
-    return appStorageBox.get(key).cast<ParticipantNonCrf>();
+    return appStorageBox.get(key);
     // Map<String, dynamic> data = {
     //   'pid': pid,
     //   'uploads': [
