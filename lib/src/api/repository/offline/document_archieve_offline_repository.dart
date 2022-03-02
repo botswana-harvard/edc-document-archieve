@@ -17,7 +17,7 @@ class DocumentArchieveOffLineRepository extends LocalStorageRepository
     List<ParticipantCrf> crfs = appStorageBox
         .get(key, defaultValue: <ParticipantCrf>[]).cast<ParticipantCrf>();
     try {
-      ParticipantCrf exist = crfs.firstWhere((form) => crf == form);
+      final _ = crfs.firstWhere((form) => crf == form);
     } on StateError catch (e) {
       logger.e(e);
       crfs.add(crf);
@@ -25,6 +25,18 @@ class DocumentArchieveOffLineRepository extends LocalStorageRepository
 
     await appStorageBox.delete(key);
     await appStorageBox.put(key, crfs);
+  }
+
+  @override
+  Future<void> addParticipantNonCrfForm({
+    required ParticipantNonCrf nonCrf,
+  }) async {
+    String key = '${nonCrf.pid}_non_crfs';
+    List<ParticipantNonCrf> nonCrfs = appStorageBox.get(key,
+        defaultValue: <ParticipantNonCrf>[]).cast<ParticipantNonCrf>();
+    nonCrfs.add(nonCrf);
+    await appStorageBox.delete(key);
+    await appStorageBox.put(key, nonCrfs);
   }
 
   @override
@@ -45,28 +57,23 @@ class DocumentArchieveOffLineRepository extends LocalStorageRepository
   }
 
   @override
-  Future<void> addParticipantNonCrfForm(String studyName) {
-    // TODO: implement addParticipantNonCrfForm
-    throw UnimplementedError();
-  }
-
-  @override
   Future<List<StudyDocument>> getAllForms(String studyName) async {
     String key = '${studyName}_forms';
-    return appStorageBox
-        .get(key, defaultValue: <StudyDocument>[]).cast<StudyDocument>();
+
     // List<Map<String, dynamic>> listForms = [
     //   {
     //     'name': 'Lab Results',
     //     'type': 'crf',
     //   },
-    //   {'name': 'Omang Forms', 'type': 'non_crf'},
+    //   {'name': 'Omang', 'type': 'non_crf'},
     //   {'name': 'Clinician Notes', 'type': 'crf'},
-    //   {'name': 'Speciment Forms', 'type': 'crf'}
+    //   {'name': 'Speciment', 'type': 'crf'}
     // ];
     // List<StudyDocument> studyDocs =
     //     listForms.map((json) => StudyDocument.fromJson(json)).toList();
     // await appStorageBox.put(key, studyDocs);
+    return appStorageBox
+        .get(key, defaultValue: <StudyDocument>[]).cast<StudyDocument>();
   }
 
   @override
@@ -77,6 +84,8 @@ class DocumentArchieveOffLineRepository extends LocalStorageRepository
 
   @override
   Future<List<String>> getAllStudies() async {
+    // List<String> studies = ['Flourish', 'Tshilo Dikotla'];
+    // await appStorageBox.put(kStudies, studies);
     return appStorageBox.get(kStudies, defaultValue: <String>[]).cast<String>();
   }
 

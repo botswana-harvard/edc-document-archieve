@@ -41,7 +41,7 @@ class _CRFormScreenState extends State<CRFormScreen> {
     _documentForm = _appService.selectedStudyDocument;
     _pid = _appService.selectedPid;
     _archieveBloc = Injector.resolve<DocumentArchieveBloc>();
-    _archieveBloc.getParticipantForms(pid: _pid, form: _documentForm.type);
+    _archieveBloc.getParticipantForms(pid: _pid, documentForm: _documentForm);
     super.didChangeDependencies();
   }
 

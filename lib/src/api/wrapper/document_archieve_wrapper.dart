@@ -35,7 +35,9 @@ class DocumentArchieveWrapper implements DocumentArchieveProvider {
   }
 
   @override
-  Future<void> addParticipantNonCrfForm(String studyName) {
+  Future<void> addParticipantNonCrfForm({
+    required ParticipantNonCrf nonCrf,
+  }) {
     // TODO: implement addParticipantNonCrfForm
     throw UnimplementedError();
   }

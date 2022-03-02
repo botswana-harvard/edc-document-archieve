@@ -37,5 +37,5 @@ class ParticipantCrf extends HiveObject with EquatableMixin {
 
   @override
   // TODO: implement props
-  List<Object?> get props => [pid, visit, timepoint];
+  List<Object?> get props => [pid, visit, timepoint, document.name];
 }

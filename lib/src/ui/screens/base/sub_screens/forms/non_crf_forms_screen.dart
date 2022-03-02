@@ -39,7 +39,7 @@ class _NonCRFormScreenState extends State<NonCRFormScreen> {
     _documentForm = _appService.selectedStudyDocument;
     _pid = _appService.selectedPid;
     _archieveBloc = Injector.resolve<DocumentArchieveBloc>();
-    _archieveBloc.getParticipantForms(form: _documentForm.type, pid: _pid);
+    _archieveBloc.getParticipantForms(documentForm: _documentForm, pid: _pid);
     super.didChangeDependencies();
   }
 

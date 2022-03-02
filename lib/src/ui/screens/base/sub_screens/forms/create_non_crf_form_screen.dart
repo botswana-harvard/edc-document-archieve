@@ -47,6 +47,12 @@ class _CreateNonCRFormScreenState extends State<CreateNonCRFormScreen> {
   }
 
   @override
+  void dispose() {
+    _appService.clear();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return LayoutBuilder(
       builder: (context, constraints) {

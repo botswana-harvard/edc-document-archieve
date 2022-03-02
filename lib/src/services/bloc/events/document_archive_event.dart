@@ -31,12 +31,15 @@ class DocumentArchieveVisitRequested extends DocumentArchieveEvent {}
 
 class DocumentArchieveFormRequested extends DocumentArchieveEvent {
   final String pid;
-  final String form;
+  final StudyDocument documentForm;
 
-  const DocumentArchieveFormRequested({required this.pid, required this.form});
+  const DocumentArchieveFormRequested({
+    required this.pid,
+    required this.documentForm,
+  });
 }
 
-class DocumentArchieveCrfFormAdded extends DocumentArchieveEvent {
-  final ParticipantCrf participantCrf;
-  const DocumentArchieveCrfFormAdded({required this.participantCrf});
+class DocumentArchieveFormAdded extends DocumentArchieveEvent {
+  final dynamic form;
+  const DocumentArchieveFormAdded({required this.form});
 }

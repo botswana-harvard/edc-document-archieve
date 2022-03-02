@@ -27,8 +27,8 @@ class DocumentArchieveBloc
       transformer: sequential(),
     );
 
-    on<DocumentArchieveCrfFormAdded>(
-      _onDocumentArchieveCrfFormAdded,
+    on<DocumentArchieveFormAdded>(
+      _onDocumentArchieveFormAdded,
       transformer: sequential(),
     );
   }
@@ -58,11 +58,14 @@ class DocumentArchieveBloc
     Emitter<DocumentArchieveState> emit,
   ) async {
     emit(const DocumentArchieveState<Map<String, dynamic>>.loading());
-    String form = event.form;
-    switch (form) {
+    StudyDocument documentForm = event.documentForm;
+    switch (documentForm.type) {
       case kCrfForm:
         List<ParticipantCrf> data =
             await documentArchieveRepository.getCrForms(pid: event.pid);
+        data = data
+            .where((element) => element.document.name == documentForm.name)
+            .toList();
         return emit(
             DocumentArchieveState<List<ParticipantCrf>>.loaded(data: data));
       case kNonCrfForm:
@@ -75,13 +78,25 @@ class DocumentArchieveBloc
     }
   }
 
-  Future<void> _onDocumentArchieveCrfFormAdded(
-    DocumentArchieveCrfFormAdded event,
+  Future<void> _onDocumentArchieveFormAdded(
+    DocumentArchieveFormAdded event,
     Emitter<DocumentArchieveState> emit,
   ) async {
     emit(const DocumentArchieveState<Map<String, dynamic>>.loading());
-    ParticipantCrf crf = event.participantCrf;
-    await documentArchieveRepository.addParticipantCrfForm(crf: crf);
+    String documentType = event.form.document.type;
+    switch (documentType) {
+      case kCrfForm:
+        ParticipantCrf crf = event.form;
+        await documentArchieveRepository.addParticipantCrfForm(crf: crf);
+        break;
+      case kNonCrfForm:
+        ParticipantNonCrf nonCrf = event.form;
+        await documentArchieveRepository.addParticipantNonCrfForm(
+            nonCrf: nonCrf);
+        break;
+      default:
+    }
+
     emit(const DocumentArchieveState.loaded());
   }
 
@@ -112,8 +127,9 @@ class DocumentArchieveBloc
     return data;
   }
 
-  void getParticipantForms({required String pid, required String form}) {
-    add(DocumentArchieveFormRequested(pid: pid, form: form));
+  void getParticipantForms(
+      {required String pid, required StudyDocument documentForm}) {
+    add(DocumentArchieveFormRequested(pid: pid, documentForm: documentForm));
   }
 
   void addCrfDocument({
@@ -130,6 +146,19 @@ class DocumentArchieveBloc
       'uploads': uploads,
       'document': studyDocument.toJson()
     });
-    add(DocumentArchieveCrfFormAdded(participantCrf: crf));
+    add(DocumentArchieveFormAdded(form: crf));
+  }
+
+  void addNonCrfDocument({
+    required String pid,
+    required List<String> uploads,
+    required StudyDocument studyDocument,
+  }) {
+    ParticipantNonCrf nonCrf = ParticipantNonCrf.fromJson({
+      'pid': pid,
+      'uploads': uploads,
+      'document': studyDocument.toJson(),
+    });
+    add(DocumentArchieveFormAdded(form: nonCrf));
   }
 }

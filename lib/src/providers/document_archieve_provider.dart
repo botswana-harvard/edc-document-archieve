@@ -25,7 +25,9 @@ abstract class DocumentArchieveProvider {
     required ParticipantCrf crf,
   });
 
-  Future<void> addParticipantNonCrfForm(String studyName);
+  Future<void> addParticipantNonCrfForm({
+    required ParticipantNonCrf nonCrf,
+  });
 
   Future<List<ParticipantCrf>> getCrForms({required String pid});
 
