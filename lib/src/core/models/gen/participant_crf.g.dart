@@ -22,13 +22,13 @@ class ParticipantCrfAdapter extends TypeAdapter<ParticipantCrf> {
       timepoint: fields[3] as String,
       document: fields[4] as StudyDocument,
       uploads: (fields[5] as List).cast<String>(),
-    );
+    )..id = fields[6] as String;
   }
 
   @override
   void write(BinaryWriter writer, ParticipantCrf obj) {
     writer
-      ..writeByte(5)
+      ..writeByte(6)
       ..writeByte(1)
       ..write(obj.pid)
       ..writeByte(2)
@@ -38,7 +38,9 @@ class ParticipantCrfAdapter extends TypeAdapter<ParticipantCrf> {
       ..writeByte(4)
       ..write(obj.document)
       ..writeByte(5)
-      ..write(obj.uploads);
+      ..write(obj.uploads)
+      ..writeByte(6)
+      ..write(obj.id);
   }
 
   @override
@@ -65,7 +67,7 @@ ParticipantCrf _$ParticipantCrfFromJson(Map<String, dynamic> json) =>
           StudyDocument.fromJson(json['document'] as Map<String, dynamic>),
       uploads:
           (json['uploads'] as List<dynamic>).map((e) => e as String).toList(),
-    );
+    )..id = json['id'] as String;
 
 Map<String, dynamic> _$ParticipantCrfToJson(ParticipantCrf instance) =>
     <String, dynamic>{
@@ -74,4 +76,5 @@ Map<String, dynamic> _$ParticipantCrfToJson(ParticipantCrf instance) =>
       'timepoint': instance.timepoint,
       'document': instance.document.toJson(),
       'uploads': instance.uploads,
+      'id': instance.id,
     };

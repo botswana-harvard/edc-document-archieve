@@ -204,10 +204,12 @@ class _CRFormScreenState extends State<CRFormScreen> {
   }
 
   void onFolderButtonTapped() {
+    _appService.clear();
     Get.toNamed(kCreateCRFormRoute);
   }
 
   void onUpdateButtonPressed(ParticipantCrf crf) {
+    _appService.selectedImages = crf.uploads;
     Get.toNamed(kCreateCRFormRoute, arguments: crf);
   }
 

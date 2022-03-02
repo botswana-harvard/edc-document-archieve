@@ -20,19 +20,21 @@ class ParticipantNonCrfAdapter extends TypeAdapter<ParticipantNonCrf> {
       pid: fields[1] as String,
       document: fields[2] as StudyDocument,
       uploads: (fields[3] as List).cast<String>(),
-    );
+    )..id = fields[4] as String;
   }
 
   @override
   void write(BinaryWriter writer, ParticipantNonCrf obj) {
     writer
-      ..writeByte(3)
+      ..writeByte(4)
       ..writeByte(1)
       ..write(obj.pid)
       ..writeByte(2)
       ..write(obj.document)
       ..writeByte(3)
-      ..write(obj.uploads);
+      ..write(obj.uploads)
+      ..writeByte(4)
+      ..write(obj.id);
   }
 
   @override
@@ -57,11 +59,12 @@ ParticipantNonCrf _$ParticipantNonCrfFromJson(Map<String, dynamic> json) =>
           StudyDocument.fromJson(json['document'] as Map<String, dynamic>),
       uploads:
           (json['uploads'] as List<dynamic>).map((e) => e as String).toList(),
-    );
+    )..id = json['id'] as String;
 
 Map<String, dynamic> _$ParticipantNonCrfToJson(ParticipantNonCrf instance) =>
     <String, dynamic>{
       'pid': instance.pid,
       'document': instance.document.toJson(),
       'uploads': instance.uploads,
+      'id': instance.id,
     };

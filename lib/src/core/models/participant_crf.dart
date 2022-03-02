@@ -2,6 +2,7 @@ import 'package:edc_document_archieve/src/core/models/study_document.dart';
 import 'package:equatable/equatable.dart';
 import 'package:hive/hive.dart';
 import 'package:json_annotation/json_annotation.dart';
+import 'package:uuid/uuid.dart';
 part 'gen/participant_crf.g.dart';
 
 @JsonSerializable(explicitToJson: true)
@@ -22,6 +23,9 @@ class ParticipantCrf extends HiveObject with EquatableMixin {
   @HiveField(5)
   late List<String> uploads;
 
+  @HiveField(6)
+  String id = const Uuid().v5.toString();
+
   ParticipantCrf({
     required this.pid,
     required this.visit,
@@ -36,5 +40,5 @@ class ParticipantCrf extends HiveObject with EquatableMixin {
   Map<String, dynamic> toJson() => _$ParticipantCrfToJson(this);
 
   @override
-  List<Object?> get props => [pid, visit, timepoint, document.name];
+  List<Object?> get props => [id, pid, visit, timepoint, document.name];
 }

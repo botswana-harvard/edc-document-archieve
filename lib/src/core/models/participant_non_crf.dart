@@ -2,6 +2,7 @@ import 'package:edc_document_archieve/src/core/models/study_document.dart';
 import 'package:equatable/equatable.dart';
 import 'package:hive/hive.dart';
 import 'package:json_annotation/json_annotation.dart';
+import 'package:uuid/uuid.dart';
 part 'gen/participant_non_crf.g.dart';
 
 @JsonSerializable(explicitToJson: true)
@@ -16,6 +17,9 @@ class ParticipantNonCrf extends HiveObject with EquatableMixin {
   @HiveField(3)
   late List<String> uploads;
 
+  @HiveField(4)
+  String id = const Uuid().v5.toString();
+
   ParticipantNonCrf({
     required this.pid,
     required this.document,
@@ -28,5 +32,5 @@ class ParticipantNonCrf extends HiveObject with EquatableMixin {
   Map<String, dynamic> toJson() => _$ParticipantNonCrfToJson(this);
 
   @override
-  List<Object?> get props => [pid, document];
+  List<Object?> get props => [id, pid, document];
 }

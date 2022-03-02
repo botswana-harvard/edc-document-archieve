@@ -1,6 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:hive/hive.dart';
 import 'package:json_annotation/json_annotation.dart';
+import 'package:uuid/uuid.dart';
 part 'gen/study_document.g.dart';
 
 @JsonSerializable(explicitToJson: true)
@@ -11,6 +12,9 @@ class StudyDocument extends HiveObject with EquatableMixin {
 
   @HiveField(2)
   late String type;
+
+  @HiveField(3)
+  String id = const Uuid().v5.toString();
 
   StudyDocument({
     required this.name,
@@ -23,5 +27,5 @@ class StudyDocument extends HiveObject with EquatableMixin {
   Map<String, dynamic> toJson() => _$StudyDocumentToJson(this);
 
   @override
-  List<Object?> get props => [name, type];
+  List<Object?> get props => [id, name, type];
 }

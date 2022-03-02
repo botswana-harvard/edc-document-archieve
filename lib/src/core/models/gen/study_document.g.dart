@@ -19,17 +19,19 @@ class StudyDocumentAdapter extends TypeAdapter<StudyDocument> {
     return StudyDocument(
       name: fields[1] as String,
       type: fields[2] as String,
-    );
+    )..id = fields[3] as String;
   }
 
   @override
   void write(BinaryWriter writer, StudyDocument obj) {
     writer
-      ..writeByte(2)
+      ..writeByte(3)
       ..writeByte(1)
       ..write(obj.name)
       ..writeByte(2)
-      ..write(obj.type);
+      ..write(obj.type)
+      ..writeByte(3)
+      ..write(obj.id);
   }
 
   @override
@@ -51,10 +53,11 @@ StudyDocument _$StudyDocumentFromJson(Map<String, dynamic> json) =>
     StudyDocument(
       name: json['name'] as String,
       type: json['type'] as String,
-    );
+    )..id = json['id'] as String;
 
 Map<String, dynamic> _$StudyDocumentToJson(StudyDocument instance) =>
     <String, dynamic>{
       'name': instance.name,
       'type': instance.type,
+      'id': instance.id,
     };

@@ -60,15 +60,9 @@ class _CreateCRFormScreenState extends State<CreateCRFormScreen> {
     selectedDocumentName = _appService.selectedStudyDocument.name;
     selectedPid = _appService.selectedPid;
     if (_appService.selectedImages.isNotEmpty) {
-      uploads.addAll(_appService.selectedImages);
+      uploads = _appService.selectedImages;
     }
     super.didChangeDependencies();
-  }
-
-  @override
-  void dispose() {
-    _appService.clear();
-    super.dispose();
   }
 
   @override
@@ -232,8 +226,7 @@ class _CreateCRFormScreenState extends State<CreateCRFormScreen> {
           List<XFile>? pickedFileList = await _picker.pickMultiImage(
             imageQuality: 50,
           );
-          _appService.selectedImages
-              .addAll(pickedFileList!.map((e) => e.path).toList());
+          _appService.addAllImages(pickedFileList!.map((e) => e.path).toList());
         } catch (e) {
           logger.e(e);
         }
