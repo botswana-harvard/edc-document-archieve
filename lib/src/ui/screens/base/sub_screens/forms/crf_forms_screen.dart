@@ -9,8 +9,10 @@ import 'package:edc_document_archieve/src/services/bloc/states/document_archive_
 import 'package:edc_document_archieve/src/ui/screens/base/sub_screens/forms/widgets/gallery_image.dart';
 import 'package:edc_document_archieve/src/ui/widgets/custom_appbar.dart';
 import 'package:edc_document_archieve/src/ui/widgets/custom_text.dart';
+import 'package:edc_document_archieve/src/utils/constants/back.dart';
 import 'package:edc_document_archieve/src/utils/constants/colors.dart';
 import 'package:edc_document_archieve/src/utils/constants/constants.dart';
+import 'package:edc_document_archieve/src/utils/debugLog.dart';
 import 'package:edc_document_archieve/src/utils/dialogs.dart';
 import 'package:edc_document_archieve/src/utils/enums.dart';
 import 'package:expansion_tile_card/expansion_tile_card.dart';
@@ -58,7 +60,9 @@ class _CRFormScreenState extends State<CRFormScreen> {
             break;
           case DocumentArchieveStatus.success:
             Dialogs.closeLoadingDialog(context);
-            _partcipantCrfs = state.data;
+            if (state.data != null) {
+              _partcipantCrfs = state.data;
+            }
             break;
           default:
         }
@@ -213,11 +217,19 @@ class _CRFormScreenState extends State<CRFormScreen> {
     Get.toNamed(kCreateCRFormRoute, arguments: crf);
   }
 
+  void onConfirmDeleteButtonPressed(ParticipantCrf crf) {
+    back();
+    _archieveBloc.deleteForm(crf: crf);
+    //_appService.notifyWidgetListeners();
+  }
+
   void onDeleteButtonPressed(ParticipantCrf crf) {
     CoolAlert.show(
-        context: context,
-        type: CoolAlertType.confirm,
-        text: 'Are you sure you want to delete this form?',
-        title: 'Delete ${crf.document.name}');
+      context: context,
+      type: CoolAlertType.confirm,
+      text: 'Are you sure you want to delete this form?',
+      title: 'Delete ${crf.document.name}',
+      onConfirmBtnTap: () => onConfirmDeleteButtonPressed(crf),
+    );
   }
 }

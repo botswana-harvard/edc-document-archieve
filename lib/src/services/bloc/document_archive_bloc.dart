@@ -31,6 +31,11 @@ class DocumentArchieveBloc
       _onDocumentArchieveFormAdded,
       transformer: sequential(),
     );
+
+    on<DocumentArchieveFormDeleted>(
+      _onDocumentArchieveFormDeleted,
+      transformer: sequential(),
+    );
   }
 
   final DocumentArchieveProvider documentArchieveRepository;
@@ -107,6 +112,32 @@ class DocumentArchieveBloc
     emit(const DocumentArchieveState.loaded());
   }
 
+  Future<void> _onDocumentArchieveFormDeleted(
+    DocumentArchieveFormDeleted event,
+    Emitter<DocumentArchieveState> emit,
+  ) async {
+    emit(const DocumentArchieveState<Map<String, dynamic>>.loading());
+    String documentType = event.form.document.type;
+    switch (documentType) {
+      case kCrfForm:
+        ParticipantCrf crf = event.form;
+        List<ParticipantCrf> data =
+            await documentArchieveRepository.deleteParticipantCrfForm(crf: crf);
+        data = data.reversed.toList();
+        return emit(
+            DocumentArchieveState<List<ParticipantCrf>>.loaded(data: data));
+      case kNonCrfForm:
+        ParticipantNonCrf nonCrf = event.form;
+        List<ParticipantNonCrf> data = await documentArchieveRepository
+            .deleteParticipantNonCrfForm(nonCrf: nonCrf);
+        data = data.reversed.toList();
+        return emit(
+            DocumentArchieveState<List<ParticipantNonCrf>>.loaded(data: data));
+      default:
+    }
+    emit(const DocumentArchieveState.loaded());
+  }
+
   void getDocumentArchievePids({required String selectedStudy}) {
     add(DocumentArchievePidsRequested(studySelected: selectedStudy));
   }
@@ -178,8 +209,10 @@ class DocumentArchieveBloc
     crf.visit = visitCode;
     crf.timepoint = timePoint;
     crf.uploads = uploads;
-
-    logger.e(crf.toJson());
     add(DocumentArchieveFormAdded(form: crf));
+  }
+
+  void deleteForm({required ParticipantCrf crf}) {
+    add(DocumentArchieveFormDeleted(form: crf));
   }
 }

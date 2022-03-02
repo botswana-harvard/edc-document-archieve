@@ -29,6 +29,14 @@ abstract class DocumentArchieveProvider {
     required ParticipantNonCrf nonCrf,
   });
 
+  Future<List<ParticipantCrf>> deleteParticipantCrfForm({
+    required ParticipantCrf crf,
+  });
+
+  Future<List<ParticipantNonCrf>> deleteParticipantNonCrfForm({
+    required ParticipantNonCrf nonCrf,
+  });
+
   Future<List<ParticipantCrf>> getCrForms({required String pid});
 
   Future<List<ParticipantNonCrf>> getNonCrForms({required String pid});

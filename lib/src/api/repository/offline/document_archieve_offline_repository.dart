@@ -84,8 +84,6 @@ class DocumentArchieveOffLineRepository extends LocalStorageRepository
 
   @override
   Future<List<String>> getAllStudies() async {
-    // List<String> studies = ['Flourish', 'Tshilo Dikotla'];
-    // await appStorageBox.put(kStudies, studies);
     return appStorageBox.get(kStudies, defaultValue: <String>[]).cast<String>();
   }
 
@@ -113,5 +111,45 @@ class DocumentArchieveOffLineRepository extends LocalStorageRepository
     String key = '${pid}_non_crfs';
     return appStorageBox.get(key,
         defaultValue: <ParticipantNonCrf>[]).cast<ParticipantNonCrf>();
+  }
+
+  @override
+  Future<List<ParticipantCrf>> deleteParticipantCrfForm(
+      {required ParticipantCrf crf}) async {
+    //Key to retrieve our docs
+    String key = '${crf.pid}_crfs';
+    //get all participant's non crfs
+    List<ParticipantCrf> allCrfs = appStorageBox
+        .get(key, defaultValue: <ParticipantCrf>[]).cast<ParticipantCrf>();
+
+    //remove the crf from list of crfs
+    allCrfs.remove(crf);
+
+    // delete old list and add new updated list
+    await appStorageBox.delete(key);
+    await appStorageBox.put(key, allCrfs);
+
+    return allCrfs;
+  }
+
+  @override
+  Future<List<ParticipantNonCrf>> deleteParticipantNonCrfForm(
+      {required ParticipantNonCrf nonCrf}) async {
+    //Key to retrieve our docs
+    String key = '${nonCrf.pid}_non_crfs';
+
+    //get all participant's non crfs
+    List<ParticipantNonCrf> allNonCrfs = appStorageBox.get(key,
+        defaultValue: <ParticipantNonCrf>[]).cast<ParticipantNonCrf>();
+
+    //remove the non crf from list of non crfs
+    allNonCrfs.remove(nonCrf);
+
+    // delete old list and add new updated list
+    await appStorageBox.delete(key);
+    await appStorageBox.put(key, allNonCrfs);
+
+    //return new list
+    return allNonCrfs;
   }
 }

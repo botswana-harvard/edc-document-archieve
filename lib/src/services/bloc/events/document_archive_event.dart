@@ -43,3 +43,8 @@ class DocumentArchieveFormAdded extends DocumentArchieveEvent {
   final dynamic form;
   const DocumentArchieveFormAdded({required this.form});
 }
+
+class DocumentArchieveFormDeleted extends DocumentArchieveEvent {
+  final dynamic form;
+  const DocumentArchieveFormDeleted({required this.form});
+}

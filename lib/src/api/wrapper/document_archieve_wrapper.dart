@@ -77,4 +77,16 @@ class DocumentArchieveWrapper implements DocumentArchieveProvider {
   Future<List<ParticipantNonCrf>> getNonCrForms({required String pid}) async {
     return await _offlineRepository.getNonCrForms(pid: pid);
   }
+
+  @override
+  Future<List<ParticipantCrf>> deleteParticipantCrfForm(
+      {required ParticipantCrf crf}) async {
+    return await _offlineRepository.deleteParticipantCrfForm(crf: crf);
+  }
+
+  @override
+  Future<List<ParticipantNonCrf>> deleteParticipantNonCrfForm(
+      {required ParticipantNonCrf nonCrf}) async {
+    return await _offlineRepository.deleteParticipantNonCrfForm(nonCrf: nonCrf);
+  }
 }
