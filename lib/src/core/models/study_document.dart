@@ -14,11 +14,12 @@ class StudyDocument extends HiveObject with EquatableMixin {
   late String type;
 
   @HiveField(3)
-  String id = const Uuid().v5.toString();
+  late String id;
 
   StudyDocument({
     required this.name,
     required this.type,
+    required this.id,
   });
 
   factory StudyDocument.fromJson(Map<String, dynamic> data) =>

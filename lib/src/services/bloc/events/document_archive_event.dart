@@ -43,3 +43,9 @@ class DocumentArchieveFormAdded extends DocumentArchieveEvent {
   final dynamic form;
   const DocumentArchieveFormAdded({required this.form});
 }
+
+class DocumentArchieveFormUpdated extends DocumentArchieveEvent {
+  final Map<String, dynamic> data;
+  final dynamic form;
+  const DocumentArchieveFormUpdated({required this.form, required this.data});
+}

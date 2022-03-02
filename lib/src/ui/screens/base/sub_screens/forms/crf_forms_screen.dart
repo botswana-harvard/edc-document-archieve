@@ -1,4 +1,3 @@
-import 'package:edc_document_archieve/gen/assets.gen.dart';
 import 'package:edc_document_archieve/gen/fonts.gen.dart';
 import 'package:edc_document_archieve/src/config/injector.dart';
 import 'package:edc_document_archieve/src/core/models/participant_crf.dart';
@@ -11,7 +10,6 @@ import 'package:edc_document_archieve/src/ui/widgets/custom_appbar.dart';
 import 'package:edc_document_archieve/src/ui/widgets/custom_text.dart';
 import 'package:edc_document_archieve/src/utils/constants/colors.dart';
 import 'package:edc_document_archieve/src/utils/constants/constants.dart';
-import 'package:edc_document_archieve/src/utils/debugLog.dart';
 import 'package:edc_document_archieve/src/utils/dialogs.dart';
 import 'package:edc_document_archieve/src/utils/enums.dart';
 import 'package:expansion_tile_card/expansion_tile_card.dart';

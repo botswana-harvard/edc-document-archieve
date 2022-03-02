@@ -41,15 +41,15 @@ class _CreateCRFormScreenState extends State<CreateCRFormScreen> {
   final ImagePicker _picker = ImagePicker();
   final GlobalKey<FormState> _key = GlobalKey<FormState>();
   List<String> uploads = [];
+  ParticipantCrf? crf = Get.arguments;
 
   @override
   void initState() {
     _archieveBloc = Injector.resolve<DocumentArchieveBloc>();
-    ParticipantCrf? crf = Get.arguments;
     if (crf != null) {
-      selectedVisitCode = crf.visit;
-      selectedTimePoint = crf.timepoint;
-      uploads = crf.uploads;
+      selectedVisitCode = crf!.visit;
+      selectedTimePoint = crf!.timepoint;
+      uploads = crf!.uploads;
     }
     super.initState();
   }
@@ -197,7 +197,7 @@ class _CreateCRFormScreenState extends State<CreateCRFormScreen> {
             },
           ),
           bottomNavigationBar: DefaultButton(
-            buttonName: kUpload.titleCase,
+            buttonName: crf != null ? kUpdate.titleCase : kUpload.titleCase,
             onTap: onUploadButtonTapped,
             margin: const EdgeInsets.all(0.0),
             borderRadius: 0,
@@ -209,13 +209,22 @@ class _CreateCRFormScreenState extends State<CreateCRFormScreen> {
 
   void onUploadButtonTapped() {
     if (_key.currentState!.validate() && uploads.isNotEmpty) {
-      _archieveBloc.addCrfDocument(
-        pid: selectedPid,
-        visitCode: selectedVisitCode!,
-        timePoint: selectedTimePoint!,
-        uploads: uploads,
-        studyDocument: _appService.selectedStudyDocument,
-      );
+      if (crf != null) {
+        _archieveBloc.updateCrfDocument(
+          visitCode: selectedVisitCode!,
+          timePoint: selectedTimePoint!,
+          uploads: uploads,
+          crf: crf!,
+        );
+      } else {
+        _archieveBloc.addCrfDocument(
+          pid: selectedPid,
+          visitCode: selectedVisitCode!,
+          timePoint: selectedTimePoint!,
+          uploads: uploads,
+          studyDocument: _appService.selectedStudyDocument,
+        );
+      }
     }
   }
 

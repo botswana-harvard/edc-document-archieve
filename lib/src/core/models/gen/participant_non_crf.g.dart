@@ -20,7 +20,8 @@ class ParticipantNonCrfAdapter extends TypeAdapter<ParticipantNonCrf> {
       pid: fields[1] as String,
       document: fields[2] as StudyDocument,
       uploads: (fields[3] as List).cast<String>(),
-    )..id = fields[4] as String;
+      id: fields[4] as String,
+    );
   }
 
   @override
@@ -55,11 +56,12 @@ class ParticipantNonCrfAdapter extends TypeAdapter<ParticipantNonCrf> {
 ParticipantNonCrf _$ParticipantNonCrfFromJson(Map<String, dynamic> json) =>
     ParticipantNonCrf(
       pid: json['pid'] as String,
+      id: const Uuid().v4(),
       document:
           StudyDocument.fromJson(json['document'] as Map<String, dynamic>),
       uploads:
           (json['uploads'] as List<dynamic>).map((e) => e as String).toList(),
-    )..id = json['id'] as String;
+    );
 
 Map<String, dynamic> _$ParticipantNonCrfToJson(ParticipantNonCrf instance) =>
     <String, dynamic>{

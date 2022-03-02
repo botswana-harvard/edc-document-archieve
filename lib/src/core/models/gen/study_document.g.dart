@@ -19,7 +19,8 @@ class StudyDocumentAdapter extends TypeAdapter<StudyDocument> {
     return StudyDocument(
       name: fields[1] as String,
       type: fields[2] as String,
-    )..id = fields[3] as String;
+      id: fields[3] as String,
+    );
   }
 
   @override
@@ -51,9 +52,9 @@ class StudyDocumentAdapter extends TypeAdapter<StudyDocument> {
 
 StudyDocument _$StudyDocumentFromJson(Map<String, dynamic> json) =>
     StudyDocument(
-      name: json['name'] as String,
-      type: json['type'] as String,
-    )..id = json['id'] as String;
+        name: json['name'] as String,
+        type: json['type'] as String,
+        id: const Uuid().v4());
 
 Map<String, dynamic> _$StudyDocumentToJson(StudyDocument instance) =>
     <String, dynamic>{

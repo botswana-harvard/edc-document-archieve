@@ -167,4 +167,19 @@ class DocumentArchieveBloc
     });
     add(DocumentArchieveFormAdded(form: nonCrf));
   }
+
+  void updateCrfDocument({
+    required String visitCode,
+    required String timePoint,
+    required List<String> uploads,
+    required ParticipantCrf crf,
+  }) {
+    Map<String, dynamic> data = {
+      'visit': visitCode,
+      'timepoint': timePoint,
+      'uploads': uploads,
+    };
+    logger.e(crf.toJson());
+    add(DocumentArchieveFormUpdated(form: crf, data: data));
+  }
 }

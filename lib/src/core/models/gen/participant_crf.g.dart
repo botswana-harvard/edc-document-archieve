@@ -22,7 +22,8 @@ class ParticipantCrfAdapter extends TypeAdapter<ParticipantCrf> {
       timepoint: fields[3] as String,
       document: fields[4] as StudyDocument,
       uploads: (fields[5] as List).cast<String>(),
-    )..id = fields[6] as String;
+      id: fields[6] as String,
+    );
   }
 
   @override
@@ -63,11 +64,12 @@ ParticipantCrf _$ParticipantCrfFromJson(Map<String, dynamic> json) =>
       pid: json['pid'] as String,
       visit: json['visit'] as String,
       timepoint: json['timepoint'] as String,
+      id: const Uuid().v4(),
       document:
           StudyDocument.fromJson(json['document'] as Map<String, dynamic>),
       uploads:
           (json['uploads'] as List<dynamic>).map((e) => e as String).toList(),
-    )..id = json['id'] as String;
+    );
 
 Map<String, dynamic> _$ParticipantCrfToJson(ParticipantCrf instance) =>
     <String, dynamic>{

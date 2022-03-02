@@ -18,12 +18,13 @@ class ParticipantNonCrf extends HiveObject with EquatableMixin {
   late List<String> uploads;
 
   @HiveField(4)
-  String id = const Uuid().v5.toString();
+  late String id;
 
   ParticipantNonCrf({
     required this.pid,
     required this.document,
     required this.uploads,
+    required this.id,
   });
 
   factory ParticipantNonCrf.fromJson(Map<String, dynamic> data) =>

@@ -24,7 +24,7 @@ class ParticipantCrf extends HiveObject with EquatableMixin {
   late List<String> uploads;
 
   @HiveField(6)
-  String id = const Uuid().v5.toString();
+  String id;
 
   ParticipantCrf({
     required this.pid,
@@ -32,6 +32,7 @@ class ParticipantCrf extends HiveObject with EquatableMixin {
     required this.timepoint,
     required this.document,
     required this.uploads,
+    required this.id,
   });
 
   factory ParticipantCrf.fromJson(Map<String, dynamic> data) =>
