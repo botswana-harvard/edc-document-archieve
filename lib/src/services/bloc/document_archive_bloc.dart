@@ -71,11 +71,16 @@ class DocumentArchieveBloc
       case kNonCrfForm:
         List<ParticipantNonCrf> data =
             await documentArchieveRepository.getNonCrForms(pid: event.pid);
-        data = data
-            .where((element) => element.document.name == documentForm.name)
-            .toList();
-        return emit(
-            DocumentArchieveState<List<ParticipantNonCrf>>.loaded(data: data));
+        try {
+          ParticipantNonCrf nonCrf = data.firstWhere(
+              (element) => element.document.name == documentForm.name);
+          logger.w(nonCrf.uploads);
+          return emit(
+              DocumentArchieveState<ParticipantNonCrf>.loaded(data: nonCrf));
+        } catch (e) {
+          logger.e(e);
+        }
+        break;
       default:
     }
   }

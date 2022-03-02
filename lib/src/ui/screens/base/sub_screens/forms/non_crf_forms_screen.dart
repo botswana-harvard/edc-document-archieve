@@ -120,11 +120,11 @@ class _NonCRFormScreenState extends State<NonCRFormScreen> {
                         color: Theme.of(context).canvasColor,
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
-                          children: const <Widget>[
-                            Text("Tap to show image"),
+                          children: <Widget>[
+                            const Text("Tap to show image"),
                             GalleryImage(
                               titleGallery: 'Uploaded Images',
-                              imageUrls: [],
+                              imageUrls: uploads,
                             ),
                           ],
                         ),
