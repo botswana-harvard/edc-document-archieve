@@ -31,5 +31,5 @@ abstract class DocumentArchieveProvider {
 
   Future<List<ParticipantCrf>> getCrForms({required String pid});
 
-  Future<ParticipantNonCrf?> getNonCrForms({required String pid});
+  Future<List<ParticipantNonCrf>> getNonCrForms({required String pid});
 }

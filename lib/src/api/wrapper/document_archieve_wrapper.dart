@@ -37,9 +37,8 @@ class DocumentArchieveWrapper implements DocumentArchieveProvider {
   @override
   Future<void> addParticipantNonCrfForm({
     required ParticipantNonCrf nonCrf,
-  }) {
-    // TODO: implement addParticipantNonCrfForm
-    throw UnimplementedError();
+  }) async {
+    await _offlineRepository.addParticipantNonCrfForm(nonCrf: nonCrf);
   }
 
   @override
@@ -75,7 +74,7 @@ class DocumentArchieveWrapper implements DocumentArchieveProvider {
   }
 
   @override
-  Future<ParticipantNonCrf?> getNonCrForms({required String pid}) async {
+  Future<List<ParticipantNonCrf>> getNonCrForms({required String pid}) async {
     return await _offlineRepository.getNonCrForms(pid: pid);
   }
 }
