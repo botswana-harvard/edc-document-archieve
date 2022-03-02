@@ -83,9 +83,8 @@ class DocumentArchieveBloc
           return emit(
               DocumentArchieveState<ParticipantNonCrf>.loaded(data: nonCrf));
         } catch (e) {
-          logger.e(e);
+          return emit(const DocumentArchieveState<ParticipantNonCrf>.loaded());
         }
-        break;
       default:
     }
   }
@@ -108,7 +107,6 @@ class DocumentArchieveBloc
         break;
       default:
     }
-
     emit(const DocumentArchieveState.loaded());
   }
 
@@ -128,11 +126,10 @@ class DocumentArchieveBloc
             DocumentArchieveState<List<ParticipantCrf>>.loaded(data: data));
       case kNonCrfForm:
         ParticipantNonCrf nonCrf = event.form;
-        List<ParticipantNonCrf> data = await documentArchieveRepository
-            .deleteParticipantNonCrfForm(nonCrf: nonCrf);
-        data = data.reversed.toList();
+        await documentArchieveRepository.deleteParticipantNonCrfForm(
+            nonCrf: nonCrf);
         return emit(
-            DocumentArchieveState<List<ParticipantNonCrf>>.loaded(data: data));
+            const DocumentArchieveState<List<ParticipantNonCrf>>.loaded());
       default:
     }
     emit(const DocumentArchieveState.loaded());
@@ -212,7 +209,15 @@ class DocumentArchieveBloc
     add(DocumentArchieveFormAdded(form: crf));
   }
 
-  void deleteForm({required ParticipantCrf crf}) {
+  void updateNonCrfDocument({
+    required List<String> uploads,
+    required ParticipantNonCrf nonCrf,
+  }) {
+    nonCrf.uploads = uploads;
+    add(DocumentArchieveFormAdded(form: nonCrf));
+  }
+
+  void deleteForm({required dynamic crf}) {
     add(DocumentArchieveFormDeleted(form: crf));
   }
 }

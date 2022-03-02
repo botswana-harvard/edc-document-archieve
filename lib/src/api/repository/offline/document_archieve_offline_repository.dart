@@ -33,23 +33,20 @@ class DocumentArchieveOffLineRepository extends LocalStorageRepository
     //Key to retrieve our docs
     String key = '${nonCrf.pid}_non_crfs';
     //get all participant's non crfs
-    List<ParticipantNonCrf> allNonCrfs = appStorageBox.get(key,
+    List<ParticipantNonCrf> nonCrfs = appStorageBox.get(key,
         defaultValue: <ParticipantNonCrf>[]).cast<ParticipantNonCrf>();
     try {
       //Get existing participant non crf form
       ParticipantNonCrf filteredForm =
-          allNonCrfs.firstWhere((form) => nonCrf == form);
+          nonCrfs.firstWhere((form) => nonCrf == form);
       //remove it from list of non crfs
-      allNonCrfs.remove(filteredForm);
-      //add new uploads to existing non crf form
-      filteredForm.uploads.addAll(nonCrf.uploads);
-      //add updated non crf to list of non crfs for pid
-      allNonCrfs.add(filteredForm);
+      nonCrfs.remove(filteredForm);
     } on StateError catch (e) {
       logger.e(e);
     }
+    nonCrfs.add(nonCrf);
     await appStorageBox.delete(key);
-    await appStorageBox.put(key, allNonCrfs);
+    await appStorageBox.put(key, nonCrfs);
   }
 
   @override
@@ -133,7 +130,7 @@ class DocumentArchieveOffLineRepository extends LocalStorageRepository
   }
 
   @override
-  Future<List<ParticipantNonCrf>> deleteParticipantNonCrfForm(
+  Future<void> deleteParticipantNonCrfForm(
       {required ParticipantNonCrf nonCrf}) async {
     //Key to retrieve our docs
     String key = '${nonCrf.pid}_non_crfs';
@@ -148,8 +145,5 @@ class DocumentArchieveOffLineRepository extends LocalStorageRepository
     // delete old list and add new updated list
     await appStorageBox.delete(key);
     await appStorageBox.put(key, allNonCrfs);
-
-    //return new list
-    return allNonCrfs;
   }
 }

@@ -220,7 +220,6 @@ class _CRFormScreenState extends State<CRFormScreen> {
   void onConfirmDeleteButtonPressed(ParticipantCrf crf) {
     back();
     _archieveBloc.deleteForm(crf: crf);
-    //_appService.notifyWidgetListeners();
   }
 
   void onDeleteButtonPressed(ParticipantCrf crf) {

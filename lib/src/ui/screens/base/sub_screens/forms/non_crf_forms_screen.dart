@@ -1,3 +1,5 @@
+import 'package:cool_alert/cool_alert.dart';
+import 'package:edc_document_archieve/gen/fonts.gen.dart';
 import 'package:edc_document_archieve/src/config/injector.dart';
 import 'package:edc_document_archieve/src/core/models/participant_non_crf.dart';
 import 'package:edc_document_archieve/src/core/models/study_document.dart';
@@ -6,6 +8,7 @@ import 'package:edc_document_archieve/src/services/bloc/document_archive_bloc.da
 import 'package:edc_document_archieve/src/services/bloc/states/document_archive_state.dart';
 import 'package:edc_document_archieve/src/ui/widgets/custom_appbar.dart';
 import 'package:edc_document_archieve/src/ui/screens/base/sub_screens/forms/widgets/gallery_image.dart';
+import 'package:edc_document_archieve/src/utils/constants/back.dart';
 import 'package:edc_document_archieve/src/utils/constants/colors.dart';
 import 'package:edc_document_archieve/src/utils/constants/constants.dart';
 import 'package:edc_document_archieve/src/utils/dialogs.dart';
@@ -29,7 +32,7 @@ class _NonCRFormScreenState extends State<NonCRFormScreen> {
   late String _pid;
   late AppService _appService;
   late DocumentArchieveBloc _archieveBloc;
-  late ParticipantNonCrf? _participantNonCrf;
+  ParticipantNonCrf? _participantNonCrf;
   List<String> uploads = [];
 
   @override
@@ -61,6 +64,8 @@ class _NonCRFormScreenState extends State<NonCRFormScreen> {
                 _participantNonCrf = state.data;
                 if (_participantNonCrf != null) {
                   uploads = _participantNonCrf!.uploads;
+                } else {
+                  uploads = [];
                 }
                 break;
               default:
@@ -118,16 +123,47 @@ class _NonCRFormScreenState extends State<NonCRFormScreen> {
                       child: Container(
                         padding: const EdgeInsets.all(10),
                         color: Theme.of(context).canvasColor,
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: <Widget>[
-                            const Text("Tap to show image"),
-                            GalleryImage(
-                              titleGallery: 'Uploaded Images',
-                              imageUrls: uploads,
-                            ),
-                          ],
-                        ),
+                        child: _participantNonCrf != null
+                            ? Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: <Widget>[
+                                  const Text("Tap to show image"),
+                                  GalleryImage(
+                                    titleGallery: 'Uploaded Images',
+                                    imageUrls: uploads,
+                                  ),
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      TextButton(
+                                        onPressed: onUpdateButtonPressed,
+                                        child: const Text(
+                                          'Update',
+                                          style: TextStyle(
+                                            fontFamily: FontFamily.robotoSlab,
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 16,
+                                          ),
+                                        ),
+                                      ),
+                                      TextButton(
+                                        onPressed: onDeleteButtonPressed,
+                                        child: const Text(
+                                          'Delete',
+                                          style: TextStyle(
+                                            color: Colors.red,
+                                            fontFamily: FontFamily.robotoSlab,
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 16,
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  )
+                                ],
+                              )
+                            : const SizedBox.shrink(),
                       ),
                     )
                   ],
@@ -149,6 +185,28 @@ class _NonCRFormScreenState extends State<NonCRFormScreen> {
   }
 
   void onFolderButtonTapped() {
+    _appService.clear();
     Get.toNamed(kCreateNonCRFormRoute);
+  }
+
+  void onUpdateButtonPressed() {
+    _appService.selectedImages = _participantNonCrf!.uploads;
+    Get.toNamed(kCreateNonCRFormRoute, arguments: _participantNonCrf);
+  }
+
+  void onConfirmDeleteButtonPressed() {
+    back();
+    _archieveBloc.deleteForm(crf: _participantNonCrf);
+  }
+
+  void onDeleteButtonPressed() {
+    CoolAlert.show(
+      context: context,
+      type: CoolAlertType.confirm,
+      text: 'Are you sure you want to delete this form?',
+      title: 'Delete ${_participantNonCrf!.document.name}',
+      onConfirmBtnTap: onConfirmDeleteButtonPressed,
+      autoCloseDuration: const Duration(seconds: 2),
+    );
   }
 }

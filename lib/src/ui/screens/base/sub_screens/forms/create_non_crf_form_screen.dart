@@ -1,5 +1,6 @@
 import 'package:cool_alert/cool_alert.dart';
 import 'package:edc_document_archieve/src/config/injector.dart';
+import 'package:edc_document_archieve/src/core/models/participant_non_crf.dart';
 import 'package:edc_document_archieve/src/core/models/study_document.dart';
 import 'package:edc_document_archieve/src/services/app_service.dart';
 import 'package:edc_document_archieve/src/services/bloc/document_archive_bloc.dart';
@@ -17,6 +18,7 @@ import 'package:edc_document_archieve/src/utils/dialogs.dart';
 import 'package:edc_document_archieve/src/utils/enums.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:recase/recase.dart';
@@ -37,6 +39,7 @@ class _CreateNonCRFormScreenState extends State<CreateNonCRFormScreen> {
   late DocumentArchieveBloc _archieveBloc;
   List<String> uploads = [];
   final ImagePicker _picker = ImagePicker();
+  ParticipantNonCrf? nonCrf = Get.arguments;
 
   @override
   void didChangeDependencies() {
@@ -44,14 +47,10 @@ class _CreateNonCRFormScreenState extends State<CreateNonCRFormScreen> {
     _documentForm = _appService.selectedStudyDocument;
     _pid = _appService.selectedPid;
     _archieveBloc = Injector.resolve<DocumentArchieveBloc>();
-    uploads.addAll(_appService.selectedImages);
+    if (_appService.selectedImages.isNotEmpty) {
+      uploads = _appService.selectedImages;
+    }
     super.didChangeDependencies();
-  }
-
-  @override
-  void dispose() {
-    _appService.clear();
-    super.dispose();
   }
 
   @override
@@ -63,14 +62,14 @@ class _CreateNonCRFormScreenState extends State<CreateNonCRFormScreen> {
 
         return BlocConsumer<DocumentArchieveBloc, DocumentArchieveState>(
           bloc: _archieveBloc,
-          listener: (context, state) {
+          listener: (context, state) async {
             switch (state.status) {
               case DocumentArchieveStatus.loading:
                 Dialogs.showLoadingDialog(context);
                 break;
               case DocumentArchieveStatus.success:
                 Dialogs.closeLoadingDialog(context);
-                CoolAlert.show(
+                await CoolAlert.show(
                   context: context,
                   type: CoolAlertType.success,
                   text: 'Non Crf form uploaded successfully!',
@@ -171,7 +170,8 @@ class _CreateNonCRFormScreenState extends State<CreateNonCRFormScreen> {
                 ),
               ),
               bottomNavigationBar: DefaultButton(
-                buttonName: kUpload.titleCase,
+                buttonName:
+                    nonCrf != null ? kUpdate.titleCase : kUpload.titleCase,
                 onTap: onUploadButtonTapped,
                 margin: const EdgeInsets.all(0.0),
                 borderRadius: 0,
@@ -184,12 +184,14 @@ class _CreateNonCRFormScreenState extends State<CreateNonCRFormScreen> {
   }
 
   void onUploadButtonTapped() {
-    if (uploads.isNotEmpty) {
+    if (uploads.isNotEmpty && nonCrf == null) {
       _archieveBloc.addNonCrfDocument(
         pid: _pid,
         uploads: uploads,
         studyDocument: _documentForm,
       );
+    } else if (nonCrf != null) {
+      _archieveBloc.updateNonCrfDocument(uploads: uploads, nonCrf: nonCrf!);
     }
   }
 
@@ -200,8 +202,7 @@ class _CreateNonCRFormScreenState extends State<CreateNonCRFormScreen> {
           List<XFile>? pickedFileList = await _picker.pickMultiImage(
             imageQuality: 50,
           );
-          _appService.selectedImages
-              .addAll(pickedFileList!.map((e) => e.path).toList());
+          _appService.addAllImages(pickedFileList!.map((e) => e.path).toList());
         } catch (e) {
           logger.e(e);
         }

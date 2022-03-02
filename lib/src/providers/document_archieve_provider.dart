@@ -33,7 +33,7 @@ abstract class DocumentArchieveProvider {
     required ParticipantCrf crf,
   });
 
-  Future<List<ParticipantNonCrf>> deleteParticipantNonCrfForm({
+  Future<void> deleteParticipantNonCrfForm({
     required ParticipantNonCrf nonCrf,
   });
 
