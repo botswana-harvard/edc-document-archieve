@@ -74,7 +74,6 @@ class DocumentArchieveBloc
         try {
           ParticipantNonCrf nonCrf = data.firstWhere(
               (element) => element.document.name == documentForm.name);
-          logger.w(nonCrf.uploads);
           return emit(
               DocumentArchieveState<ParticipantNonCrf>.loaded(data: nonCrf));
         } catch (e) {

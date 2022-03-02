@@ -1,4 +1,3 @@
-import 'package:edc_document_archieve/gen/assets.gen.dart';
 import 'package:edc_document_archieve/src/api/repository/offline/local_storage_repository.dart';
 import 'package:edc_document_archieve/src/core/models/participant_crf.dart';
 import 'package:edc_document_archieve/src/core/models/participant_non_crf.dart';
@@ -22,7 +21,6 @@ class DocumentArchieveOffLineRepository extends LocalStorageRepository
       logger.e(e);
       crfs.add(crf);
     }
-
     await appStorageBox.delete(key);
     await appStorageBox.put(key, crfs);
   }
@@ -32,11 +30,19 @@ class DocumentArchieveOffLineRepository extends LocalStorageRepository
     required ParticipantNonCrf nonCrf,
   }) async {
     String key = '${nonCrf.pid}_non_crfs';
-    List<ParticipantNonCrf> nonCrfs = appStorageBox.get(key,
+    List<ParticipantNonCrf> allNonCrfs = appStorageBox.get(key,
         defaultValue: <ParticipantNonCrf>[]).cast<ParticipantNonCrf>();
-    nonCrfs.add(nonCrf);
+    try {
+      ParticipantNonCrf filteredForm =
+          allNonCrfs.firstWhere((form) => nonCrf == form);
+      allNonCrfs.remove(filteredForm);
+      filteredForm.uploads.addAll(nonCrf.uploads);
+      allNonCrfs.add(filteredForm);
+    } on StateError catch (e) {
+      logger.e(e);
+    }
     await appStorageBox.delete(key);
-    await appStorageBox.put(key, nonCrfs);
+    await appStorageBox.put(key, allNonCrfs);
   }
 
   @override
@@ -59,19 +65,6 @@ class DocumentArchieveOffLineRepository extends LocalStorageRepository
   @override
   Future<List<StudyDocument>> getAllForms(String studyName) async {
     String key = '${studyName}_forms';
-
-    // List<Map<String, dynamic>> listForms = [
-    //   {
-    //     'name': 'Lab Results',
-    //     'type': 'crf',
-    //   },
-    //   {'name': 'Omang', 'type': 'non_crf'},
-    //   {'name': 'Clinician Notes', 'type': 'crf'},
-    //   {'name': 'Speciment', 'type': 'crf'}
-    // ];
-    // List<StudyDocument> studyDocs =
-    //     listForms.map((json) => StudyDocument.fromJson(json)).toList();
-    // await appStorageBox.put(key, studyDocs);
     return appStorageBox
         .get(key, defaultValue: <StudyDocument>[]).cast<StudyDocument>();
   }
@@ -106,45 +99,6 @@ class DocumentArchieveOffLineRepository extends LocalStorageRepository
     String key = '${pid}_crfs';
     return appStorageBox
         .get(key, defaultValue: <ParticipantCrf>[]).cast<ParticipantCrf>();
-    // List<Map<String, dynamic>> listForms = [
-    //   {
-    //     'pid': pid,
-    //     'visit': '1',
-    //     'timepoint': '0',
-    //     'uploads': [
-    //       Assets.images.test.snapshot2.path,
-    //       Assets.images.test.snapshot3.path,
-    //       Assets.images.test.snapshot4.path,
-    //       Assets.images.test.snapshot5.path,
-    //       Assets.images.test.snapshot6.path,
-    //       Assets.images.test.snapshot7.path,
-    //     ],
-    //     'document': {
-    //       'name': 'Lab Results',
-    //       'type': 'crf',
-    //     }
-    //   },
-    //   {
-    //     'pid': pid,
-    //     'visit': '2',
-    //     'timepoint': '1',
-    //     'uploads': [
-    //       Assets.images.test.snapshot2.path,
-    //       Assets.images.test.snapshot3.path,
-    //       Assets.images.test.snapshot4.path,
-    //       Assets.images.test.snapshot5.path,
-    //       Assets.images.test.snapshot6.path,
-    //       Assets.images.test.snapshot7.path,
-    //     ],
-    //     'document': {
-    //       'name': 'Lab Results',
-    //       'type': 'crf',
-    //     }
-    //   },
-    // ];
-    // List<ParticipantCrf> pidDocs =
-    //     listForms.map((json) => ParticipantCrf.fromJson(json)).toList();
-    // await appStorageBox.put(key, pidDocs);
   }
 
   @override
@@ -152,22 +106,5 @@ class DocumentArchieveOffLineRepository extends LocalStorageRepository
     String key = '${pid}_non_crfs';
     return appStorageBox.get(key,
         defaultValue: <ParticipantNonCrf>[]).cast<ParticipantNonCrf>();
-    // Map<String, dynamic> data = {
-    //   'pid': pid,
-    //   'uploads': [
-    //     Assets.images.test.snapshot2.path,
-    //     Assets.images.test.snapshot3.path,
-    //     Assets.images.test.snapshot4.path,
-    //     Assets.images.test.snapshot5.path,
-    //     Assets.images.test.snapshot6.path,
-    //     Assets.images.test.snapshot7.path,
-    //   ],
-    //   'document': {
-    //     'name': 'Omang',
-    //     'type': 'crf',
-    //   }
-    // };
-    // ParticipantNonCrf pidDocs = ParticipantNonCrf.fromJson(data);
-    // await appStorageBox.put(key, pidDocs);
   }
 }

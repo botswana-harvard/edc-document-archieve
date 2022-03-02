@@ -1,4 +1,5 @@
 import 'package:edc_document_archieve/gen/assets.gen.dart';
+import 'package:edc_document_archieve/gen/fonts.gen.dart';
 import 'package:edc_document_archieve/src/config/injector.dart';
 import 'package:edc_document_archieve/src/core/models/participant_crf.dart';
 import 'package:edc_document_archieve/src/core/models/study_document.dart';
@@ -13,6 +14,7 @@ import 'package:edc_document_archieve/src/utils/constants/constants.dart';
 import 'package:edc_document_archieve/src/utils/debugLog.dart';
 import 'package:edc_document_archieve/src/utils/dialogs.dart';
 import 'package:edc_document_archieve/src/utils/enums.dart';
+import 'package:expansion_tile_card/expansion_tile_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
@@ -32,7 +34,8 @@ class _CRFormScreenState extends State<CRFormScreen> {
   late String _pid;
   late AppService _appService;
   late DocumentArchieveBloc _archieveBloc;
-  late List<ParticipantCrf> _partcipantCrf = [];
+  List<ParticipantCrf> _partcipantCrf = [];
+  List<GlobalKey<ExpansionTileCardState>> cardKeyList = [];
 
   @override
   void didChangeDependencies() {
@@ -109,10 +112,25 @@ class _CRFormScreenState extends State<CRFormScreen> {
                         String visit = _partcipantCrf[index].visit;
                         String timepoint = _partcipantCrf[index].timepoint;
                         List<String> uploads = _partcipantCrf[index].uploads;
+                        cardKeyList.add(GlobalKey<ExpansionTileCardState>(
+                            debugLabel: '$index'));
                         return Container(
                           padding: const EdgeInsets.all(10),
                           color: Theme.of(context).canvasColor,
-                          child: ExpansionTile(
+                          child: ExpansionTileCard(
+                            key: cardKeyList[index],
+                            onExpansionChanged: (value) {
+                              if (value) {
+                                Future.delayed(
+                                    const Duration(milliseconds: 500), () {
+                                  for (var i = 0; i < cardKeyList.length; i++) {
+                                    if (index != i) {
+                                      cardKeyList[i].currentState?.collapse();
+                                    }
+                                  }
+                                });
+                              }
+                            },
                             title: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
@@ -132,6 +150,35 @@ class _CRFormScreenState extends State<CRFormScreen> {
                                   ),
                                 ],
                               ),
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  TextButton(
+                                    onPressed: onUpdateButtonPressed,
+                                    child: const Text(
+                                      'Update',
+                                      style: TextStyle(
+                                        fontFamily: FontFamily.robotoSlab,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 16,
+                                      ),
+                                    ),
+                                  ),
+                                  TextButton(
+                                    onPressed: onDeleteButtonPressed,
+                                    child: const Text(
+                                      'Delete',
+                                      style: TextStyle(
+                                        color: Colors.red,
+                                        fontFamily: FontFamily.robotoSlab,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 16,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              )
                             ],
                           ),
                         );
@@ -157,5 +204,13 @@ class _CRFormScreenState extends State<CRFormScreen> {
 
   void onFolderButtonTapped() {
     Get.toNamed(kCreateCRFormRoute);
+  }
+
+  void onUpdateButtonPressed() {
+    Get.toNamed(kCreateCRFormRoute);
+  }
+
+  void onDeleteButtonPressed() {
+    //TODO: Delete form
   }
 }

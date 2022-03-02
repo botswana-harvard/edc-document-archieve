@@ -1,10 +1,11 @@
+import 'package:equatable/equatable.dart';
 import 'package:hive/hive.dart';
 import 'package:json_annotation/json_annotation.dart';
 part 'gen/study_document.g.dart';
 
 @JsonSerializable(explicitToJson: true)
 @HiveType(typeId: 2)
-class StudyDocument extends HiveObject {
+class StudyDocument extends HiveObject with EquatableMixin {
   @HiveField(1)
   late String name;
 
@@ -20,4 +21,7 @@ class StudyDocument extends HiveObject {
       _$StudyDocumentFromJson(data);
 
   Map<String, dynamic> toJson() => _$StudyDocumentToJson(this);
+
+  @override
+  List<Object?> get props => [name, type];
 }

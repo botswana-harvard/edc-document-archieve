@@ -29,8 +29,8 @@ class _PidsScreenState extends State<PidsScreen> {
   late DocumentArchieveBloc _archieveBloc;
 
   late List<StudyDocument> studyDocuments;
-  late List<String> pids = [];
-  late List<GlobalKey<ExpansionTileCardState>> cardKeyList = [];
+  List<String> pids = [];
+  List<GlobalKey<ExpansionTileCardState>> cardKeyList = [];
 
   @override
   void initState() {
