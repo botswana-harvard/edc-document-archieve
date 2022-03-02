@@ -1,3 +1,4 @@
+import 'package:cool_alert/cool_alert.dart';
 import 'package:edc_document_archieve/gen/fonts.gen.dart';
 import 'package:edc_document_archieve/src/config/injector.dart';
 import 'package:edc_document_archieve/src/core/models/participant_crf.dart';
@@ -165,7 +166,8 @@ class _CRFormScreenState extends State<CRFormScreen> {
                                     ),
                                   ),
                                   TextButton(
-                                    onPressed: onDeleteButtonPressed,
+                                    onPressed: () => onDeleteButtonPressed(
+                                        _partcipantCrfs[index]),
                                     child: const Text(
                                       'Delete',
                                       style: TextStyle(
@@ -211,7 +213,11 @@ class _CRFormScreenState extends State<CRFormScreen> {
     Get.toNamed(kCreateCRFormRoute, arguments: crf);
   }
 
-  void onDeleteButtonPressed() {
-    //TODO: Delete form
+  void onDeleteButtonPressed(ParticipantCrf crf) {
+    CoolAlert.show(
+        context: context,
+        type: CoolAlertType.confirm,
+        text: 'Are you sure you want to delete this form?',
+        title: 'Delete ${crf.document.name}');
   }
 }

@@ -54,6 +54,7 @@ dependencies:
   expansion_tile_card: ^2.0.0
   image_picker: ^0.8.4+10
   uuid: ^3.0.6
+  cool_alert: ^1.1.0
 
 dev_dependencies:
   flutter_test:

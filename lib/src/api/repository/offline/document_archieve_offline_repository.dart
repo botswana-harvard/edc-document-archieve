@@ -16,11 +16,12 @@ class DocumentArchieveOffLineRepository extends LocalStorageRepository
     List<ParticipantCrf> crfs = appStorageBox
         .get(key, defaultValue: <ParticipantCrf>[]).cast<ParticipantCrf>();
     try {
-      final _ = crfs.firstWhere((form) => crf == form);
+      final crfDoc = crfs.firstWhere((form) => crf == form);
+      crfs.remove(crfDoc);
     } on StateError catch (e) {
       logger.e(e);
-      crfs.add(crf);
     }
+    crfs.add(crf);
     await appStorageBox.delete(key);
     await appStorageBox.put(key, crfs);
   }

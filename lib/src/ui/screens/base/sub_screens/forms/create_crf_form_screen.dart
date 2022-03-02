@@ -1,3 +1,4 @@
+import 'package:cool_alert/cool_alert.dart';
 import 'package:edc_document_archieve/src/config/injector.dart';
 import 'package:edc_document_archieve/src/core/data/dummy_data.dart';
 import 'package:edc_document_archieve/src/core/models/participant_crf.dart';
@@ -78,13 +79,19 @@ class _CreateCRFormScreenState extends State<CreateCRFormScreen> {
           ),
           body: BlocConsumer<DocumentArchieveBloc, DocumentArchieveState>(
             bloc: _archieveBloc,
-            listener: (context, state) {
+            listener: (context, state) async {
               switch (state.status) {
                 case DocumentArchieveStatus.loading:
                   Dialogs.showLoadingDialog(context);
                   break;
                 case DocumentArchieveStatus.success:
                   Dialogs.closeLoadingDialog(context);
+                  await CoolAlert.show(
+                    context: context,
+                    type: CoolAlertType.success,
+                    text: 'Crf form uploaded successfully!',
+                    autoCloseDuration: const Duration(seconds: 3),
+                  );
                   _appService.notifyWidgetListeners();
                   back();
                   break;

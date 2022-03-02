@@ -1,3 +1,4 @@
+import 'package:cool_alert/cool_alert.dart';
 import 'package:edc_document_archieve/src/config/injector.dart';
 import 'package:edc_document_archieve/src/core/models/study_document.dart';
 import 'package:edc_document_archieve/src/services/app_service.dart';
@@ -69,6 +70,12 @@ class _CreateNonCRFormScreenState extends State<CreateNonCRFormScreen> {
                 break;
               case DocumentArchieveStatus.success:
                 Dialogs.closeLoadingDialog(context);
+                CoolAlert.show(
+                  context: context,
+                  type: CoolAlertType.success,
+                  text: 'Non Crf form uploaded successfully!',
+                  autoCloseDuration: const Duration(seconds: 2),
+                );
                 _appService.notifyWidgetListeners();
                 back();
                 break;

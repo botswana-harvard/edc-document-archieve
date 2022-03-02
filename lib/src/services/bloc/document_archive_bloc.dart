@@ -66,6 +66,7 @@ class DocumentArchieveBloc
         data = data
             .where((element) => element.document.name == documentForm.name)
             .toList();
+        data = data.reversed.toList();
         return emit(
             DocumentArchieveState<List<ParticipantCrf>>.loaded(data: data));
       case kNonCrfForm:
@@ -174,12 +175,11 @@ class DocumentArchieveBloc
     required List<String> uploads,
     required ParticipantCrf crf,
   }) {
-    Map<String, dynamic> data = {
-      'visit': visitCode,
-      'timepoint': timePoint,
-      'uploads': uploads,
-    };
+    crf.visit = visitCode;
+    crf.timepoint = timePoint;
+    crf.uploads = uploads;
+
     logger.e(crf.toJson());
-    add(DocumentArchieveFormUpdated(form: crf, data: data));
+    add(DocumentArchieveFormAdded(form: crf));
   }
 }

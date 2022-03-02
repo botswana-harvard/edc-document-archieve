@@ -124,7 +124,8 @@ class Dialogs {
                         alignment: Alignment.center,
                         child: Text(
                           text,
-                          style: const TextStyle(fontSize: 12),
+                          style: const TextStyle(
+                              fontSize: 12, color: Colors.black),
                         ),
                       ),
                       child,
