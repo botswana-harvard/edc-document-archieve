@@ -29,14 +29,20 @@ class DocumentArchieveOffLineRepository extends LocalStorageRepository
   Future<void> addParticipantNonCrfForm({
     required ParticipantNonCrf nonCrf,
   }) async {
+    //Key to retrieve our docs
     String key = '${nonCrf.pid}_non_crfs';
+    //get all participant's non crfs
     List<ParticipantNonCrf> allNonCrfs = appStorageBox.get(key,
         defaultValue: <ParticipantNonCrf>[]).cast<ParticipantNonCrf>();
     try {
+      //Get existing participant non crf form
       ParticipantNonCrf filteredForm =
           allNonCrfs.firstWhere((form) => nonCrf == form);
+      //remove it from list of non crfs
       allNonCrfs.remove(filteredForm);
+      //add new uploads to existing non crf form
       filteredForm.uploads.addAll(nonCrf.uploads);
+      //add updated non crf to list of non crfs for pid
       allNonCrfs.add(filteredForm);
     } on StateError catch (e) {
       logger.e(e);

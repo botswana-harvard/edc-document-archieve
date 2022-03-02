@@ -34,7 +34,7 @@ class _CRFormScreenState extends State<CRFormScreen> {
   late String _pid;
   late AppService _appService;
   late DocumentArchieveBloc _archieveBloc;
-  List<ParticipantCrf> _partcipantCrf = [];
+  List<ParticipantCrf> _partcipantCrfs = [];
   List<GlobalKey<ExpansionTileCardState>> cardKeyList = [];
 
   @override
@@ -59,7 +59,7 @@ class _CRFormScreenState extends State<CRFormScreen> {
             break;
           case DocumentArchieveStatus.success:
             Dialogs.closeLoadingDialog(context);
-            _partcipantCrf = state.data;
+            _partcipantCrfs = state.data;
             break;
           default:
         }
@@ -109,9 +109,9 @@ class _CRFormScreenState extends State<CRFormScreen> {
                     ),
                     SliverList(
                       delegate: SliverChildBuilderDelegate((context, index) {
-                        String visit = _partcipantCrf[index].visit;
-                        String timepoint = _partcipantCrf[index].timepoint;
-                        List<String> uploads = _partcipantCrf[index].uploads;
+                        String visit = _partcipantCrfs[index].visit;
+                        String timepoint = _partcipantCrfs[index].timepoint;
+                        List<String> uploads = _partcipantCrfs[index].uploads;
                         cardKeyList.add(GlobalKey<ExpansionTileCardState>(
                             debugLabel: '$index'));
                         return Container(
@@ -155,7 +155,8 @@ class _CRFormScreenState extends State<CRFormScreen> {
                                     MainAxisAlignment.spaceBetween,
                                 children: [
                                   TextButton(
-                                    onPressed: onUpdateButtonPressed,
+                                    onPressed: () => onUpdateButtonPressed(
+                                        _partcipantCrfs[index]),
                                     child: const Text(
                                       'Update',
                                       style: TextStyle(
@@ -182,7 +183,7 @@ class _CRFormScreenState extends State<CRFormScreen> {
                             ],
                           ),
                         );
-                      }, childCount: _partcipantCrf.length),
+                      }, childCount: _partcipantCrfs.length),
                     ),
                   ],
                 ),
@@ -206,8 +207,8 @@ class _CRFormScreenState extends State<CRFormScreen> {
     Get.toNamed(kCreateCRFormRoute);
   }
 
-  void onUpdateButtonPressed() {
-    Get.toNamed(kCreateCRFormRoute);
+  void onUpdateButtonPressed(ParticipantCrf crf) {
+    Get.toNamed(kCreateCRFormRoute, arguments: crf);
   }
 
   void onDeleteButtonPressed() {

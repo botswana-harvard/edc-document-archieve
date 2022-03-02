@@ -8,13 +8,13 @@ class AppService with ChangeNotifier {
   late String _selectedStudy;
   late StudyDocument _studyDocument;
   late String _selectedPid;
-  List<XFile>? _selectedImages = [];
+  List<String> _selectedImages = [];
 
   //define Getters
   String get selectedStudy => _selectedStudy;
   String get selectedPid => _selectedPid;
   StudyDocument get selectedStudyDocument => _studyDocument;
-  List<XFile>? get selectedImages => _selectedImages;
+  List<String> get selectedImages => _selectedImages;
 
   //define Setters
   set selectedStudy(String selectedStudy) {
@@ -22,7 +22,7 @@ class AppService with ChangeNotifier {
     notifyListeners();
   }
 
-  set selectedImages(List<XFile>? selectedImages) {
+  set selectedImages(List<String> selectedImages) {
     _selectedImages = selectedImages;
     notifyListeners();
   }
@@ -52,11 +52,11 @@ class AppService with ChangeNotifier {
   }
 
   void removeSelectedImage(String imageUrl) {
-    _selectedImages!.removeWhere((element) => element.path == imageUrl);
+    _selectedImages!.removeWhere((element) => element == imageUrl);
     notifyListeners();
   }
 
-  void addSelectedImage(XFile xFile) {
+  void addSelectedImage(String xFile) {
     _selectedImages!.add(xFile);
     notifyListeners();
   }

@@ -1,7 +1,6 @@
-import 'dart:io';
-
 import 'package:edc_document_archieve/src/config/injector.dart';
 import 'package:edc_document_archieve/src/core/data/dummy_data.dart';
+import 'package:edc_document_archieve/src/core/models/participant_crf.dart';
 import 'package:edc_document_archieve/src/services/app_service.dart';
 import 'package:edc_document_archieve/src/services/bloc/document_archive_bloc.dart';
 import 'package:edc_document_archieve/src/services/bloc/states/document_archive_state.dart';
@@ -19,6 +18,7 @@ import 'package:edc_document_archieve/src/utils/dialogs.dart';
 import 'package:edc_document_archieve/src/utils/enums.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:recase/recase.dart';
 
@@ -38,13 +38,19 @@ class _CreateCRFormScreenState extends State<CreateCRFormScreen> {
   late String selectedPid;
   String? selectedVisitCode;
   String? selectedTimePoint;
-  List<XFile>? _imageFileList = [];
   final ImagePicker _picker = ImagePicker();
   final GlobalKey<FormState> _key = GlobalKey<FormState>();
+  List<String> uploads = [];
 
   @override
   void initState() {
     _archieveBloc = Injector.resolve<DocumentArchieveBloc>();
+    ParticipantCrf? crf = Get.arguments;
+    if (crf != null) {
+      selectedVisitCode = crf.visit;
+      selectedTimePoint = crf.timepoint;
+      uploads = crf.uploads;
+    }
     super.initState();
   }
 
@@ -53,7 +59,9 @@ class _CreateCRFormScreenState extends State<CreateCRFormScreen> {
     _appService = context.watch<AppService>();
     selectedDocumentName = _appService.selectedStudyDocument.name;
     selectedPid = _appService.selectedPid;
-    _imageFileList = _appService.selectedImages;
+    if (_appService.selectedImages.isNotEmpty) {
+      uploads.addAll(_appService.selectedImages);
+    }
     super.didChangeDependencies();
   }
 
@@ -185,8 +193,7 @@ class _CreateCRFormScreenState extends State<CreateCRFormScreen> {
                       Expanded(
                         child: GalleryImage(
                           titleGallery: 'Uploaded Images',
-                          imageUrls:
-                              _imageFileList!.map((e) => e.path).toList(),
+                          imageUrls: uploads,
                         ),
                       )
                     ],
@@ -207,13 +214,12 @@ class _CreateCRFormScreenState extends State<CreateCRFormScreen> {
   }
 
   void onUploadButtonTapped() {
-    if (_key.currentState!.validate() && _imageFileList!.isNotEmpty) {
-      List<String> images = _imageFileList!.map((e) => e.path).toList();
+    if (_key.currentState!.validate() && uploads.isNotEmpty) {
       _archieveBloc.addCrfDocument(
         pid: selectedPid,
         visitCode: selectedVisitCode!,
         timePoint: selectedTimePoint!,
-        uploads: images,
+        uploads: uploads,
         studyDocument: _appService.selectedStudyDocument,
       );
     }
@@ -226,8 +232,8 @@ class _CreateCRFormScreenState extends State<CreateCRFormScreen> {
           List<XFile>? pickedFileList = await _picker.pickMultiImage(
             imageQuality: 50,
           );
-
-          _appService.selectedImages = pickedFileList;
+          _appService.selectedImages
+              .addAll(pickedFileList!.map((e) => e.path).toList());
         } catch (e) {
           logger.e(e);
         }
@@ -239,7 +245,7 @@ class _CreateCRFormScreenState extends State<CreateCRFormScreen> {
             imageQuality: 50,
           );
           if (pickedFile != null) {
-            _appService.addSelectedImage(pickedFile);
+            _appService.addSelectedImage(pickedFile.path);
           }
         } catch (e) {
           logger.e(e);

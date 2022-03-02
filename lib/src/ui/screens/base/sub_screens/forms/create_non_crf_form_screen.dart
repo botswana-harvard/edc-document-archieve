@@ -1,8 +1,4 @@
-import 'dart:io';
-
-import 'package:edc_document_archieve/gen/assets.gen.dart';
 import 'package:edc_document_archieve/src/config/injector.dart';
-import 'package:edc_document_archieve/src/core/models/participant_non_crf.dart';
 import 'package:edc_document_archieve/src/core/models/study_document.dart';
 import 'package:edc_document_archieve/src/services/app_service.dart';
 import 'package:edc_document_archieve/src/services/bloc/document_archive_bloc.dart';
@@ -38,7 +34,7 @@ class _CreateNonCRFormScreenState extends State<CreateNonCRFormScreen> {
   late String _pid;
   late AppService _appService;
   late DocumentArchieveBloc _archieveBloc;
-  List<XFile>? _imageFileList = [];
+  List<String> uploads = [];
   final ImagePicker _picker = ImagePicker();
 
   @override
@@ -47,7 +43,7 @@ class _CreateNonCRFormScreenState extends State<CreateNonCRFormScreen> {
     _documentForm = _appService.selectedStudyDocument;
     _pid = _appService.selectedPid;
     _archieveBloc = Injector.resolve<DocumentArchieveBloc>();
-    _imageFileList = _appService.selectedImages;
+    uploads.addAll(_appService.selectedImages);
     super.didChangeDependencies();
   }
 
@@ -160,8 +156,7 @@ class _CreateNonCRFormScreenState extends State<CreateNonCRFormScreen> {
                       Expanded(
                         child: GalleryImage(
                           titleGallery: 'Uploaded Images',
-                          imageUrls:
-                              _imageFileList!.map((e) => e.path).toList(),
+                          imageUrls: uploads,
                         ),
                       )
                     ],
@@ -182,8 +177,7 @@ class _CreateNonCRFormScreenState extends State<CreateNonCRFormScreen> {
   }
 
   void onUploadButtonTapped() {
-    if (_imageFileList!.isNotEmpty) {
-      List<String> uploads = _imageFileList!.map((e) => e.path).toList();
+    if (uploads.isNotEmpty) {
       _archieveBloc.addNonCrfDocument(
         pid: _pid,
         uploads: uploads,
@@ -199,7 +193,8 @@ class _CreateNonCRFormScreenState extends State<CreateNonCRFormScreen> {
           List<XFile>? pickedFileList = await _picker.pickMultiImage(
             imageQuality: 50,
           );
-          _appService.selectedImages = pickedFileList;
+          _appService.selectedImages
+              .addAll(pickedFileList!.map((e) => e.path).toList());
         } catch (e) {
           logger.e(e);
         }
@@ -211,7 +206,7 @@ class _CreateNonCRFormScreenState extends State<CreateNonCRFormScreen> {
             imageQuality: 50,
           );
           if (pickedFile != null) {
-            _appService.addSelectedImage(pickedFile);
+            _appService.addSelectedImage(pickedFile.path);
           }
         } catch (e) {
           logger.e(e);
