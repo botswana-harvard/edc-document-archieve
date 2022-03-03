@@ -206,7 +206,6 @@ class _NonCRFormScreenState extends State<NonCRFormScreen> {
       text: 'Are you sure you want to delete this form?',
       title: 'Delete ${_participantNonCrf!.document.name}',
       onConfirmBtnTap: onConfirmDeleteButtonPressed,
-      autoCloseDuration: const Duration(seconds: 2),
     );
   }
 }

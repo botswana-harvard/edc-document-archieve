@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.edc_document_archieve">
    <application
-        android:label="edc_document_archieve"
+        android:label="Edc Document Archieve"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity
