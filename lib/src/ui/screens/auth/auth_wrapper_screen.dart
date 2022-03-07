@@ -13,9 +13,8 @@ class AuthWrapperScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    UserAccount? lastUserAccountLoggedIn =
-        Injector.resolve<AuthenticationBloc>().lastAccountLoggedIn();
-    if (lastUserAccountLoggedIn == null) {
+    String token = Injector.resolve<AuthenticationBloc>().lastAccountLoggedIn();
+    if (token.isEmpty) {
       return const WelcomeScreen();
     }
     return BaseScreen();

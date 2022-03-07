@@ -1,6 +1,5 @@
 import 'package:dio/dio.dart';
 import 'package:edc_document_archieve/src/api/repository/online/interceptor/api_interceptor.dart';
-import 'package:edc_document_archieve/src/utils/constants/constants.dart';
 import 'package:edc_document_archieve/src/utils/debugLog.dart';
 import 'package:flutter/material.dart';
 
@@ -8,9 +7,9 @@ abstract class BaseOnlineRepository {
   late Dio _dio;
 
   ///
-  final String baseUrl = kBaseUrl;
+  final String baseUrl = 'http://10.113.201.239:8000/edc_da_api/';
 
-  ///
+  ///10.113.201.239
 
   BaseOnlineRepository() {
     /// dio base settings
@@ -59,7 +58,7 @@ abstract class BaseOnlineRepository {
   }) async {
     late Response response;
     try {
-      // set  for requests with custom headers
+      // set for requests with custom headers
       Options _options = Options(
         validateStatus: (status) {
           return status! < 500;

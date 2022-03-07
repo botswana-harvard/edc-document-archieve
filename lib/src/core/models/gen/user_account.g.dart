@@ -17,10 +17,10 @@ class UserAccountAdapter extends TypeAdapter<UserAccount> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return UserAccount(
-      id: fields[0] as String,
-      email: fields[1] as String,
+      id: fields[0],
+      username: fields[1] as String,
       password: fields[2] as String,
-      token: fields[3] as String?,
+      token: fields[3] as String,
     );
   }
 
@@ -31,7 +31,7 @@ class UserAccountAdapter extends TypeAdapter<UserAccount> {
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
-      ..write(obj.email)
+      ..write(obj.username)
       ..writeByte(2)
       ..write(obj.password)
       ..writeByte(3)
@@ -54,16 +54,16 @@ class UserAccountAdapter extends TypeAdapter<UserAccount> {
 // **************************************************************************
 
 UserAccount _$UserAccountFromJson(Map<String, dynamic> json) => UserAccount(
-      id: json['id'] as String,
-      email: json['email'] as String,
+      id: json['id'],
+      username: json['username'] as String,
       password: json['password'] as String,
-      token: json['token'] as String?,
+      token: json['token'] as String,
     );
 
 Map<String, dynamic> _$UserAccountToJson(UserAccount instance) =>
     <String, dynamic>{
       'id': instance.id,
-      'email': instance.email,
+      'username': instance.username,
       'password': instance.password,
       'token': instance.token,
     };

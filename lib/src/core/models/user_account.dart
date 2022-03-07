@@ -6,22 +6,22 @@ part 'gen/user_account.g.dart';
 @HiveType(typeId: 1)
 class UserAccount extends HiveObject {
   @HiveField(0)
-  late String id;
+  final int id;
 
   @HiveField(1)
-  late String email;
+  final String username;
 
   @HiveField(2)
-  late String password;
+  final String password;
 
   @HiveField(3)
-  late String? token;
+  final String token;
 
   UserAccount({
     required this.id,
-    required this.email,
+    required this.username,
     required this.password,
-    this.token,
+    required this.token,
   });
 
   factory UserAccount.fromJson(Map<String, dynamic> data) =>

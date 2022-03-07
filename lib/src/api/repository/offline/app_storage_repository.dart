@@ -10,7 +10,7 @@ class AppStorageRepository extends LocalStorageRepository {
 
   /// Retrive cookie
   String getCookies() {
-    String _savedCookies = appStorageBox.get(kCookies);
+    String _savedCookies = appStorageBox.get(kCookies, defaultValue: '');
     return _savedCookies;
   }
 

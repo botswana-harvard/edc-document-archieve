@@ -24,20 +24,20 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  late TextEditingController emailController;
+  late TextEditingController usernameController;
   late TextEditingController passwordController;
   late GlobalKey<FormState> _formKey;
   late AuthenticationBloc _authenticationBloc;
-  late FocusNode _emailFocusNode;
+  late FocusNode _usernameFocusNode;
   late FocusNode _passwordFocusNode;
 
   @override
   void initState() {
-    emailController = TextEditingController();
+    usernameController = TextEditingController();
     passwordController = TextEditingController();
     _formKey = GlobalKey<FormState>();
     _authenticationBloc = Injector.resolve<AuthenticationBloc>();
-    _emailFocusNode = FocusNode();
+    _usernameFocusNode = FocusNode();
     _passwordFocusNode = FocusNode();
     super.initState();
   }
@@ -78,10 +78,9 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                         Container(margin: const EdgeInsets.only(top: 35)),
                         CustomTextField(
-                          labelText: kEmail.titleCase,
-                          keyboardType: TextInputType.emailAddress,
-                          controller: emailController,
-                          focusNode: _emailFocusNode,
+                          labelText: kUsername.titleCase,
+                          controller: usernameController,
+                          focusNode: _usernameFocusNode,
                         ),
                         Container(margin: const EdgeInsets.only(top: 20)),
                         CustomTextField(
@@ -121,13 +120,14 @@ class _LoginScreenState extends State<LoginScreen> {
             break;
           case AuthenticationStatus.unauthenticated:
             Dialogs.closeLoadingDialog(context);
-            Get.showSnackbar(const GetSnackBar(
-              title: 'Error',
-              message: 'Incorrect email or password.',
-              duration: Duration(seconds: 2),
+            Get.showSnackbar(GetSnackBar(
+              title: 'Authentication Error',
+              message: state.error!,
+              duration: const Duration(seconds: 2),
             ));
             break;
           default:
+            Dialogs.closeLoadingDialog(context);
         }
       },
     );
@@ -135,16 +135,16 @@ class _LoginScreenState extends State<LoginScreen> {
 
   Future<void> onButtonLoginTapped() async {
     //unfocus keyboard when clicking login button
-    _emailFocusNode.unfocus();
+    _usernameFocusNode.unfocus();
     _passwordFocusNode.unfocus();
 
     //check if the input values are not none
     if (_formKey.currentState!.validate()) {
-      String email = emailController.text.trim();
+      String username = usernameController.text.trim();
       String password = passwordController.text.trim();
       _authenticationBloc.add(
         AuthenticationLoginSubmitted(
-          email: email,
+          username: username,
           password: password,
         ),
       );

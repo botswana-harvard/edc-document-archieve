@@ -26,28 +26,28 @@ class AuthenticationOfflineRepository extends LocalStorageRepository
   @override
   Future<void> logOut() async {
     //Get the last user logged in
-    await userAccountsBox.delete(kLastUserLoggedIn);
+    await appStorageBox.delete(kLastUserLoggedIn);
     //Change auth status to un authenticated
     authStatus = AuthenticationStatus.unauthenticated;
   }
 
   @override
-  Future<void> login({required String email, required String password}) async {
+  Future<void> login(
+      {required String username, required String password}) async {
     //Get user from Hive database
-    UserAccount? user = userAccountsBox.get(email);
+    UserAccount? user = userAccountsBox.get(username);
     List<int> bytes = utf8.encode(password);
 
     //encrypt the input password and compare with the users password
     Digest hashedPassword = hasher.convert(bytes);
 
     // check if the user exists in Hive database, if exists verify password
-    if (user != null && user.password == password) {
-      await userAccountsBox.put(kLastUserLoggedIn, user.email);
+    if (user != null && user.password == hashedPassword.toString()) {
+      await addLastUserAccountLoggedIn(user.token);
       authStatus = AuthenticationStatus.authenticated;
       logger.wtf('Authenticated...');
     } else {
       authStatus = AuthenticationStatus.unauthenticated;
-      logger.wtf('UnAuthenticated...');
     }
   }
 
@@ -64,10 +64,17 @@ class AuthenticationOfflineRepository extends LocalStorageRepository
   }
 
   @override
-  UserAccount? lastUserAccountLoggedIn() {
+  String lastUserAccountLoggedIn() {
     //Get last logged in user from Hive database
-    String email = userAccountsBox.get(kLastUserLoggedIn);
-    UserAccount? user = userAccountsBox.get(email);
-    return user;
+    String token = appStorageBox.get(kLastUserLoggedIn, defaultValue: '');
+    return token;
+  }
+
+  @override
+  String error = '';
+
+  addLastUserAccountLoggedIn(String token) async {
+    await appStorageBox.delete(kLastUserLoggedIn);
+    await appStorageBox.put(kLastUserLoggedIn, token);
   }
 }

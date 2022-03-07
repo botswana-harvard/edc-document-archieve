@@ -10,7 +10,7 @@ class CustomSearchDelegate extends SearchDelegate {
   final List<String> pids;
   List<GlobalKey<ExpansionTileCardState>> cardKeyList = [];
   late AppService _appService;
-  final List<StudyDocument> studyDocuments;
+  final List<StudyDocument>? studyDocuments;
 
   CustomSearchDelegate({required this.studyDocuments, required this.pids});
 
@@ -132,7 +132,7 @@ class CustomSearchDelegate extends SearchDelegate {
                   )
                 : Text(suggestions[index]),
             children: [
-              ...studyDocuments.map((studyDocument) => Container(
+              ...studyDocuments!.map((studyDocument) => Container(
                     padding: const EdgeInsets.all(10),
                     height: 80,
                     child: ListTile(

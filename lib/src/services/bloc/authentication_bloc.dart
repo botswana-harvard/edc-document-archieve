@@ -14,7 +14,7 @@ class AuthenticationBloc
   AuthenticationBloc({
     required AuthenticationProvider authenticationRepository,
   })  : _authenticationRepository = authenticationRepository,
-        super(const AuthenticationState.unknown()) {
+        super(AuthenticationState.unknown()) {
     on<AuthenticationLogoutRequested>(
       _onAuthenticationLogoutRequested,
       transformer: sequential(),
@@ -38,26 +38,26 @@ class AuthenticationBloc
     AuthenticationLoginSubmitted event,
     Emitter<AuthenticationState> emit,
   ) async {
-    emit(const AuthenticationState.loading());
+    emit(AuthenticationState.loading());
     await _authenticationRepository.login(
-        email: event.email, password: event.password);
+        username: event.username, password: event.password);
 
     switch (_authenticationRepository.authStatus) {
       case AuthenticationStatus.authenticated:
-        emit(const AuthenticationState.authenticated());
+        emit(AuthenticationState.authenticated());
         break;
       default:
-        emit(const AuthenticationState.unauthenticated());
+        emit(AuthenticationState.unauthenticated(
+            _authenticationRepository.error));
     }
   }
 
-  UserAccount? lastAccountLoggedIn() {
+  String lastAccountLoggedIn() {
     try {
-      final UserAccount? user =
-          _authenticationRepository.lastUserAccountLoggedIn();
+      final String user = _authenticationRepository.lastUserAccountLoggedIn();
       return user;
     } catch (_) {
-      return null;
+      return '';
     }
   }
 }

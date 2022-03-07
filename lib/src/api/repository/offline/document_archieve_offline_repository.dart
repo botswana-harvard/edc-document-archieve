@@ -75,13 +75,14 @@ class DocumentArchieveOffLineRepository extends LocalStorageRepository
 
   @override
   Future<List<String>> getAllParticipants(String studyName) async {
-    String key = '${studyName}_pids';
+    String key = '${studyName}_caregiver';
     return appStorageBox.get(key, defaultValue: <String>[]).cast<String>();
   }
 
   @override
   Future<List<String>> getAllStudies() async {
-    return appStorageBox.get(kStudies, defaultValue: <String>[]).cast<String>();
+    return appStorageBox
+        .get(kProjects, defaultValue: <String>[]).cast<String>();
   }
 
   @override

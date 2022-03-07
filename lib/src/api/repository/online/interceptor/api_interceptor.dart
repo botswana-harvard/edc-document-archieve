@@ -41,15 +41,6 @@ class ApiInterceptor extends Interceptor {
       options.headers["User-Agent"] = userAgent;
 
       String url = options.uri.toString();
-
-      // add cookies to request if it is not a login request
-      if (!customCookieUrls.contains(url)) {
-        List savedCookies = jsonDecode(
-          _localStorageService.getCookies(),
-        );
-
-        options.headers["Cookie"] = savedCookies;
-      }
     } catch (e) {
       /// todo: non fatal error on registration
       logger.e(e);

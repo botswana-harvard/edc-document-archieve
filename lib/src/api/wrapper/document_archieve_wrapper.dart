@@ -89,4 +89,8 @@ class DocumentArchieveWrapper implements DocumentArchieveProvider {
       {required ParticipantNonCrf nonCrf}) async {
     await _offlineRepository.deleteParticipantNonCrfForm(nonCrf: nonCrf);
   }
+
+  Future<void> saveData() async {
+    Map<String, dynamic>? data = await _onlineRepository.getProjects();
+  }
 }

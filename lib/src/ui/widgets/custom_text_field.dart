@@ -55,7 +55,6 @@ class CustomTextField extends StatelessWidget {
                   value: value,
                 );
               default:
-                logger.e(value);
                 if (value == null || value.isEmpty) {
                   return 'This filed is required';
                 }

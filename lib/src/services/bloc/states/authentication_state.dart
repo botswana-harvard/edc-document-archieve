@@ -1,20 +1,22 @@
 part of '../authentication_bloc.dart';
 
+// ignore: must_be_immutable
 class AuthenticationState extends Equatable {
-  const AuthenticationState._({this.status = AuthenticationStatus.unknown});
+  AuthenticationState._(
+      {this.status = AuthenticationStatus.unknown, this.error});
 
-  const AuthenticationState.unknown() : this._();
+  AuthenticationState.unknown() : this._();
 
-  const AuthenticationState.authenticated()
+  AuthenticationState.authenticated()
       : this._(status: AuthenticationStatus.authenticated);
 
-  const AuthenticationState.unauthenticated()
-      : this._(status: AuthenticationStatus.unauthenticated);
+  AuthenticationState.unauthenticated(String error)
+      : this._(status: AuthenticationStatus.unauthenticated, error: error);
 
-  const AuthenticationState.loading()
-      : this._(status: AuthenticationStatus.loading);
+  AuthenticationState.loading() : this._(status: AuthenticationStatus.loading);
 
   final AuthenticationStatus status;
+  late String? error;
 
   @override
   List<Object> get props => [status];
