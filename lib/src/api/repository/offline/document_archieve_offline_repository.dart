@@ -67,31 +67,16 @@ class DocumentArchieveOffLineRepository extends LocalStorageRepository
   }
 
   @override
-  Future<Map<String, dynamic>> getAllForms(String studyName) async {
-    String caregiverFormsKey = '${studyName}_$kCrfForm';
-    String childFormsKey = '${studyName}_$kNonCrfForm';
-    logger.wtf(caregiverFormsKey);
-
-    List<String> caregiverForms = appStorageBox
-        .get(caregiverFormsKey, defaultValue: <String>[]).cast<String>();
-    List<String> childForms = appStorageBox
-        .get(childFormsKey, defaultValue: <String>[]).cast<String>();
-    Map<String, dynamic> data = {
-      kCaregiverForms: caregiverForms,
-      kChildForms: childForms
-    };
-    logger.e(data);
-    return data;
-  }
-
-  @override
   Future<Map<String, dynamic>> getAllParticipants(String studyName) async {
-    String caregiverPidsKey = '${studyName}_caregiver';
-    String childPidsKey = '${studyName}_child';
-    List<String> caregiverPids = appStorageBox
-        .get(caregiverPidsKey, defaultValue: <String>[]).cast<String>();
-    List<String> childPids = appStorageBox
-        .get(childPidsKey, defaultValue: <String>[]).cast<String>();
+    String pidsKey = '${studyName}_pids';
+    List<String> caregiverPids = [];
+    List<String> childPids = [];
+    Map<String, dynamic> pids =
+        appStorageBox.get(pidsKey, defaultValue: {}).cast<String, dynamic>();
+    if (pids.isNotEmpty) {
+      caregiverPids = pids[kCaregiverPid].cast<String>();
+      childPids = pids[kChildPid].cast<String>();
+    }
 
     Map<String, dynamic> data = {
       kCaregiverPid: caregiverPids,
@@ -167,5 +152,48 @@ class DocumentArchieveOffLineRepository extends LocalStorageRepository
     // delete old list and add new updated list
     await appStorageBox.delete(key);
     await appStorageBox.put(key, allNonCrfs);
+  }
+
+  @override
+  Future<List<StudyDocument>> getChildForms(String studyName) async {
+    String formKey = '${studyName}_$kChildForms';
+    List<StudyDocument> documents = await getForms(formKey);
+    return documents;
+  }
+
+  @override
+  Future<List<StudyDocument>> getCaregiverForms(String studyName) async {
+    String formKey = '${studyName}_$kCaregiverForms';
+    List<StudyDocument> documents = await getForms(formKey);
+    return documents;
+  }
+
+  Future<List<StudyDocument>> getForms(String formKey) async {
+    List<String> crfs = [];
+    List<String> nonCrfs = [];
+    List<StudyDocument> documents = [];
+    Map<String, dynamic> caregiverForms = appStorageBox.get(
+      formKey,
+      defaultValue: {},
+    ).cast<String, dynamic>();
+
+    if (caregiverForms.isNotEmpty) {
+      crfs = caregiverForms['${kCrfForm}s'].cast<String>();
+      nonCrfs = caregiverForms['${kNonCrfForm}s'].cast<String>();
+      for (String crf in crfs) {
+        documents.add(StudyDocument.fromJson({
+          'name': crf,
+          'type': kCrfForm,
+        }));
+      }
+
+      for (String nonCrf in nonCrfs) {
+        documents.add(StudyDocument.fromJson({
+          'name': nonCrf,
+          'type': kNonCrfForm,
+        }));
+      }
+    }
+    return documents;
   }
 }

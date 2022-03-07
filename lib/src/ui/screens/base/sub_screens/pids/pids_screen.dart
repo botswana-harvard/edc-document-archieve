@@ -11,7 +11,9 @@ import 'package:edc_document_archieve/src/utils/constants/colors.dart';
 import 'package:edc_document_archieve/src/utils/constants/constants.dart';
 import 'package:edc_document_archieve/src/utils/dialogs.dart';
 import 'package:edc_document_archieve/src/utils/enums.dart';
+import 'package:expansion_tile_card/expansion_tile_card.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
@@ -30,16 +32,35 @@ class _PidsScreenState extends State<PidsScreen> {
   late AppService _appService;
   late DocumentArchieveBloc _archieveBloc;
 
-  List<StudyDocument>? studyDocuments;
+  List<StudyDocument>? caregiverDocuments;
+  List<StudyDocument>? childDocuments;
   List<String> caregiverPids = [];
   List<String> childPids = [];
+  List<GlobalKey<ExpansionTileCardState>> caregiverCardKeyList = [];
+  List<GlobalKey<ExpansionTileCardState>> childCardKeyList = [];
   late PersistentTabController _controller;
+  late ScrollController _caregiverScrollController;
+  late ScrollController _childScrollController;
+  bool isNavbarHidden = false;
 
   @override
   void initState() {
     _archieveBloc = Injector.resolve<DocumentArchieveBloc>();
     _controller = PersistentTabController(initialIndex: 0);
+    _caregiverScrollController = ScrollController();
+    _childScrollController = ScrollController();
+
+    _caregiverScrollController.addListener(listenToScrollDirection);
+
+    _childScrollController.addListener(listenToScrollDirection);
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    _caregiverScrollController.removeListener(listenToScrollDirection);
+    _childScrollController.removeListener(listenToScrollDirection);
+    super.dispose();
   }
 
   @override
@@ -48,6 +69,38 @@ class _PidsScreenState extends State<PidsScreen> {
     _archieveBloc.getDocumentArchievePids(
         selectedStudy: _appService.selectedStudy);
     super.didChangeDependencies();
+  }
+
+  void listenToScrollDirection() {
+    switch (_controller.index) {
+      case 0:
+        final ScrollDirection direction =
+            _caregiverScrollController.position.userScrollDirection;
+        if (direction == ScrollDirection.forward) {
+          hideBottomNavBar();
+        } else if (direction == ScrollDirection.reverse) {
+          showBottomNavBar();
+        }
+        break;
+      case 2:
+        final ScrollDirection direction =
+            _childScrollController.position.userScrollDirection;
+        if (direction == ScrollDirection.forward) {
+          hideBottomNavBar();
+        } else if (direction == ScrollDirection.reverse) {
+          showBottomNavBar();
+        }
+        break;
+      default:
+    }
+  }
+
+  void showBottomNavBar() {
+    setState(() => isNavbarHidden = true);
+  }
+
+  void hideBottomNavBar() {
+    setState(() => isNavbarHidden = false);
   }
 
   @override
@@ -63,7 +116,17 @@ class _PidsScreenState extends State<PidsScreen> {
             if (state.data != null) {
               caregiverPids = state.data[kCaregiverPid].reversed.toList();
               childPids = state.data[kChildPid].reversed.toList();
-              //studyDocuments = state.data[kForms];
+              caregiverDocuments = state.data[kCaregiverForms];
+              childDocuments = state.data[kChildForms];
+
+              for (int i = 0; i < caregiverPids.length; i++) {
+                caregiverCardKeyList
+                    .add(GlobalKey<ExpansionTileCardState>(debugLabel: '$i'));
+              }
+              for (int i = 0; i < childPids.length; i++) {
+                childCardKeyList
+                    .add(GlobalKey<ExpansionTileCardState>(debugLabel: '$i'));
+              }
             }
             Dialogs.closeLoadingDialog(context);
             break;
@@ -85,8 +148,10 @@ class _PidsScreenState extends State<PidsScreen> {
                   showSearch(
                     context: context,
                     delegate: CustomSearchDelegate(
-                      pids: caregiverPids,
-                      studyDocuments: studyDocuments,
+                      pids: _controller.index == 0 ? caregiverPids : childPids,
+                      studyDocuments: _controller.index == 0
+                          ? caregiverDocuments
+                          : childDocuments,
                     ),
                   );
                 },
@@ -101,15 +166,18 @@ class _PidsScreenState extends State<PidsScreen> {
             context,
             screens: [
               ListPids(
-                pids: caregiverPids,
-                onFolderButtonTapped: onFolderButtonTapped,
-                studyDocuments: studyDocuments,
-              ),
+                  scrollController: _caregiverScrollController,
+                  pids: caregiverPids,
+                  onFolderButtonTapped: onFolderButtonTapped,
+                  studyDocuments: caregiverDocuments,
+                  cardKeyList: caregiverCardKeyList),
               const CreatePidScreen(),
               ListPids(
+                scrollController: _childScrollController,
                 pids: childPids,
                 onFolderButtonTapped: onFolderButtonTapped,
-                studyDocuments: studyDocuments,
+                studyDocuments: childDocuments,
+                cardKeyList: childCardKeyList,
               )
             ],
             controller: _controller,
@@ -129,6 +197,7 @@ class _PidsScreenState extends State<PidsScreen> {
             bottomScreenMargin: 0.0,
             decoration: const NavBarDecoration(
                 borderRadius: BorderRadius.all(Radius.circular(10))),
+            hideNavigationBar: isNavbarHidden,
           ),
         );
       },
@@ -145,7 +214,7 @@ class _PidsScreenState extends State<PidsScreen> {
         inactiveColorSecondary: Colors.purple,
       ),
       PersistentBottomNavBarItem(
-        icon: const Icon(Icons.add),
+        icon: const Icon(Icons.person_add, color: Colors.black87),
         title: ("Add PID"),
         activeColorPrimary: Colors.blueAccent,
         activeColorSecondary: Colors.black,

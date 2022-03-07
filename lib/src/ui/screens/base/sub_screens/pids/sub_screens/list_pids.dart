@@ -6,30 +6,27 @@ import 'package:provider/provider.dart';
 
 typedef ValueSetter<StudyDocument> = void Function(StudyDocument value);
 
-// ignore: must_be_immutable
-class ListPids extends StatefulWidget {
-  ListPids({
+class ListPids extends StatelessWidget {
+  const ListPids({
     Key? key,
     required this.pids,
     required this.onFolderButtonTapped,
     required this.studyDocuments,
+    required this.scrollController,
+    required this.cardKeyList,
   }) : super(key: key);
 
   final List<String> pids;
   final List<StudyDocument>? studyDocuments;
   final ValueSetter<StudyDocument> onFolderButtonTapped;
-
-  @override
-  State<ListPids> createState() => _ListPidsState();
-}
-
-class _ListPidsState extends State<ListPids> {
-  List<GlobalKey<ExpansionTileCardState>> cardKeyList = [];
+  final ScrollController scrollController;
+  final List<GlobalKey<ExpansionTileCardState>> cardKeyList;
 
   @override
   Widget build(BuildContext context) {
     AppService _appService = context.read<AppService>();
     return ListView.separated(
+      controller: scrollController,
       separatorBuilder: (context, index) {
         return Align(
           alignment: Alignment.centerRight,
@@ -43,15 +40,13 @@ class _ListPidsState extends State<ListPids> {
         );
       },
       itemBuilder: (context, index) {
-        cardKeyList
-            .add(GlobalKey<ExpansionTileCardState>(debugLabel: '$index'));
         return Container(
           padding: const EdgeInsets.all(10),
           child: ExpansionTileCard(
             key: cardKeyList[index],
             onExpansionChanged: (value) {
               if (value) {
-                _appService.selectedPid = widget.pids[index];
+                _appService.selectedPid = pids[index];
                 Future.delayed(const Duration(milliseconds: 500), () {
                   for (var i = 0; i < cardKeyList.length; i++) {
                     if (index != i) {
@@ -66,14 +61,14 @@ class _ListPidsState extends State<ListPids> {
               size: 30,
             ),
             title: Text(
-              widget.pids[index],
+              pids[index],
               style: const TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.bold,
               ),
             ),
             children: [
-              ...widget.studyDocuments!.map((studyDocument) => Container(
+              ...studyDocuments!.map((studyDocument) => Container(
                     padding: const EdgeInsets.all(10),
                     height: 80,
                     child: ListTile(
@@ -88,14 +83,14 @@ class _ListPidsState extends State<ListPids> {
                         Icons.arrow_forward_ios,
                         size: 16,
                       ),
-                      onTap: () => widget.onFolderButtonTapped(studyDocument),
+                      onTap: () => onFolderButtonTapped(studyDocument),
                     ),
                   )),
             ],
           ),
         );
       },
-      itemCount: widget.pids.length,
+      itemCount: pids.length,
     );
   }
 }

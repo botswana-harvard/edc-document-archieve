@@ -98,7 +98,6 @@ class AuthenticationWrapper implements AuthenticationProvider {
 
   Future<void> saveDataLocalStorage() async {
     data = await _onlineRepository.getProjects();
-    logger.e(data);
     if (data.isNotEmpty) {
       data.forEach((key, value) async {
         String projectName = key;

@@ -152,11 +152,15 @@ class DocumentArchieveBloc
       String studySelected) async {
     Map<String, dynamic> results =
         await documentArchieveRepository.getAllParticipants(studySelected);
-    Map<String, dynamic> forms =
-        await documentArchieveRepository.getAllForms(studySelected);
+    List<StudyDocument> caregiverForms =
+        await documentArchieveRepository.getCaregiverForms(studySelected);
+
+    List<StudyDocument> childForms =
+        await documentArchieveRepository.getChildForms(studySelected);
 
     Map<String, dynamic> data = {
-      kForms: forms,
+      kCaregiverForms: caregiverForms,
+      kChildForms: childForms,
       kCaregiverPid: results[kCaregiverPid],
       kChildPid: results[kChildPid]
     };

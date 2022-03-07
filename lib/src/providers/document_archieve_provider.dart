@@ -10,7 +10,8 @@ abstract class DocumentArchieveProvider {
   Future<Map<String, dynamic>> getAllParticipants(String studyName);
 
   //
-  Future<Map<String, dynamic>> getAllForms(String studyName);
+  Future<List<StudyDocument>> getCaregiverForms(String studyName);
+  Future<List<StudyDocument>> getChildForms(String studyName);
 
   Future<List<String>> getAllVisits(String studyName);
 

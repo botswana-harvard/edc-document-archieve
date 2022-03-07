@@ -42,11 +42,6 @@ class DocumentArchieveWrapper implements DocumentArchieveProvider {
   }
 
   @override
-  Future<Map<String, dynamic>> getAllForms(String studyName) async {
-    return await _offlineRepository.getAllForms(studyName);
-  }
-
-  @override
   Future<Map<String, dynamic>> getAllParticipants(String studyName) async {
     return await _offlineRepository.getAllParticipants(studyName);
   }
@@ -92,5 +87,15 @@ class DocumentArchieveWrapper implements DocumentArchieveProvider {
 
   Future<void> saveData() async {
     Map<String, dynamic>? data = await _onlineRepository.getProjects();
+  }
+
+  @override
+  Future<List<StudyDocument>> getChildForms(String studyName) async {
+    return await _offlineRepository.getChildForms(studyName);
+  }
+
+  @override
+  Future<List<StudyDocument>> getCaregiverForms(String studyName) async {
+    return await _offlineRepository.getCaregiverForms(studyName);
   }
 }
