@@ -67,16 +67,37 @@ class DocumentArchieveOffLineRepository extends LocalStorageRepository
   }
 
   @override
-  Future<List<StudyDocument>> getAllForms(String studyName) async {
-    String key = '${studyName}_forms';
-    return appStorageBox
-        .get(key, defaultValue: <StudyDocument>[]).cast<StudyDocument>();
+  Future<Map<String, dynamic>> getAllForms(String studyName) async {
+    String caregiverFormsKey = '${studyName}_$kCrfForm';
+    String childFormsKey = '${studyName}_$kNonCrfForm';
+    logger.wtf(caregiverFormsKey);
+
+    List<String> caregiverForms = appStorageBox
+        .get(caregiverFormsKey, defaultValue: <String>[]).cast<String>();
+    List<String> childForms = appStorageBox
+        .get(childFormsKey, defaultValue: <String>[]).cast<String>();
+    Map<String, dynamic> data = {
+      kCaregiverForms: caregiverForms,
+      kChildForms: childForms
+    };
+    logger.e(data);
+    return data;
   }
 
   @override
-  Future<List<String>> getAllParticipants(String studyName) async {
-    String key = '${studyName}_caregiver';
-    return appStorageBox.get(key, defaultValue: <String>[]).cast<String>();
+  Future<Map<String, dynamic>> getAllParticipants(String studyName) async {
+    String caregiverPidsKey = '${studyName}_caregiver';
+    String childPidsKey = '${studyName}_child';
+    List<String> caregiverPids = appStorageBox
+        .get(caregiverPidsKey, defaultValue: <String>[]).cast<String>();
+    List<String> childPids = appStorageBox
+        .get(childPidsKey, defaultValue: <String>[]).cast<String>();
+
+    Map<String, dynamic> data = {
+      kCaregiverPid: caregiverPids,
+      kChildPid: childPids
+    };
+    return data;
   }
 
   @override

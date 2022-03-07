@@ -100,24 +100,18 @@ class AuthenticationWrapper implements AuthenticationProvider {
     data = await _onlineRepository.getProjects();
     logger.e(data);
     if (data.isNotEmpty) {
-      data.forEach((key, value) {
+      data.forEach((key, value) async {
         String projectName = key;
         if (value.isNotEmpty) {
           Map<String, dynamic> pids = value['pids'];
-          pids.forEach((key, value) async {
-            key = projectName + '_$key';
-            await _offlineRepository.appStorageBox.put(key, value);
-          });
+          await _offlineRepository.appStorageBox
+              .put('${projectName}_pids', pids);
           Map<String, dynamic> careGiverForms = value['caregiver_forms'];
-          careGiverForms.forEach((key, value) async {
-            key = projectName + '_$key';
-            await _offlineRepository.appStorageBox.put(key, value);
-          });
+          await _offlineRepository.appStorageBox
+              .put('${projectName}_caregiver_forms', careGiverForms);
           Map<String, dynamic> childForms = value['child_forms'];
-          childForms.forEach((key, value) async {
-            key = projectName + '_$key';
-            await _offlineRepository.appStorageBox.put(key, value);
-          });
+          await _offlineRepository.appStorageBox
+              .put('${projectName}_child_forms', childForms);
         }
       });
       await _offlineRepository.appStorageBox.put(kProjects, data.keys.toList());

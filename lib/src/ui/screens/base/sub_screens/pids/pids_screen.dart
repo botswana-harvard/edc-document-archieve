@@ -61,8 +61,9 @@ class _PidsScreenState extends State<PidsScreen> {
             break;
           case DocumentArchieveStatus.success:
             if (state.data != null) {
-              caregiverPids = state.data[kParticipants].reversed.toList();
-              studyDocuments = state.data[kForms];
+              caregiverPids = state.data[kCaregiverPid].reversed.toList();
+              childPids = state.data[kChildPid].reversed.toList();
+              //studyDocuments = state.data[kForms];
             }
             Dialogs.closeLoadingDialog(context);
             break;

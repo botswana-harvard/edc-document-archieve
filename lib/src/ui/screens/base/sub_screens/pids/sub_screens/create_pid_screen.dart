@@ -1,8 +1,9 @@
+import 'package:edc_document_archieve/src/core/data/dummy_data.dart';
 import 'package:edc_document_archieve/src/services/app_service.dart';
 import 'package:edc_document_archieve/src/ui/widgets/custom_text.dart';
 import 'package:edc_document_archieve/src/ui/widgets/custom_text_field.dart';
 import 'package:edc_document_archieve/src/ui/widgets/default_button.dart';
-import 'package:edc_document_archieve/src/utils/constants/back.dart';
+import 'package:edc_document_archieve/src/ui/widgets/dropdown_field.dart';
 import 'package:edc_document_archieve/src/utils/constants/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -19,6 +20,7 @@ class _CreatePidScreenState extends State<CreatePidScreen> {
   late TextEditingController pidController;
   late GlobalKey<FormState> _formKey;
   late AppService _appService;
+  String? selectedValue;
 
   @override
   void initState() {
@@ -42,7 +44,7 @@ class _CreatePidScreenState extends State<CreatePidScreen> {
         return Container(
           height: parentHeight,
           width: parentWidth,
-          margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+          margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 50),
           child: Column(
             children: [
               Row(
@@ -55,7 +57,7 @@ class _CreatePidScreenState extends State<CreatePidScreen> {
                   Padding(
                     padding: EdgeInsets.all(8.0),
                     child: CustomText(
-                      text: 'Add New PID',
+                      text: 'Add Participant Identifier (PID)',
                       color: kDarkBlue,
                     ),
                   ),
@@ -68,18 +70,31 @@ class _CreatePidScreenState extends State<CreatePidScreen> {
                 thickness: 2.0,
               ),
               const SizedBox(height: 20),
-              const CustomText(
-                text: 'Please note that the PID that is added must be '
-                    'a valid pid from EDC',
+              CustomText(
+                text:
+                    'Please note that the PID that is added in the mobile app must be '
+                    'a valid pid from ${_appService.selectedStudy} study',
                 fontSize: 14,
               ),
               const SizedBox(height: 30),
               Form(
                 key: _formKey,
-                child: CustomTextField(
-                  labelText: 'PID',
-                  margin: 0,
-                  controller: pidController,
+                child: Column(
+                  children: [
+                    const SizedBox(height: 30),
+                    DropDownFormField(
+                      dataSource: pidChoice,
+                      onChanged: onDropdownChanged,
+                      titleText: 'Select PID Type',
+                      value: selectedValue,
+                    ),
+                    const SizedBox(height: 30),
+                    CustomTextField(
+                      labelText: 'PID',
+                      margin: 0,
+                      controller: pidController,
+                    ),
+                  ],
                 ),
               ),
               const SizedBox(height: 50),
@@ -97,5 +112,11 @@ class _CreatePidScreenState extends State<CreatePidScreen> {
       _appService.addPid(pid);
       Get.back();
     }
+  }
+
+  void onDropdownChanged(String? value) {
+    setState(() {
+      selectedValue = value;
+    });
   }
 }

@@ -13,3 +13,8 @@ const List<Map<String, dynamic>> timepointChoice = [
   {'display': '4', 'value': '4'},
   {'display': '5', 'value': '5'},
 ];
+
+const List<Map<String, dynamic>> pidChoice = [
+  {'display': 'Caregiver', 'value': 'caregiver'},
+  {'display': 'Child', 'value': 'child'},
+];

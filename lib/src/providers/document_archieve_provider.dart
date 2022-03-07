@@ -7,10 +7,10 @@ abstract class DocumentArchieveProvider {
   Future<List<String>> getAllStudies();
 
   // Get all PIDs from edc API
-  Future<List<String>> getAllParticipants(String studyName);
+  Future<Map<String, dynamic>> getAllParticipants(String studyName);
 
   //
-  Future<List<StudyDocument>> getAllForms(String studyName);
+  Future<Map<String, dynamic>> getAllForms(String studyName);
 
   Future<List<String>> getAllVisits(String studyName);
 

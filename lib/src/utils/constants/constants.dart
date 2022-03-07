@@ -30,8 +30,12 @@ const String kShortPassError = 'Password is too short, '
 const String kMatchPassError = 'Password doesn\'t match with confirm password';
 const String kLastUserLoggedIn = 'lastUserAccountLoggedIn';
 
-const String kParticipants = 'participants';
 const String kProjects = 'projects';
 const String kForms = 'forms';
 const String kCrfForm = 'crf';
 const String kNonCrfForm = 'non_crf';
+const String kCaregiverPid = 'caregiver';
+const String kChildPid = 'child';
+
+const String kCaregiverForms = 'caregiver_forms';
+const String kChildForms = 'child_forms';

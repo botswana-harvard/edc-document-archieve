@@ -42,12 +42,12 @@ class DocumentArchieveWrapper implements DocumentArchieveProvider {
   }
 
   @override
-  Future<List<StudyDocument>> getAllForms(String studyName) async {
+  Future<Map<String, dynamic>> getAllForms(String studyName) async {
     return await _offlineRepository.getAllForms(studyName);
   }
 
   @override
-  Future<List<String>> getAllParticipants(String studyName) async {
+  Future<Map<String, dynamic>> getAllParticipants(String studyName) async {
     return await _offlineRepository.getAllParticipants(studyName);
   }
 
