@@ -60,12 +60,24 @@ class ListPids extends StatelessWidget {
               Icons.folder,
               size: 30,
             ),
-            title: Text(
-              pids[index],
-              style: const TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-              ),
+            title: Row(
+              children: [
+                Text(
+                  pids[index],
+                  style: const TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                if (false)
+                  IconButton(
+                    onPressed: () {},
+                    icon: const Icon(
+                      Icons.pending_actions,
+                      color: Colors.deepOrangeAccent,
+                    ),
+                  )
+              ],
             ),
             children: [
               ...studyDocuments!.map((studyDocument) => Container(

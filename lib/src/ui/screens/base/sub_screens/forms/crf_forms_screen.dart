@@ -1,8 +1,13 @@
+import 'dart:async';
+import 'dart:io';
+
 import 'package:cool_alert/cool_alert.dart';
 import 'package:edc_document_archieve/gen/fonts.gen.dart';
 import 'package:edc_document_archieve/src/config/injector.dart';
+import 'package:edc_document_archieve/src/core/data/dummy_data.dart';
 import 'package:edc_document_archieve/src/core/models/participant_crf.dart';
 import 'package:edc_document_archieve/src/core/models/study_document.dart';
+import 'package:edc_document_archieve/src/core/models/upload_item.dart';
 import 'package:edc_document_archieve/src/services/app_service.dart';
 import 'package:edc_document_archieve/src/services/bloc/document_archive_bloc.dart';
 import 'package:edc_document_archieve/src/services/bloc/states/document_archive_state.dart';
@@ -18,6 +23,7 @@ import 'package:edc_document_archieve/src/utils/enums.dart';
 import 'package:expansion_tile_card/expansion_tile_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_uploader/flutter_uploader.dart';
 import 'package:get/get.dart';
 import 'package:recase/recase.dart';
 
@@ -37,6 +43,53 @@ class _CRFormScreenState extends State<CRFormScreen> {
   late DocumentArchieveBloc _archieveBloc;
   List<ParticipantCrf> _partcipantCrfs = [];
   List<GlobalKey<ExpansionTileCardState>> cardKeyList = [];
+  FlutterUploader uploader = FlutterUploader();
+  late StreamSubscription _progressSubscription;
+  late StreamSubscription _resultSubscription;
+  Map<String, UploadItem> _tasks = {};
+
+  @override
+  void initState() {
+    super.initState();
+    _progressSubscription = uploader.progress.listen((progress) {
+      final task = _tasks[progress.tag];
+      print("progress: ${progress.progress} , tag: ${progress.tag}");
+      if (task == null) return;
+      if (task.isCompleted()) return;
+      setState(() {
+        _tasks[progress.tag] = task.copyWith(
+            progressT: progress.progress, statusT: progress.status);
+      });
+    });
+    _resultSubscription = uploader.result.listen((result) {
+      logger.e(
+          "id: ${result.taskId}, status: ${result.status}, response: ${result.response}, statusCode: ${result.statusCode}, tag: ${result.tag}, headers: ${result.headers}");
+
+      final task = _tasks[result.tag];
+      if (task == null) return;
+
+      setState(() {
+        _tasks[result.tag] = task.copyWith(statusT: result.status);
+      });
+    }, onError: (ex, stacktrace) {
+      logger.e("exception: $ex");
+      logger.e("stacktrace: $stacktrace" ?? "no stacktrace");
+      final exp = ex as UploadException;
+      final task = _tasks[exp.tag];
+      if (task == null) return;
+
+      setState(() {
+        _tasks[exp.tag] = task.copyWith(statusT: exp.status);
+      });
+    });
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _progressSubscription.cancel();
+    _resultSubscription.cancel();
+  }
 
   @override
   void didChangeDependencies() {
@@ -102,7 +155,7 @@ class _CRFormScreenState extends State<CRFormScreen> {
                             const SizedBox(width: 10),
                             CustomText(text: _pid, fontSize: 16),
                             TextButton(
-                                onPressed: () {},
+                                onPressed: syncData,
                                 child: const Text('Sync Data')),
                           ],
                         ),
@@ -137,9 +190,14 @@ class _CRFormScreenState extends State<CRFormScreen> {
                             title: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                CustomText(text: 'Visit $visit', fontSize: 18),
                                 CustomText(
-                                    text: 'Timepoint $timepoint', fontSize: 16),
+                                  text: 'Visit: ${visit.substring(1)}',
+                                  fontSize: 18,
+                                ),
+                                CustomText(
+                                  text: 'Timepoint: $timepoint',
+                                  fontSize: 16,
+                                ),
                               ],
                             ),
                             children: [
@@ -230,5 +288,30 @@ class _CRFormScreenState extends State<CRFormScreen> {
       title: 'Delete ${crf.document.name}',
       onConfirmBtnTap: () => onConfirmDeleteButtonPressed(crf),
     );
+  }
+
+  void syncData() {
+    List<Map<String, dynamic>> jsonData = [];
+    String cohort = '';
+    for (var crf in _partcipantCrfs) {
+      if (crf.document.pidType == kCaregiverPid) {
+        cohort = flourishCaregiverVisitCodeChoice
+            .firstWhere((element) => element['value'] == crf.visit)['display'];
+      } else if (crf.document.pidType == kChildPid) {
+        cohort = flourishChildVisitCodeChoice
+            .firstWhere((element) => element['value'] == crf.visit)['display'];
+      }
+      Map<String, dynamic> temp = {
+        'pid': crf.pid,
+        'project': _appService.selectedStudy,
+        'visit': crf.visit.substring(1),
+        'timepoint': crf.timepoint,
+        'document': crf.document.name,
+        'uploads': crf.uploads.map((file) => File(file)).toList(),
+        'cohort': cohort,
+      };
+      jsonData.add(temp);
+    }
+    logger.e(jsonData);
   }
 }

@@ -18,9 +18,8 @@ class DocumentArchieveOffLineRepository extends LocalStorageRepository
     try {
       final crfDoc = crfs.firstWhere((form) => crf == form);
       crfs.remove(crfDoc);
-    } on StateError catch (e) {
-      logger.e(e);
-    }
+      // ignore: empty_catches
+    } on StateError catch (e) {}
     crfs.add(crf);
     await appStorageBox.delete(key);
     await appStorageBox.put(key, crfs);
@@ -183,18 +182,27 @@ class DocumentArchieveOffLineRepository extends LocalStorageRepository
   @override
   Future<List<StudyDocument>> getChildForms(String studyName) async {
     String formKey = '${studyName}_$kChildForms';
-    List<StudyDocument> documents = await getForms(formKey);
+    List<StudyDocument> documents = await getForms(
+      formKey: formKey,
+      pidType: kChildPid,
+    );
     return documents;
   }
 
   @override
   Future<List<StudyDocument>> getCaregiverForms(String studyName) async {
     String formKey = '${studyName}_$kCaregiverForms';
-    List<StudyDocument> documents = await getForms(formKey);
+    List<StudyDocument> documents = await getForms(
+      formKey: formKey,
+      pidType: kCaregiverPid,
+    );
     return documents;
   }
 
-  Future<List<StudyDocument>> getForms(String formKey) async {
+  Future<List<StudyDocument>> getForms({
+    required String formKey,
+    required String pidType,
+  }) async {
     List<String> crfs = [];
     List<String> nonCrfs = [];
     List<StudyDocument> documents = [];
@@ -210,6 +218,7 @@ class DocumentArchieveOffLineRepository extends LocalStorageRepository
         documents.add(StudyDocument.fromJson({
           'name': crf,
           'type': kCrfForm,
+          'pidType': pidType,
         }));
       }
 
@@ -217,6 +226,7 @@ class DocumentArchieveOffLineRepository extends LocalStorageRepository
         documents.add(StudyDocument.fromJson({
           'name': nonCrf,
           'type': kNonCrfForm,
+          'pidType': pidType,
         }));
       }
     }

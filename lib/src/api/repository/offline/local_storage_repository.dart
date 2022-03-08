@@ -24,7 +24,8 @@ abstract class LocalStorageRepository {
     Hive.registerAdapter(StudyDocumentAdapter());
     Hive.registerAdapter(ParticipantCrfAdapter());
     Hive.registerAdapter(ParticipantNonCrfAdapter());
-    await Hive.openBox(kAppStorageBox, path: appDir.path);
-    await Hive.openBox(kUserAccountsBox, path: appDir.path);
+    await Hive.openBox(kAppStorageBox, path: appDir.path, crashRecovery: true);
+    await Hive.openBox(kUserAccountsBox,
+        path: appDir.path, crashRecovery: true);
   }
 }

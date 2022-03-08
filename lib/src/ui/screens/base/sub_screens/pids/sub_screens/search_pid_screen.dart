@@ -31,6 +31,7 @@ class CustomSearchDelegate extends SearchDelegate {
     return IconButton(
       icon: const Icon(Icons.arrow_back),
       onPressed: () {
+        FocusScope.of(context).unfocus();
         close(context, null);
       },
     );

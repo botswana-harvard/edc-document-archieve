@@ -101,6 +101,8 @@ class _CreateCRFormScreenState extends State<CreateCRFormScreen> {
             builder: (context, state) {
               String title =
                   '${kVisitCode.titleCase}: ${selectedVisitCode?.substring(1) ?? ''}';
+              String pidType = _appService.selectedStudyDocument.pidType;
+
               return SingleChildScrollView(
                 child: Container(
                   margin: const EdgeInsets.only(top: 30),
@@ -125,7 +127,9 @@ class _CreateCRFormScreenState extends State<CreateCRFormScreen> {
                         child: Column(
                           children: [
                             DropDownFormField(
-                              dataSource: flourishCaregiverVisitCodeChoice,
+                              dataSource: pidType == kCaregiverPid
+                                  ? flourishCaregiverVisitCodeChoice
+                                  : flourishChildVisitCodeChoice,
                               onChanged: onDropdownVisitCodeChanged,
                               titleText: title,
                               value: selectedVisitCode,
@@ -220,7 +224,7 @@ class _CreateCRFormScreenState extends State<CreateCRFormScreen> {
     if (_key.currentState!.validate() && uploads.isNotEmpty) {
       if (crf != null) {
         _archieveBloc.updateCrfDocument(
-          visitCode: selectedVisitCode!.substring(1),
+          visitCode: selectedVisitCode!,
           timePoint: selectedTimePoint!,
           uploads: uploads,
           crf: crf!,
