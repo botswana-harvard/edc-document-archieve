@@ -50,9 +50,8 @@ class _PidsScreenState extends State<PidsScreen> {
     _caregiverScrollController = ScrollController();
     _childScrollController = ScrollController();
 
-    _caregiverScrollController.addListener(listenToScrollDirection);
-
-    _childScrollController.addListener(listenToScrollDirection);
+    // _caregiverScrollController.addListener(listenToScrollDirection);
+    // _childScrollController.addListener(listenToScrollDirection);
     super.initState();
   }
 
@@ -65,7 +64,7 @@ class _PidsScreenState extends State<PidsScreen> {
 
   @override
   void didChangeDependencies() {
-    _appService = context.watch<AppService>();
+    _appService = context.read<AppService>();
     _archieveBloc.getDocumentArchievePids(
         selectedStudy: _appService.selectedStudy);
     super.didChangeDependencies();

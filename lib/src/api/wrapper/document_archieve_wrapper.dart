@@ -26,11 +26,15 @@ class DocumentArchieveWrapper implements DocumentArchieveProvider {
   }
 
   @override
-  Future<void> addParticipantIdentifier(
-      {required String studyName, required String pid}) async {
+  Future<void> addParticipantIdentifier({
+    required String studyName,
+    required String pid,
+    required String type,
+  }) async {
     await _offlineRepository.addParticipantIdentifier(
       studyName: studyName,
       pid: pid,
+      type: type,
     );
   }
 

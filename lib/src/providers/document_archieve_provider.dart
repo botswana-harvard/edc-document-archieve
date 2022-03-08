@@ -20,6 +20,7 @@ abstract class DocumentArchieveProvider {
   Future<void> addParticipantIdentifier({
     required String studyName,
     required String pid,
+    required String type,
   });
 
   Future<void> addParticipantCrfForm({

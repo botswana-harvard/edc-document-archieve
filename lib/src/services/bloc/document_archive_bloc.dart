@@ -143,9 +143,16 @@ class DocumentArchieveBloc
     add(DocumentArchieveStudiesRequested());
   }
 
-  Future<void> addPid({required String studyName, required String pid}) async {
+  Future<void> addPid({
+    required String studyName,
+    required String pid,
+    required String type,
+  }) async {
     await documentArchieveRepository.addParticipantIdentifier(
-        pid: pid, studyName: studyName);
+      pid: pid,
+      studyName: studyName,
+      type: type,
+    );
   }
 
   Future<Map<String, dynamic>> getParticipantsForms(

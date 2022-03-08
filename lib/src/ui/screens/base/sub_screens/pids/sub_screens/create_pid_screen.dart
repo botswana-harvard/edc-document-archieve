@@ -21,11 +21,13 @@ class _CreatePidScreenState extends State<CreatePidScreen> {
   late GlobalKey<FormState> _formKey;
   late AppService _appService;
   String? selectedValue;
+  late FocusNode focusNode;
 
   @override
   void initState() {
     pidController = TextEditingController();
     _formKey = GlobalKey<FormState>();
+    focusNode = FocusNode();
     super.initState();
   }
 
@@ -44,62 +46,65 @@ class _CreatePidScreenState extends State<CreatePidScreen> {
         return Container(
           height: parentHeight,
           width: parentWidth,
-          margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 50),
-          child: Column(
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: const [
-                  Icon(
-                    Icons.person,
-                    color: kDarkBlue,
-                  ),
-                  Padding(
-                    padding: EdgeInsets.all(8.0),
-                    child: CustomText(
-                      text: 'Add Participant Identifier (PID)',
+          margin: const EdgeInsets.only(left: 20, right: 20, top: 50),
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: const [
+                    Icon(
+                      Icons.person,
                       color: kDarkBlue,
                     ),
-                  ),
-                ],
-              ),
-              const Divider(
-                color: kDarkBlue,
-                height: 2,
-                indent: 2,
-                thickness: 2.0,
-              ),
-              const SizedBox(height: 20),
-              CustomText(
-                text:
-                    'Please note that the PID that is added in the mobile app must be '
-                    'a valid pid from ${_appService.selectedStudy} study',
-                fontSize: 14,
-              ),
-              const SizedBox(height: 30),
-              Form(
-                key: _formKey,
-                child: Column(
-                  children: [
-                    const SizedBox(height: 30),
-                    DropDownFormField(
-                      dataSource: pidChoice,
-                      onChanged: onDropdownChanged,
-                      titleText: 'Select PID Type',
-                      value: selectedValue,
-                    ),
-                    const SizedBox(height: 30),
-                    CustomTextField(
-                      labelText: 'PID',
-                      margin: 0,
-                      controller: pidController,
+                    Padding(
+                      padding: EdgeInsets.all(8.0),
+                      child: CustomText(
+                        text: 'Add Participant Identifier (PID)',
+                        color: kDarkBlue,
+                      ),
                     ),
                   ],
                 ),
-              ),
-              const SizedBox(height: 50),
-              DefaultButton(buttonName: 'Save', onTap: onAddPidButtonPressed),
-            ],
+                const Divider(
+                  color: kDarkBlue,
+                  height: 2,
+                  indent: 2,
+                  thickness: 2.0,
+                ),
+                const SizedBox(height: 20),
+                CustomText(
+                  text:
+                      'Please note that the PID that is added in the mobile app must be '
+                      'a valid pid from ${_appService.selectedStudy} study',
+                  fontSize: 14,
+                ),
+                const SizedBox(height: 30),
+                Form(
+                  key: _formKey,
+                  child: Column(
+                    children: [
+                      const SizedBox(height: 30),
+                      DropDownFormField(
+                        dataSource: pidChoice,
+                        onChanged: onDropdownChanged,
+                        titleText: 'Select PID Type',
+                        value: selectedValue,
+                      ),
+                      const SizedBox(height: 30),
+                      CustomTextField(
+                        labelText: 'PID',
+                        margin: 0,
+                        controller: pidController,
+                        focusNode: focusNode,
+                      ),
+                    ],
+                  ),
+                ),
+                const SizedBox(height: 50),
+                DefaultButton(buttonName: 'Save', onTap: onAddPidButtonPressed),
+              ],
+            ),
           ),
         );
       },
@@ -109,7 +114,8 @@ class _CreatePidScreenState extends State<CreatePidScreen> {
   void onAddPidButtonPressed() {
     if (_formKey.currentState!.validate()) {
       String pid = pidController.text.trim();
-      _appService.addPid(pid);
+      FocusScope.of(context).unfocus();
+      _appService.addPid(pid: pid, type: selectedValue!);
       Get.back();
     }
   }

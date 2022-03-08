@@ -38,9 +38,12 @@ class AppService with ChangeNotifier {
   }
 
   //add participant identifier and notifies UI about the new PID
-  Future<void> addPid(String pid) async {
-    await Injector.resolve<DocumentArchieveBloc>()
-        .addPid(pid: pid, studyName: selectedStudy);
+  Future<void> addPid({required String pid, required String type}) async {
+    await Injector.resolve<DocumentArchieveBloc>().addPid(
+      pid: pid,
+      studyName: selectedStudy,
+      type: type,
+    );
     notifyWidgetListeners();
   }
 

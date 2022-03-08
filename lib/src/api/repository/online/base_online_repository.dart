@@ -8,7 +8,7 @@ abstract class BaseOnlineRepository {
 
   ///
   final String baseUrl = 'http://10.113.201.239:8000/edc_da_api/';
-  final String devUrl = 'http://192.168.8.101:8000/edc_da_api/';
+  final String devUrl = 'http://10.0.2.2:8000/edc_da_api/';
 
   ///10.113.201.239
 

@@ -53,17 +53,43 @@ class DocumentArchieveOffLineRepository extends LocalStorageRepository
   Future<void> addParticipantIdentifier({
     required String studyName,
     required String pid,
+    required String type,
   }) async {
     //Get keys
-    String key = '${studyName}_pids';
-    List<String>? pids = appStorageBox.get(key);
-    if (pids != null && !pids.contains(pid)) {
-      pids.add(pid);
-    } else if (pids == null || pids.isEmpty) {
-      pids = [pid];
+    String pidsKey = '${studyName}_pids';
+    List<String> caregiverPids = [];
+    List<String> childPids = [];
+    Map<String, dynamic> pids =
+        appStorageBox.get(pidsKey, defaultValue: {}).cast<String, dynamic>();
+    if (pids.isNotEmpty) {
+      caregiverPids = pids[kCaregiverPid].cast<String>();
+      childPids = pids[kChildPid].cast<String>();
     }
-    await appStorageBox.delete(key);
-    await appStorageBox.put(key, pids);
+
+    switch (type) {
+      case kCaregiverPid:
+        if (!caregiverPids.contains(pid)) {
+          caregiverPids.add(pid);
+        } else if (childPids.isEmpty) {
+          caregiverPids = [pid];
+        }
+        break;
+      case kChildPid:
+        if (!childPids.contains(pid)) {
+          childPids.add(pid);
+        } else if (childPids.isEmpty) {
+          childPids = [pid];
+        }
+        break;
+      default:
+    }
+    Map<String, dynamic> data = {
+      kCaregiverPid: caregiverPids,
+      kChildPid: childPids
+    };
+
+    await appStorageBox.delete(pidsKey);
+    await appStorageBox.put(pidsKey, data);
   }
 
   @override

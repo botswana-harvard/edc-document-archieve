@@ -47,7 +47,7 @@ class ListPids extends StatelessWidget {
             onExpansionChanged: (value) {
               if (value) {
                 _appService.selectedPid = pids[index];
-                Future.delayed(const Duration(milliseconds: 500), () {
+                Future.delayed(const Duration(milliseconds: 100), () {
                   for (var i = 0; i < cardKeyList.length; i++) {
                     if (index != i) {
                       cardKeyList[i].currentState?.collapse();
