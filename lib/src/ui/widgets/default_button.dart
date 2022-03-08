@@ -9,6 +9,7 @@ class DefaultButton extends StatelessWidget {
   final VoidCallback onTap;
   final EdgeInsets? margin;
   final double borderRadius;
+  final bool isButtonDisabled;
 
   const DefaultButton({
     Key? key,
@@ -16,18 +17,19 @@ class DefaultButton extends StatelessWidget {
     required this.onTap,
     this.margin = const EdgeInsets.only(left: 30, right: 30),
     this.borderRadius = 50,
+    this.isButtonDisabled = false,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: onTap,
+      onTap: isButtonDisabled ? () {} : onTap,
       child: Container(
         margin: margin,
         width: double.infinity,
         height: 55,
         decoration: BoxDecoration(
-          gradient: kBlueGradient,
+          gradient: isButtonDisabled ? kGreyGradient : kBlueGradient,
           borderRadius: BorderRadius.circular(borderRadius),
           boxShadow: const [
             BoxShadow(
@@ -40,6 +42,7 @@ class DefaultButton extends StatelessWidget {
         child: Center(
           child: CustomText(
             text: buttonName.titleCase,
+            color: isButtonDisabled ? Colors.grey : Colors.black,
           ),
         ),
       ),

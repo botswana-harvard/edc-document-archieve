@@ -74,7 +74,7 @@ class _CreateCRFormScreenState extends State<CreateCRFormScreen> {
         double parentWidth = constraints.maxWidth;
         return Scaffold(
           appBar: CustomAppBar(
-            titleName: 'Upload $selectedDocumentName',
+            titleName: selectedDocumentName,
             implyLeading: true,
           ),
           body: BlocConsumer<DocumentArchieveBloc, DocumentArchieveState>(
@@ -99,6 +99,8 @@ class _CreateCRFormScreenState extends State<CreateCRFormScreen> {
               }
             },
             builder: (context, state) {
+              String title =
+                  '${kVisitCode.titleCase}: ${selectedVisitCode?.substring(1) ?? ''}';
               return SingleChildScrollView(
                 child: Container(
                   margin: const EdgeInsets.only(top: 30),
@@ -123,9 +125,9 @@ class _CreateCRFormScreenState extends State<CreateCRFormScreen> {
                         child: Column(
                           children: [
                             DropDownFormField(
-                              dataSource: visitCodeChoice,
+                              dataSource: flourishCaregiverVisitCodeChoice,
                               onChanged: onDropdownVisitCodeChanged,
-                              titleText: kVisitCode.titleCase,
+                              titleText: title,
                               value: selectedVisitCode,
                             ),
                             const SizedBox(height: 30),
@@ -218,7 +220,7 @@ class _CreateCRFormScreenState extends State<CreateCRFormScreen> {
     if (_key.currentState!.validate() && uploads.isNotEmpty) {
       if (crf != null) {
         _archieveBloc.updateCrfDocument(
-          visitCode: selectedVisitCode!,
+          visitCode: selectedVisitCode!.substring(1),
           timePoint: selectedTimePoint!,
           uploads: uploads,
           crf: crf!,

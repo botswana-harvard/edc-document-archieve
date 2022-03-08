@@ -8,3 +8,8 @@ const kBlueGradient = LinearGradient(
     colors: [kDarkBlue, kLightBlue],
     begin: Alignment.topLeft,
     end: Alignment.bottomRight);
+
+const kGreyGradient = LinearGradient(
+    colors: [Colors.grey, Colors.white],
+    begin: Alignment.topLeft,
+    end: Alignment.bottomRight);

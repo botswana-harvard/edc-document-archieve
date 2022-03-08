@@ -59,32 +59,34 @@ class BaseScreen extends StatelessWidget {
                     borderRadius: BorderRadius.circular(20.0),
                   ),
                   color: Colors.grey[100],
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      const SizedBox(height: 40),
-                      const CustomText(
-                        text: 'Select Study',
-                        fontSize: 30,
-                        color: Colors.black,
-                      ),
-                      const SizedBox(height: 30),
-                      ...availableStudies!
-                          .map(
-                            (studyName) => Column(
-                              children: [
-                                CustomStudyCard(
-                                  cardColor: Colors.lightBlue[300],
-                                  onTap: () => onStudySeleted(studyName),
-                                  studyName: studyName.titleCase,
-                                ),
-                                const SizedBox(height: 30),
-                              ],
-                            ),
-                          )
-                          .toList(),
-                    ],
+                  child: SingleChildScrollView(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        const SizedBox(height: 40),
+                        const CustomText(
+                          text: 'Select Study',
+                          fontSize: 30,
+                          color: Colors.black,
+                        ),
+                        const SizedBox(height: 30),
+                        ...availableStudies!
+                            .map(
+                              (studyName) => Column(
+                                children: [
+                                  CustomStudyCard(
+                                    cardColor: Colors.lightBlue[300],
+                                    onTap: () => onStudySeleted(studyName),
+                                    studyName: studyName.titleCase,
+                                  ),
+                                  const SizedBox(height: 30),
+                                ],
+                              ),
+                            )
+                            .toList(),
+                      ],
+                    ),
                   ),
                 ),
               ),

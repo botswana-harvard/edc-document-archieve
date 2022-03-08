@@ -42,11 +42,14 @@ class _PidsScreenState extends State<PidsScreen> {
   late ScrollController _caregiverScrollController;
   late ScrollController _childScrollController;
   bool isNavbarHidden = false;
+  int previousIndex = 0;
+  int currentIndex = 0;
 
   @override
   void initState() {
     _archieveBloc = Injector.resolve<DocumentArchieveBloc>();
-    _controller = PersistentTabController(initialIndex: 0);
+    previousIndex = Get.arguments ?? previousIndex;
+    _controller = PersistentTabController(initialIndex: previousIndex);
     _caregiverScrollController = ScrollController();
     _childScrollController = ScrollController();
 
@@ -64,7 +67,7 @@ class _PidsScreenState extends State<PidsScreen> {
 
   @override
   void didChangeDependencies() {
-    _appService = context.read<AppService>();
+    _appService = context.watch<AppService>();
     _archieveBloc.getDocumentArchievePids(
         selectedStudy: _appService.selectedStudy);
     super.didChangeDependencies();
@@ -170,7 +173,7 @@ class _PidsScreenState extends State<PidsScreen> {
                   onFolderButtonTapped: onFolderButtonTapped,
                   studyDocuments: caregiverDocuments,
                   cardKeyList: caregiverCardKeyList),
-              const CreatePidScreen(),
+              CreatePidScreen(previousIndex: previousIndex),
               ListPids(
                 scrollController: _childScrollController,
                 pids: childPids,
@@ -197,6 +200,7 @@ class _PidsScreenState extends State<PidsScreen> {
             decoration: const NavBarDecoration(
                 borderRadius: BorderRadius.all(Radius.circular(10))),
             hideNavigationBar: isNavbarHidden,
+            onItemSelected: _onItemSelected,
           ),
         );
       },
@@ -241,7 +245,10 @@ class _PidsScreenState extends State<PidsScreen> {
     }
   }
 
-  void showNewPidDialog() {
-    Get.dialog(const CreatePidScreen());
+  void _onItemSelected(int value) {
+    setState(() {
+      previousIndex = currentIndex;
+      currentIndex = value;
+    });
   }
 }

@@ -1,3 +1,4 @@
+import 'package:cool_alert/cool_alert.dart';
 import 'package:edc_document_archieve/src/core/data/dummy_data.dart';
 import 'package:edc_document_archieve/src/services/app_service.dart';
 import 'package:edc_document_archieve/src/ui/widgets/custom_text.dart';
@@ -5,15 +6,22 @@ import 'package:edc_document_archieve/src/ui/widgets/custom_text_field.dart';
 import 'package:edc_document_archieve/src/ui/widgets/default_button.dart';
 import 'package:edc_document_archieve/src/ui/widgets/dropdown_field.dart';
 import 'package:edc_document_archieve/src/utils/constants/colors.dart';
+import 'package:edc_document_archieve/src/utils/constants/constants.dart';
+import 'package:edc_document_archieve/src/utils/dialogs.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 
 class CreatePidScreen extends StatefulWidget {
-  const CreatePidScreen({Key? key}) : super(key: key);
+  const CreatePidScreen({
+    Key? key,
+    required this.previousIndex,
+  }) : super(key: key);
 
   @override
   _CreatePidScreenState createState() => _CreatePidScreenState();
+
+  final int previousIndex;
 }
 
 class _CreatePidScreenState extends State<CreatePidScreen> {
@@ -22,12 +30,14 @@ class _CreatePidScreenState extends State<CreatePidScreen> {
   late AppService _appService;
   String? selectedValue;
   late FocusNode focusNode;
+  late bool isButtonDisabled;
 
   @override
   void initState() {
     pidController = TextEditingController();
     _formKey = GlobalKey<FormState>();
     focusNode = FocusNode();
+    isButtonDisabled = false;
     super.initState();
   }
 
@@ -102,7 +112,12 @@ class _CreatePidScreenState extends State<CreatePidScreen> {
                   ),
                 ),
                 const SizedBox(height: 50),
-                DefaultButton(buttonName: 'Save', onTap: onAddPidButtonPressed),
+                DefaultButton(
+                  buttonName: 'Save',
+                  onTap: onAddPidButtonPressed,
+                  borderRadius: 5,
+                  isButtonDisabled: isButtonDisabled,
+                ),
               ],
             ),
           ),
@@ -111,12 +126,43 @@ class _CreatePidScreenState extends State<CreatePidScreen> {
     );
   }
 
-  void onAddPidButtonPressed() {
+  Future<void> onAddPidButtonPressed() async {
     if (_formKey.currentState!.validate()) {
+      //disable save button while processing
+      setState(() {
+        isButtonDisabled = true;
+      });
+
       String pid = pidController.text.trim();
       FocusScope.of(context).unfocus();
-      _appService.addPid(pid: pid, type: selectedValue!);
-      Get.back();
+
+      //save data to Hive Database
+      await _appService.addPid(pid: pid, type: selectedValue!);
+      await CoolAlert.show(
+        context: context,
+        type: CoolAlertType.success,
+        text: '$selectedValue PID added successfully!',
+        autoCloseDuration: const Duration(seconds: 2),
+      );
+      switch (selectedValue) {
+        case kChildPid:
+          Get.offAndToNamed(
+            kPidsRoute,
+            arguments: 2,
+          );
+          break;
+        case kCaregiverPid:
+          Get.offAndToNamed(
+            kPidsRoute,
+            arguments: 0,
+          );
+          break;
+        default:
+          Get.offAndToNamed(
+            kPidsRoute,
+            arguments: widget.previousIndex,
+          );
+      }
     }
   }
 
