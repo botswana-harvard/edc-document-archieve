@@ -39,7 +39,6 @@ class CustomSearchDelegate extends SearchDelegate {
 
   @override
   Widget buildResults(BuildContext context) {
-    _appService = context.read<AppService>();
     if (query.length < 3) {
       return Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -60,9 +59,11 @@ class CustomSearchDelegate extends SearchDelegate {
 
   @override
   Widget buildSuggestions(BuildContext context) {
+    _appService = context.read<AppService>();
     List<String> suggestions = pids
         .where((pid) => pid.toLowerCase().contains(query.toLowerCase()))
         .toList();
+    suggestions = suggestions.toSet().toList();
     return _listPidsWidget(suggestions);
   }
 

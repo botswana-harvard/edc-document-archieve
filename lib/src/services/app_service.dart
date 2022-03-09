@@ -1,19 +1,22 @@
 import 'package:edc_document_archieve/src/config/injector.dart';
+import 'package:edc_document_archieve/src/core/models/gallery_item.dart';
 import 'package:edc_document_archieve/src/core/models/study_document.dart';
 import 'package:edc_document_archieve/src/services/bloc/document_archive_bloc.dart';
+import 'package:edc_document_archieve/src/ui/screens/base/sub_screens/forms/widgets/gallery_image.dart';
 import 'package:flutter/material.dart';
+import 'package:uuid/uuid.dart';
 
 class AppService with ChangeNotifier {
   late String _selectedStudy;
   late StudyDocument _studyDocument;
   late String _selectedPid;
-  List<String> _selectedImages = [];
+  List<GalleryItem> _selectedImages = [];
 
   //define Getters
   String get selectedStudy => _selectedStudy;
   String get selectedPid => _selectedPid;
   StudyDocument get selectedStudyDocument => _studyDocument;
-  List<String> get selectedImages => _selectedImages;
+  List<GalleryItem> get selectedImages => _selectedImages;
 
   //define Setters
   set selectedStudy(String selectedStudy) {
@@ -21,7 +24,7 @@ class AppService with ChangeNotifier {
     notifyWidgetListeners();
   }
 
-  set selectedImages(List<String> selectedImages) {
+  set selectedImages(List<GalleryItem> selectedImages) {
     _selectedImages = selectedImages;
     notifyWidgetListeners();
   }
@@ -51,13 +54,14 @@ class AppService with ChangeNotifier {
     _selectedImages.clear();
   }
 
-  void removeSelectedImage(String imageUrl) {
-    _selectedImages.removeWhere((element) => element == imageUrl);
+  void removeSelectedImage(String imageId) {
+    _selectedImages.removeWhere((element) => element.id == imageId);
     notifyWidgetListeners();
   }
 
   void addSelectedImage(String xFile) {
-    _selectedImages.add(xFile);
+    _selectedImages
+        .add(GalleryItem(id: const Uuid().v4().toString(), imageUrl: xFile));
     notifyWidgetListeners();
   }
 
@@ -66,7 +70,15 @@ class AppService with ChangeNotifier {
   }
 
   void addAllImages(List<String> list) {
-    _selectedImages.addAll(list);
+    List<GalleryItem> temp = list
+        .map(
+          (image) => GalleryItem(
+            id: const Uuid().v4().toString(),
+            imageUrl: image,
+          ),
+        )
+        .toList();
+    _selectedImages.addAll(temp);
     notifyWidgetListeners();
   }
 

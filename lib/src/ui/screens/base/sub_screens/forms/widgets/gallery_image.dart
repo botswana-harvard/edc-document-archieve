@@ -1,11 +1,12 @@
 import 'package:edc_document_archieve/src/core/models/gallery_item.dart';
+import 'package:uuid/uuid.dart';
 
 import 'gallery_Item_thumbnail.dart';
 import 'gallery_image_wrapper.dart';
 import 'package:flutter/material.dart';
 
 class GalleryImage extends StatefulWidget {
-  final List<String> imageUrls;
+  final List<GalleryItem> imageUrls;
   final String? titleGallery;
 
   const GalleryImage({Key? key, required this.imageUrls, this.titleGallery})
@@ -15,18 +16,16 @@ class GalleryImage extends StatefulWidget {
 }
 
 class _GalleryImageState extends State<GalleryImage> {
-  List<GalleryItem> galleryItems = <GalleryItem>[];
-
   @override
   Widget build(BuildContext context) {
-    buildItemsList(widget.imageUrls);
     return Padding(
       padding: const EdgeInsets.all(10),
-      child: galleryItems.isEmpty
+      child: widget.imageUrls.isEmpty
           ? const SizedBox.shrink()
           : GridView.builder(
               primary: false,
-              itemCount: galleryItems.length > 3 ? 3 : galleryItems.length,
+              itemCount:
+                  widget.imageUrls.length > 3 ? 3 : widget.imageUrls.length,
               padding: const EdgeInsets.all(0),
               semanticChildCount: 1,
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
@@ -37,10 +36,10 @@ class _GalleryImageState extends State<GalleryImage> {
                   borderRadius: const BorderRadius.all(Radius.circular(8)),
                   // if have less than 4 image w build GalleryItemThumbnail
                   // if have mor than 4 build image number 3 with number for other images
-                  child: galleryItems.length > 3 && index == 2
+                  child: widget.imageUrls.length > 3 && index == 2
                       ? buildImageNumbers(index)
                       : GalleryItemThumbnail(
-                          galleryItem: galleryItems[index],
+                          galleryItem: widget.imageUrls[index],
                           onTap: () {
                             openImageFullScreen(index);
                           },
@@ -62,13 +61,13 @@ class _GalleryImageState extends State<GalleryImage> {
         fit: StackFit.expand,
         children: <Widget>[
           GalleryItemThumbnail(
-            galleryItem: galleryItems[index],
+            galleryItem: widget.imageUrls[index],
           ),
           Container(
             color: Colors.black.withOpacity(.7),
             child: Center(
               child: Text(
-                "+${galleryItems.length - index}",
+                "+${widget.imageUrls.length - index}",
                 style: const TextStyle(color: Colors.white, fontSize: 40),
               ),
             ),
@@ -85,7 +84,7 @@ class _GalleryImageState extends State<GalleryImage> {
       MaterialPageRoute(
         builder: (context) => GalleryImageViewWrapper(
           titleGallery: widget.titleGallery,
-          galleryItems: galleryItems,
+          galleryItems: widget.imageUrls,
           backgroundDecoration: const BoxDecoration(
             color: Colors.black,
           ),
@@ -94,15 +93,5 @@ class _GalleryImageState extends State<GalleryImage> {
         ),
       ),
     );
-  }
-
-// clear and build list
-  buildItemsList(List<String> items) {
-    galleryItems.clear();
-    for (String item in items) {
-      galleryItems.add(
-        GalleryItem(id: item, imageUrl: item),
-      );
-    }
   }
 }

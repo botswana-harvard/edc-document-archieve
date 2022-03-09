@@ -3,10 +3,11 @@ import 'dart:io';
 import 'package:edc_document_archieve/src/core/models/gallery_item.dart';
 import 'package:edc_document_archieve/src/services/app_service.dart';
 import 'package:edc_document_archieve/src/utils/constants/back.dart';
+import 'package:edc_document_archieve/src/utils/constants/constants.dart';
+import 'package:edc_document_archieve/src/utils/debugLog.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:photo_view/photo_view.dart';
 import 'package:photo_view/photo_view_gallery.dart';
 import 'package:provider/provider.dart';
@@ -52,20 +53,23 @@ class _GalleryImageViewWrapperState extends State<GalleryImageViewWrapper> {
 
   @override
   Widget build(BuildContext context) {
+    logger.e(Get.currentRoute);
     return Scaffold(
       key: _scaffoldKey,
       appBar: AppBar(
         title: Text(widget.titleGallery ?? 'Galley'),
         actions: [
-          IconButton(
-            onPressed: () {
-              int index = widget.initialIndex ?? 0;
-              String imageUrl = widget.galleryItems[index].imageUrl;
-              _appService.removeSelectedImage(imageUrl);
-              back();
-            },
-            icon: const Icon(Icons.delete),
-          ),
+          if (Get.previousRoute != kCrfformRoute &&
+              Get.previousRoute != kNonCrfformRoute)
+            IconButton(
+              onPressed: () {
+                int index = widget.initialIndex ?? 0;
+                String id = widget.galleryItems[index].id;
+                _appService.removeSelectedImage(id);
+                back();
+              },
+              icon: const Icon(Icons.delete),
+            ),
         ],
       ),
       body: Container(

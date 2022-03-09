@@ -1,5 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:bloc_concurrency/bloc_concurrency.dart';
+import 'package:edc_document_archieve/src/core/models/gallery_item.dart';
 import 'package:edc_document_archieve/src/core/models/participant_crf.dart';
 import 'package:edc_document_archieve/src/core/models/participant_non_crf.dart';
 import 'package:edc_document_archieve/src/core/models/study_document.dart';
@@ -183,7 +184,7 @@ class DocumentArchieveBloc
     required String pid,
     required String visitCode,
     required String timePoint,
-    required List<String> uploads,
+    required List<GalleryItem> uploads,
     required StudyDocument studyDocument,
   }) {
     ParticipantCrf crf = ParticipantCrf.fromJson({
@@ -198,7 +199,7 @@ class DocumentArchieveBloc
 
   void addNonCrfDocument({
     required String pid,
-    required List<String> uploads,
+    required List<GalleryItem> uploads,
     required StudyDocument studyDocument,
   }) {
     ParticipantNonCrf nonCrf = ParticipantNonCrf.fromJson({
@@ -212,7 +213,7 @@ class DocumentArchieveBloc
   void updateCrfDocument({
     required String visitCode,
     required String timePoint,
-    required List<String> uploads,
+    required List<GalleryItem> uploads,
     required ParticipantCrf crf,
   }) {
     crf.visit = visitCode;
@@ -222,7 +223,7 @@ class DocumentArchieveBloc
   }
 
   void updateNonCrfDocument({
-    required List<String> uploads,
+    required List<GalleryItem> uploads,
     required ParticipantNonCrf nonCrf,
   }) {
     nonCrf.uploads = uploads;

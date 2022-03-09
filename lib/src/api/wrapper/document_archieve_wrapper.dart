@@ -1,4 +1,5 @@
 import 'package:edc_document_archieve/src/api/repository/offline/document_archieve_offline_repository.dart';
+import 'package:edc_document_archieve/src/api/repository/online/base_online_repository.dart';
 import 'package:edc_document_archieve/src/api/repository/online/document_archieve_online_repository.dart';
 import 'package:edc_document_archieve/src/config/injector.dart';
 import 'package:edc_document_archieve/src/core/models/participant_crf.dart';
@@ -87,10 +88,6 @@ class DocumentArchieveWrapper implements DocumentArchieveProvider {
   Future<void> deleteParticipantNonCrfForm(
       {required ParticipantNonCrf nonCrf}) async {
     await _offlineRepository.deleteParticipantNonCrfForm(nonCrf: nonCrf);
-  }
-
-  Future<void> saveData() async {
-    Map<String, dynamic>? data = await _onlineRepository.getProjects();
   }
 
   @override

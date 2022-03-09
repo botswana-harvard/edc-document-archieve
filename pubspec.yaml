@@ -56,8 +56,6 @@ dependencies:
   uuid: ^3.0.6
   cool_alert: ^1.1.0
   persistent_bottom_nav_bar: ^4.0.2
-  flutter_uploader: ^1.2.1
-  flutter_local_notifications: ^9.4.0
 
 dev_dependencies:
   flutter_test:

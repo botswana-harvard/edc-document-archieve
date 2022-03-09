@@ -1,6 +1,10 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.edc_document_archieve">
+
+    <uses-permission android:name="android.permission.INTERNET"/>
+    
     <application
+        android:networkSecurityConfig="@xml/network_security_config"
         android:label="Edc Document Archieve"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
@@ -35,16 +39,5 @@
             android:authorities="${applicationId}.workmanager-init"
             android:enabled="false"
             android:exported="false" />
-        <provider
-            android:name="com.bluechilli.flutteruploader.FlutterUploaderInitializer"
-            android:authorities="${applicationId}.flutter-upload-init"
-            android:exported="false">
-            <!-- changes this number to configure the maximum number of concurrent tasks -->
-            <meta-data
-                android:name="com.bluechilli.flutterupload.MAX_CONCURRENT_TASKS"
-                android:value="3" />
-            <!-- changes this number to configure connection timeout for the upload http request -->
-            <meta-data android:name="com.bluechilli.flutteruploader.UPLOAD_CONNECTION_TIMEOUT_IN_SECONDS" android:value="3600" />
-        </provider>
     </application>
 </manifest>

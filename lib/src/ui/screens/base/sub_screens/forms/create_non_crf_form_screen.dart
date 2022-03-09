@@ -1,5 +1,6 @@
 import 'package:cool_alert/cool_alert.dart';
 import 'package:edc_document_archieve/src/config/injector.dart';
+import 'package:edc_document_archieve/src/core/models/gallery_item.dart';
 import 'package:edc_document_archieve/src/core/models/participant_non_crf.dart';
 import 'package:edc_document_archieve/src/core/models/study_document.dart';
 import 'package:edc_document_archieve/src/services/app_service.dart';
@@ -36,7 +37,7 @@ class _CreateNonCRFormScreenState extends State<CreateNonCRFormScreen> {
   late String _pid;
   late AppService _appService;
   late DocumentArchieveBloc _archieveBloc;
-  List<String> uploads = [];
+  List<GalleryItem> uploads = [];
   final ImagePicker _picker = ImagePicker();
   ParticipantNonCrf? nonCrf = Get.arguments;
 
@@ -72,7 +73,6 @@ class _CreateNonCRFormScreenState extends State<CreateNonCRFormScreen> {
                   context: context,
                   type: CoolAlertType.success,
                   text: 'Non Crf form uploaded successfully!',
-                  autoCloseDuration: const Duration(seconds: 2),
                 );
                 _appService.notifyWidgetListeners();
                 back();

@@ -16,7 +16,7 @@ class StudyDocument extends HiveObject with EquatableMixin {
   @HiveField(3)
   late String id;
 
-  @HiveField(3)
+  @HiveField(4)
   late String pidType;
 
   StudyDocument({
@@ -32,5 +32,5 @@ class StudyDocument extends HiveObject with EquatableMixin {
   Map<String, dynamic> toJson() => _$StudyDocumentToJson(this);
 
   @override
-  List<Object?> get props => [id, name, type];
+  List<Object?> get props => [id];
 }

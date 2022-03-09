@@ -142,7 +142,6 @@ class _CreatePidScreenState extends State<CreatePidScreen> {
         context: context,
         type: CoolAlertType.success,
         text: '$selectedValue PID added successfully!',
-        autoCloseDuration: const Duration(seconds: 2),
       );
       switch (selectedValue) {
         case kChildPid:

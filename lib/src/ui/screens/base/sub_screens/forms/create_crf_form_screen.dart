@@ -1,6 +1,7 @@
 import 'package:cool_alert/cool_alert.dart';
 import 'package:edc_document_archieve/src/config/injector.dart';
 import 'package:edc_document_archieve/src/core/data/dummy_data.dart';
+import 'package:edc_document_archieve/src/core/models/gallery_item.dart';
 import 'package:edc_document_archieve/src/core/models/participant_crf.dart';
 import 'package:edc_document_archieve/src/services/app_service.dart';
 import 'package:edc_document_archieve/src/services/bloc/document_archive_bloc.dart';
@@ -22,6 +23,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:recase/recase.dart';
+import 'package:uuid/uuid.dart';
 
 class CreateCRFormScreen extends StatefulWidget {
   static const String routeName = kCreateCRFormRoute;
@@ -41,7 +43,7 @@ class _CreateCRFormScreenState extends State<CreateCRFormScreen> {
   String? selectedTimePoint;
   final ImagePicker _picker = ImagePicker();
   final GlobalKey<FormState> _key = GlobalKey<FormState>();
-  List<String> uploads = [];
+  List<GalleryItem> uploads = [];
   ParticipantCrf? crf = Get.arguments;
 
   @override
@@ -62,6 +64,7 @@ class _CreateCRFormScreenState extends State<CreateCRFormScreen> {
     selectedPid = _appService.selectedPid;
     if (_appService.selectedImages.isNotEmpty) {
       uploads = _appService.selectedImages;
+      logger.e(uploads.length);
     }
     super.didChangeDependencies();
   }
@@ -90,7 +93,6 @@ class _CreateCRFormScreenState extends State<CreateCRFormScreen> {
                     context: context,
                     type: CoolAlertType.success,
                     text: 'Crf form uploaded successfully!',
-                    autoCloseDuration: const Duration(seconds: 3),
                   );
                   _appService.notifyWidgetListeners();
                   back();

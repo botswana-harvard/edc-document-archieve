@@ -1,3 +1,4 @@
+import 'package:edc_document_archieve/src/core/models/gallery_item.dart';
 import 'package:edc_document_archieve/src/core/models/study_document.dart';
 import 'package:equatable/equatable.dart';
 import 'package:hive/hive.dart';
@@ -21,7 +22,7 @@ class ParticipantCrf extends HiveObject with EquatableMixin {
   late StudyDocument document;
 
   @HiveField(5)
-  late List<String> uploads;
+  late List<GalleryItem> uploads;
 
   @HiveField(6)
   String id;
@@ -41,5 +42,5 @@ class ParticipantCrf extends HiveObject with EquatableMixin {
   Map<String, dynamic> toJson() => _$ParticipantCrfToJson(this);
 
   @override
-  List<Object?> get props => [id];
+  List<Object?> get props => [visit, timepoint, pid];
 }

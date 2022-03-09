@@ -6,9 +6,11 @@ import 'package:flutter/material.dart';
 abstract class BaseOnlineRepository {
   late Dio _dio;
 
-  ///
-  final String baseUrl = 'http://10.113.201.239:8000/edc_da_api/';
-  final String devUrl = 'http://192.168.8.105:8000/edc_da_api/';
+  ///http://flourish-dev.bhp.org.bw/
+  static const String flourishUrl =
+      'http://flourish-dev.bhp.org.bw/edc_da_api/';
+  static const String tdUrl = 'http://td-test.bhp.org.bw/edc_da_api/';
+  static const String devUrl = 'http://10.113.201.239:8000/edc_da_api/';
 
   ///10.113.201.239
 

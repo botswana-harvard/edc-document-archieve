@@ -1,3 +1,4 @@
+import 'package:edc_document_archieve/src/core/models/gallery_item.dart';
 import 'package:edc_document_archieve/src/core/models/participant_crf.dart';
 import 'package:edc_document_archieve/src/core/models/participant_non_crf.dart';
 import 'package:edc_document_archieve/src/core/models/study_document.dart';
@@ -24,6 +25,7 @@ abstract class LocalStorageRepository {
     Hive.registerAdapter(StudyDocumentAdapter());
     Hive.registerAdapter(ParticipantCrfAdapter());
     Hive.registerAdapter(ParticipantNonCrfAdapter());
+    Hive.registerAdapter(GalleryItemAdapter());
     await Hive.openBox(kAppStorageBox, path: appDir.path, crashRecovery: true);
     await Hive.openBox(kUserAccountsBox,
         path: appDir.path, crashRecovery: true);

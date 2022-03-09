@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:crypto/crypto.dart';
 import 'package:dio/dio.dart';
+import 'package:edc_document_archieve/src/api/repository/online/base_online_repository.dart';
 import 'package:edc_document_archieve/src/config/index.dart';
 import 'package:edc_document_archieve/src/config/injector.dart';
 import 'package:edc_document_archieve/src/core/models/user_account.dart';
@@ -68,8 +69,10 @@ class AuthenticationWrapper implements AuthenticationProvider {
 
   Future<AuthenticationStatus> authenticateOnline(
       {required String username, required String password}) async {
-    Response response =
-        await _onlineRepository.login(username: username, password: password);
+    Response response = await _onlineRepository.login(
+        BaseOnlineRepository.flourishUrl,
+        username: username,
+        password: password);
     switch (response.statusCode) {
       case 200:
         //lets encrypt the input password and compare with the users password
@@ -97,7 +100,9 @@ class AuthenticationWrapper implements AuthenticationProvider {
   }
 
   Future<void> saveDataLocalStorage() async {
-    data = await _onlineRepository.getProjects();
+    String tdUrl = BaseOnlineRepository.tdUrl;
+    data =
+        await _onlineRepository.getProjects(BaseOnlineRepository.flourishUrl);
     if (data.isNotEmpty) {
       data.forEach((key, value) async {
         String projectName = key;

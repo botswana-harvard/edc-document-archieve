@@ -1,6 +1,7 @@
 import 'package:cool_alert/cool_alert.dart';
 import 'package:edc_document_archieve/gen/fonts.gen.dart';
 import 'package:edc_document_archieve/src/config/injector.dart';
+import 'package:edc_document_archieve/src/core/models/gallery_item.dart';
 import 'package:edc_document_archieve/src/core/models/participant_non_crf.dart';
 import 'package:edc_document_archieve/src/core/models/study_document.dart';
 import 'package:edc_document_archieve/src/services/app_service.dart';
@@ -33,7 +34,7 @@ class _NonCRFormScreenState extends State<NonCRFormScreen> {
   late AppService _appService;
   late DocumentArchieveBloc _archieveBloc;
   ParticipantNonCrf? _participantNonCrf;
-  List<String> uploads = [];
+  List<GalleryItem> uploads = [];
 
   @override
   void didChangeDependencies() {

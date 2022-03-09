@@ -1,3 +1,4 @@
+import 'package:edc_document_archieve/src/core/models/gallery_item.dart';
 import 'package:edc_document_archieve/src/core/models/study_document.dart';
 import 'package:equatable/equatable.dart';
 import 'package:hive/hive.dart';
@@ -15,7 +16,7 @@ class ParticipantNonCrf extends HiveObject with EquatableMixin {
   late StudyDocument document;
 
   @HiveField(3)
-  late List<String> uploads;
+  late List<GalleryItem> uploads;
 
   @HiveField(4)
   late String id;
