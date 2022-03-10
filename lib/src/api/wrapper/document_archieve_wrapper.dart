@@ -8,6 +8,7 @@ import 'package:edc_document_archieve/src/core/models/participant_non_crf.dart';
 import 'package:edc_document_archieve/src/core/models/study_document.dart';
 import 'package:edc_document_archieve/src/providers/document_archieve_provider.dart';
 import 'package:edc_document_archieve/src/utils/debugLog.dart';
+import 'package:flutter/material.dart';
 
 class DocumentArchieveWrapper implements DocumentArchieveProvider {
   DocumentArchieveWrapper() {
@@ -102,14 +103,24 @@ class DocumentArchieveWrapper implements DocumentArchieveProvider {
     return await _offlineRepository.getCaregiverForms(studyName);
   }
 
-  @override
-  Future synchData(List<Map<String, dynamic>> data) async {
+  @protected
+  Future synchData(Map<String, dynamic> data) async {
     String url = BaseOnlineRepository.flourishUrl + 'projects/';
+    FormData formData = FormData.fromMap(data);
+    Response? response =
+        await _onlineRepository.pushDataToServer(url: url, data: formData);
+    logger.e(response?.data);
+  }
+
+  @override
+  Future synchCrfData(List<Map<String, dynamic>> data) async {
     for (Map<String, dynamic> params in data) {
-      FormData formData = FormData.fromMap(params);
-      Response? response =
-          await _onlineRepository.pushDataToServer(url: url, data: formData);
-      logger.e(response?.data);
+      await synchData(params);
     }
+  }
+
+  @override
+  Future synchNonCrfData(Map<String, dynamic> data) async {
+    await synchData(data);
   }
 }

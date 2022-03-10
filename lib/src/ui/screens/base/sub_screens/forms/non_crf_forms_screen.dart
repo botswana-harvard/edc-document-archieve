@@ -112,7 +112,12 @@ class _NonCRFormScreenState extends State<NonCRFormScreen> {
                               ),
                             ),
                             TextButton(
-                                onPressed: () {},
+                                onPressed: () {
+                                  _archieveBloc.syncNonCrfData(
+                                    nonCrf: _participantNonCrf!,
+                                    currentUser: _appService.currentUser,
+                                  );
+                                },
                                 child: const Text('Sync Data')),
                           ],
                         ),

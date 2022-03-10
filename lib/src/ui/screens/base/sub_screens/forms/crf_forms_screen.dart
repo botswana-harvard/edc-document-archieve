@@ -4,7 +4,6 @@ import 'dart:io';
 import 'package:cool_alert/cool_alert.dart';
 import 'package:edc_document_archieve/gen/fonts.gen.dart';
 import 'package:edc_document_archieve/src/config/injector.dart';
-import 'package:edc_document_archieve/src/core/data/dummy_data.dart';
 import 'package:edc_document_archieve/src/core/models/gallery_item.dart';
 import 'package:edc_document_archieve/src/core/models/participant_crf.dart';
 import 'package:edc_document_archieve/src/core/models/study_document.dart';
@@ -109,7 +108,7 @@ class _CRFormScreenState extends State<CRFormScreen> {
                             TextButton(
                                 onPressed: () => _archieveBloc.syncCrfsData(
                                       partcipantCrfs: _partcipantCrfs,
-                                      currentUser: 'moffatmore',
+                                      currentUser: _appService.currentUser,
                                     ),
                                 child: const Text('Sync Data')),
                           ],

@@ -50,7 +50,12 @@ class DocumentArchieveFormDeleted extends DocumentArchieveEvent {
   const DocumentArchieveFormDeleted({required this.form});
 }
 
-class DocumentArchieveFormSyncRequested extends DocumentArchieveEvent {
+class DocumentArchieveCrfFormSyncRequested extends DocumentArchieveEvent {
   final List<Map<String, dynamic>> data;
-  const DocumentArchieveFormSyncRequested({required this.data});
+  const DocumentArchieveCrfFormSyncRequested({required this.data});
+}
+
+class DocumentArchieveNonCrfFormSyncRequested extends DocumentArchieveEvent {
+  final Map<String, dynamic> data;
+  const DocumentArchieveNonCrfFormSyncRequested({required this.data});
 }

@@ -45,8 +45,13 @@ class DocumentArchieveBloc
       transformer: sequential(),
     );
 
-    on<DocumentArchieveFormSyncRequested>(
-      _onDocumentArchieveFormSyncRequested,
+    on<DocumentArchieveCrfFormSyncRequested>(
+      _onDocumentArchieveCrfFormSyncRequested,
+      transformer: sequential(),
+    );
+
+    on<DocumentArchieveNonCrfFormSyncRequested>(
+      _onDocumentArchieveNonCrfFormSyncRequested,
       transformer: sequential(),
     );
   }
@@ -148,11 +153,22 @@ class DocumentArchieveBloc
     emit(const DocumentArchieveState.loaded());
   }
 
-  Future<FutureOr<void>> _onDocumentArchieveFormSyncRequested(
-      DocumentArchieveFormSyncRequested event,
+  Future<FutureOr<void>> _onDocumentArchieveCrfFormSyncRequested(
+      DocumentArchieveCrfFormSyncRequested event,
       Emitter<DocumentArchieveState> emit) async {
+    emit(const DocumentArchieveState.loading());
     List<Map<String, dynamic>> data = event.data;
-    await documentArchieveRepository.synchData(data);
+    await documentArchieveRepository.synchCrfData(data);
+    emit(const DocumentArchieveState.loaded());
+  }
+
+  Future<FutureOr<void>> _onDocumentArchieveNonCrfFormSyncRequested(
+      DocumentArchieveNonCrfFormSyncRequested event,
+      Emitter<DocumentArchieveState> emit) async {
+    Map<String, dynamic> data = event.data;
+    emit(const DocumentArchieveState.loading());
+    await documentArchieveRepository.synchNonCrfData(data);
+    emit(const DocumentArchieveState.loaded());
   }
 
   void getDocumentArchievePids({required String selectedStudy}) {
@@ -246,7 +262,6 @@ class DocumentArchieveBloc
         'model_name': modelName,
         'visit_code': crf.visit.substring(1),
         'timepoint': crf.timepoint,
-        'image_name': crf.uploads.map((imageItem) => imageItem.id).toList(),
         'files': uploads,
         'date_captured': convertDateTimeDisplay(crf.created),
         'username': currentUser,
@@ -254,7 +269,29 @@ class DocumentArchieveBloc
       results.add(data);
     }
     logger.e(results);
-    add(DocumentArchieveFormSyncRequested(data: results));
+    add(DocumentArchieveCrfFormSyncRequested(data: results));
+  }
+
+  Future<void> syncNonCrfData({
+    required ParticipantNonCrf nonCrf,
+    required String currentUser,
+  }) async {
+    String modelName = nonCrf.document.name.constantCase.toLowerCase();
+    List<MultipartFile> uploads = [];
+    for (GalleryItem upload in nonCrf.uploads) {
+      MultipartFile multipart =
+          await MultipartFile.fromFile(upload.imageUrl, filename: upload.id);
+      uploads.add(multipart);
+    }
+    Map<String, dynamic> data = {
+      'subject_identifier': nonCrf.pid,
+      'app_label': nonCrf.appName,
+      'model_name': modelName,
+      'files': uploads,
+      'date_captured': convertDateTimeDisplay(nonCrf.created),
+      'username': currentUser,
+    };
+    add(DocumentArchieveNonCrfFormSyncRequested(data: data));
   }
 
   Future<void> addPid({
