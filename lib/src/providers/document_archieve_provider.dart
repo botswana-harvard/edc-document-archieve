@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:edc_document_archieve/src/core/models/participant_crf.dart';
 import 'package:edc_document_archieve/src/core/models/participant_non_crf.dart';
 import 'package:edc_document_archieve/src/core/models/study_document.dart';
@@ -42,4 +43,6 @@ abstract class DocumentArchieveProvider {
   Future<List<ParticipantCrf>> getCrForms({required String pid});
 
   Future<List<ParticipantNonCrf>> getNonCrForms({required String pid});
+
+  Future synchData(List<Map<String, dynamic>> data);
 }

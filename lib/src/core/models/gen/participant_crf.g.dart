@@ -23,13 +23,15 @@ class ParticipantCrfAdapter extends TypeAdapter<ParticipantCrf> {
       document: fields[4] as StudyDocument,
       uploads: (fields[5] as List).cast<GalleryItem>(),
       id: fields[6] as String,
+      appName: fields[7] as String,
+      created: fields[8] as String,
     );
   }
 
   @override
   void write(BinaryWriter writer, ParticipantCrf obj) {
     writer
-      ..writeByte(6)
+      ..writeByte(8)
       ..writeByte(1)
       ..write(obj.pid)
       ..writeByte(2)
@@ -41,7 +43,11 @@ class ParticipantCrfAdapter extends TypeAdapter<ParticipantCrf> {
       ..writeByte(5)
       ..write(obj.uploads)
       ..writeByte(6)
-      ..write(obj.id);
+      ..write(obj.id)
+      ..writeByte(7)
+      ..write(obj.appName)
+      ..writeByte(8)
+      ..write(obj.created);
   }
 
   @override
@@ -61,16 +67,15 @@ class ParticipantCrfAdapter extends TypeAdapter<ParticipantCrf> {
 
 ParticipantCrf _$ParticipantCrfFromJson(Map<String, dynamic> json) =>
     ParticipantCrf(
-      pid: json['pid'] as String,
-      visit: json['visit'] as String,
-      timepoint: json['timepoint'] as String,
-      id: const Uuid().v4(),
-      document:
-          StudyDocument.fromJson(json['document'] as Map<String, dynamic>),
-      uploads: (json['uploads'] as List<dynamic>)
-          .map((e) => e as GalleryItem)
-          .toList(),
-    );
+        pid: json['pid'] as String,
+        visit: json['visit'] as String,
+        timepoint: json['timepoint'] as String,
+        document:
+            StudyDocument.fromJson(json['document'] as Map<String, dynamic>),
+        uploads: json['uploads'] as List<GalleryItem>,
+        id: const Uuid().v4().toString(),
+        appName: json['appName'] as String,
+        created: DateTime.now().toString());
 
 Map<String, dynamic> _$ParticipantCrfToJson(ParticipantCrf instance) =>
     <String, dynamic>{
@@ -78,6 +83,8 @@ Map<String, dynamic> _$ParticipantCrfToJson(ParticipantCrf instance) =>
       'visit': instance.visit,
       'timepoint': instance.timepoint,
       'document': instance.document.toJson(),
-      'uploads': instance.uploads,
+      'uploads': instance.uploads.map((e) => e.toJson()).toList(),
       'id': instance.id,
+      'appName': instance.appName,
+      'created': instance.created,
     };

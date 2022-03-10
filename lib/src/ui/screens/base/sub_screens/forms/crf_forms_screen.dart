@@ -107,7 +107,10 @@ class _CRFormScreenState extends State<CRFormScreen> {
                             const SizedBox(width: 10),
                             CustomText(text: _pid, fontSize: 16),
                             TextButton(
-                                onPressed: syncData,
+                                onPressed: () => _archieveBloc.syncCrfsData(
+                                      partcipantCrfs: _partcipantCrfs,
+                                      currentUser: 'moffatmore',
+                                    ),
                                 child: const Text('Sync Data')),
                           ],
                         ),
@@ -241,31 +244,5 @@ class _CRFormScreenState extends State<CRFormScreen> {
       title: 'Delete ${crf.document.name}',
       onConfirmBtnTap: () => onConfirmDeleteButtonPressed(crf),
     );
-  }
-
-  void syncData() {
-    List<Map<String, dynamic>> jsonData = [];
-    String cohort = '';
-    for (var crf in _partcipantCrfs) {
-      if (crf.document.pidType == kCaregiverPid) {
-        cohort = flourishCaregiverVisitCodeChoice
-            .firstWhere((element) => element['value'] == crf.visit)['display'];
-      } else if (crf.document.pidType == kChildPid) {
-        cohort = flourishChildVisitCodeChoice
-            .firstWhere((element) => element['value'] == crf.visit)['display'];
-      }
-      Map<String, dynamic> temp = {
-        'subject_identifier': crf.pid,
-        'app_name': _appService.selectedStudy,
-        'visit_code': crf.visit.substring(1),
-        'timepoint': crf.timepoint,
-        'document': crf.document.name,
-        'uploads':
-            crf.uploads.map((imageItem) => File(imageItem.imageUrl)).toList(),
-        'cohort': cohort,
-      };
-      jsonData.add(temp);
-    }
-    logger.e(jsonData);
   }
 }

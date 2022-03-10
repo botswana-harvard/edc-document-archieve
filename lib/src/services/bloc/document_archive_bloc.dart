@@ -1,5 +1,8 @@
+import 'dart:async';
+
 import 'package:bloc/bloc.dart';
 import 'package:bloc_concurrency/bloc_concurrency.dart';
+import 'package:dio/dio.dart' as dio;
 import 'package:edc_document_archieve/src/core/models/gallery_item.dart';
 import 'package:edc_document_archieve/src/core/models/participant_crf.dart';
 import 'package:edc_document_archieve/src/core/models/participant_non_crf.dart';
@@ -9,6 +12,10 @@ import 'package:edc_document_archieve/src/services/bloc/events/document_archive_
 import 'package:edc_document_archieve/src/services/bloc/states/document_archive_state.dart';
 import 'package:edc_document_archieve/src/utils/constants/constants.dart';
 import 'package:edc_document_archieve/src/utils/debugLog.dart';
+import 'package:get/get.dart' as Get;
+import "package:dio/dio.dart";
+import 'package:intl/intl.dart';
+import 'package:recase/recase.dart';
 
 class DocumentArchieveBloc
     extends Bloc<DocumentArchieveEvent, DocumentArchieveState> {
@@ -35,6 +42,11 @@ class DocumentArchieveBloc
 
     on<DocumentArchieveFormDeleted>(
       _onDocumentArchieveFormDeleted,
+      transformer: sequential(),
+    );
+
+    on<DocumentArchieveFormSyncRequested>(
+      _onDocumentArchieveFormSyncRequested,
       transformer: sequential(),
     );
   }
@@ -136,12 +148,113 @@ class DocumentArchieveBloc
     emit(const DocumentArchieveState.loaded());
   }
 
+  Future<FutureOr<void>> _onDocumentArchieveFormSyncRequested(
+      DocumentArchieveFormSyncRequested event,
+      Emitter<DocumentArchieveState> emit) async {
+    List<Map<String, dynamic>> data = event.data;
+    await documentArchieveRepository.synchData(data);
+  }
+
   void getDocumentArchievePids({required String selectedStudy}) {
     add(DocumentArchievePidsRequested(studySelected: selectedStudy));
   }
 
   void getDocumentArchieveStudy() {
     add(DocumentArchieveStudiesRequested());
+  }
+
+  void getParticipantForms(
+      {required String pid, required StudyDocument documentForm}) {
+    add(DocumentArchieveFormRequested(pid: pid, documentForm: documentForm));
+  }
+
+  void addCrfDocument({
+    required String pid,
+    required String visitCode,
+    required String timePoint,
+    required List<GalleryItem> uploads,
+    required StudyDocument studyDocument,
+  }) {
+    ParticipantCrf crf = ParticipantCrf.fromJson({
+      'pid': pid,
+      'visit': visitCode,
+      'timepoint': timePoint,
+      'uploads': uploads,
+      'document': studyDocument.toJson(),
+      'appName': studyDocument.appName,
+      'created': DateTime.now().toString(),
+    });
+    add(DocumentArchieveFormAdded(form: crf));
+  }
+
+  void addNonCrfDocument({
+    required String pid,
+    required List<GalleryItem> uploads,
+    required StudyDocument studyDocument,
+  }) {
+    ParticipantNonCrf nonCrf = ParticipantNonCrf.fromJson({
+      'pid': pid,
+      'uploads': uploads,
+      'document': studyDocument.toJson(),
+      'appName': studyDocument.appName,
+      'created': DateTime.now().toString()
+    });
+    add(DocumentArchieveFormAdded(form: nonCrf));
+  }
+
+  void updateCrfDocument({
+    required String visitCode,
+    required String timePoint,
+    required List<GalleryItem> uploads,
+    required ParticipantCrf crf,
+  }) {
+    crf.visit = visitCode;
+    crf.timepoint = timePoint;
+    crf.uploads = uploads;
+    add(DocumentArchieveFormAdded(form: crf));
+  }
+
+  void updateNonCrfDocument({
+    required List<GalleryItem> uploads,
+    required ParticipantNonCrf nonCrf,
+  }) {
+    nonCrf.uploads = uploads;
+    add(DocumentArchieveFormAdded(form: nonCrf));
+  }
+
+  void deleteForm({required dynamic crf}) {
+    add(DocumentArchieveFormDeleted(form: crf));
+  }
+
+  Future<void> syncCrfsData({
+    required List<ParticipantCrf> partcipantCrfs,
+    required String currentUser,
+  }) async {
+    List<Map<String, dynamic>> results = [];
+    for (var crf in partcipantCrfs) {
+      String modelName = crf.document.name.constantCase.toLowerCase();
+      List<MultipartFile> uploads = [];
+      for (GalleryItem upload in crf.uploads) {
+        MultipartFile multipart =
+            await MultipartFile.fromFile(upload.imageUrl, filename: upload.id);
+        uploads.add(multipart);
+      }
+
+      Map<String, dynamic> data = {
+        'subject_identifier': crf.pid,
+        'app_label': crf.appName,
+        'model_name': modelName,
+        'visit_code': crf.visit.substring(1),
+        'timepoint': crf.timepoint,
+        'image_name': crf.uploads.map((imageItem) => imageItem.id).toList(),
+        'files': uploads,
+        'date_captured': convertDateTimeDisplay(crf.created),
+        'username': currentUser,
+      };
+      results.add(data);
+    }
+    logger.e(results);
+    add(DocumentArchieveFormSyncRequested(data: results));
   }
 
   Future<void> addPid({
@@ -175,62 +288,11 @@ class DocumentArchieveBloc
     return data;
   }
 
-  void getParticipantForms(
-      {required String pid, required StudyDocument documentForm}) {
-    add(DocumentArchieveFormRequested(pid: pid, documentForm: documentForm));
-  }
-
-  void addCrfDocument({
-    required String pid,
-    required String visitCode,
-    required String timePoint,
-    required List<GalleryItem> uploads,
-    required StudyDocument studyDocument,
-  }) {
-    ParticipantCrf crf = ParticipantCrf.fromJson({
-      'pid': pid,
-      'visit': visitCode,
-      'timepoint': timePoint,
-      'uploads': uploads,
-      'document': studyDocument.toJson()
-    });
-    add(DocumentArchieveFormAdded(form: crf));
-  }
-
-  void addNonCrfDocument({
-    required String pid,
-    required List<GalleryItem> uploads,
-    required StudyDocument studyDocument,
-  }) {
-    ParticipantNonCrf nonCrf = ParticipantNonCrf.fromJson({
-      'pid': pid,
-      'uploads': uploads,
-      'document': studyDocument.toJson(),
-    });
-    add(DocumentArchieveFormAdded(form: nonCrf));
-  }
-
-  void updateCrfDocument({
-    required String visitCode,
-    required String timePoint,
-    required List<GalleryItem> uploads,
-    required ParticipantCrf crf,
-  }) {
-    crf.visit = visitCode;
-    crf.timepoint = timePoint;
-    crf.uploads = uploads;
-    add(DocumentArchieveFormAdded(form: crf));
-  }
-
-  void updateNonCrfDocument({
-    required List<GalleryItem> uploads,
-    required ParticipantNonCrf nonCrf,
-  }) {
-    nonCrf.uploads = uploads;
-    add(DocumentArchieveFormAdded(form: nonCrf));
-  }
-
-  void deleteForm({required dynamic crf}) {
-    add(DocumentArchieveFormDeleted(form: crf));
+  String convertDateTimeDisplay(String date) {
+    final DateFormat displayFormater = DateFormat('yyyy-MM-dd HH:mm');
+    final DateFormat serverFormater = DateFormat('dd-MM-yyyy HH:mm');
+    final DateTime displayDate = displayFormater.parse(date);
+    final String formatted = serverFormater.format(displayDate);
+    return formatted;
   }
 }

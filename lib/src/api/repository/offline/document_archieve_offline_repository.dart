@@ -3,13 +3,10 @@ import 'package:edc_document_archieve/src/core/models/gallery_item.dart';
 import 'package:edc_document_archieve/src/core/models/participant_crf.dart';
 import 'package:edc_document_archieve/src/core/models/participant_non_crf.dart';
 import 'package:edc_document_archieve/src/core/models/study_document.dart';
-import 'package:edc_document_archieve/src/providers/document_archieve_provider.dart';
 import 'package:edc_document_archieve/src/utils/constants/constants.dart';
 import 'package:edc_document_archieve/src/utils/debugLog.dart';
 
-class DocumentArchieveOffLineRepository extends LocalStorageRepository
-    implements DocumentArchieveProvider {
-  @override
+class DocumentArchieveOffLineRepository extends LocalStorageRepository {
   Future<void> addParticipantCrfForm({
     required ParticipantCrf crf,
   }) async {
@@ -26,7 +23,6 @@ class DocumentArchieveOffLineRepository extends LocalStorageRepository
     await appStorageBox.put(key, crfs);
   }
 
-  @override
   Future<void> addParticipantNonCrfForm({
     required ParticipantNonCrf nonCrf,
   }) async {
@@ -49,7 +45,6 @@ class DocumentArchieveOffLineRepository extends LocalStorageRepository
     await appStorageBox.put(key, nonCrfs);
   }
 
-  @override
   Future<void> addParticipantIdentifier({
     required String studyName,
     required String pid,
@@ -92,7 +87,6 @@ class DocumentArchieveOffLineRepository extends LocalStorageRepository
     await appStorageBox.put(pidsKey, data);
   }
 
-  @override
   Future<Map<String, dynamic>> getAllParticipants(String studyName) async {
     String pidsKey = '${studyName}_pids';
     List<String> caregiverPids = [];
@@ -111,39 +105,33 @@ class DocumentArchieveOffLineRepository extends LocalStorageRepository
     return data;
   }
 
-  @override
   Future<List<String>> getAllStudies() async {
     return appStorageBox
         .get(kProjects, defaultValue: <String>[]).cast<String>();
   }
 
-  @override
   Future<List<String>> getAllTimePoints(String studyName) {
     // TODO: implement getAllTimePoints
     throw UnimplementedError();
   }
 
-  @override
   Future<List<String>> getAllVisits(String studyName) {
     // TODO: implement getAllVisits
     throw UnimplementedError();
   }
 
-  @override
   Future<List<ParticipantCrf>> getCrForms({required String pid}) async {
     String key = '${pid}_crfs';
     return appStorageBox
         .get(key, defaultValue: <ParticipantCrf>[]).cast<ParticipantCrf>();
   }
 
-  @override
   Future<List<ParticipantNonCrf>> getNonCrForms({required String pid}) async {
     String key = '${pid}_non_crfs';
     return appStorageBox.get(key,
         defaultValue: <ParticipantNonCrf>[]).cast<ParticipantNonCrf>();
   }
 
-  @override
   Future<List<ParticipantCrf>> deleteParticipantCrfForm(
       {required ParticipantCrf crf}) async {
     //Key to retrieve our docs
@@ -162,7 +150,6 @@ class DocumentArchieveOffLineRepository extends LocalStorageRepository
     return allCrfs;
   }
 
-  @override
   Future<void> deleteParticipantNonCrfForm(
       {required ParticipantNonCrf nonCrf}) async {
     //Key to retrieve our docs
@@ -180,7 +167,6 @@ class DocumentArchieveOffLineRepository extends LocalStorageRepository
     await appStorageBox.put(key, allNonCrfs);
   }
 
-  @override
   Future<List<StudyDocument>> getChildForms(String studyName) async {
     String formKey = '${studyName}_$kChildForms';
     List<StudyDocument> documents = await getForms(
@@ -190,7 +176,6 @@ class DocumentArchieveOffLineRepository extends LocalStorageRepository
     return documents;
   }
 
-  @override
   Future<List<StudyDocument>> getCaregiverForms(String studyName) async {
     String formKey = '${studyName}_$kCaregiverForms';
     List<StudyDocument> documents = await getForms(
@@ -204,8 +189,8 @@ class DocumentArchieveOffLineRepository extends LocalStorageRepository
     required String formKey,
     required String pidType,
   }) async {
-    List<String> crfs = [];
-    List<String> nonCrfs = [];
+    List<dynamic> crfs = [];
+    List<dynamic> nonCrfs = [];
     List<StudyDocument> documents = [];
     Map<String, dynamic> caregiverForms = appStorageBox.get(
       formKey,
@@ -213,19 +198,22 @@ class DocumentArchieveOffLineRepository extends LocalStorageRepository
     ).cast<String, dynamic>();
 
     if (caregiverForms.isNotEmpty) {
-      crfs = caregiverForms['${kCrfForm}s'].cast<String>();
-      nonCrfs = caregiverForms['${kNonCrfForm}s'].cast<String>();
-      for (String crf in crfs) {
+      crfs = caregiverForms['${kCrfForm}s'];
+      nonCrfs = caregiverForms['${kNonCrfForm}s'];
+      for (var crf in crfs) {
+        logger.e(crf);
         documents.add(StudyDocument.fromJson({
-          'name': crf,
+          'name': crf['model_name'],
+          'appName': crf['app_label'],
           'type': kCrfForm,
           'pidType': pidType,
         }));
       }
 
-      for (String nonCrf in nonCrfs) {
+      for (var nonCrf in nonCrfs) {
         documents.add(StudyDocument.fromJson({
-          'name': nonCrf,
+          'name': nonCrf['model_name'],
+          'appName': nonCrf['app_label'],
           'type': kNonCrfForm,
           'pidType': pidType,
         }));

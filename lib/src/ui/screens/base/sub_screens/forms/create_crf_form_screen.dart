@@ -23,7 +23,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:recase/recase.dart';
-import 'package:uuid/uuid.dart';
 
 class CreateCRFormScreen extends StatefulWidget {
   static const String routeName = kCreateCRFormRoute;
@@ -64,7 +63,6 @@ class _CreateCRFormScreenState extends State<CreateCRFormScreen> {
     selectedPid = _appService.selectedPid;
     if (_appService.selectedImages.isNotEmpty) {
       uploads = _appService.selectedImages;
-      logger.e(uploads.length);
     }
     super.didChangeDependencies();
   }

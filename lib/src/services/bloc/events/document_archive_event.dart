@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:edc_document_archieve/src/core/models/participant_crf.dart';
 import 'package:edc_document_archieve/src/core/models/study_document.dart';
 import 'package:equatable/equatable.dart';
@@ -47,4 +48,9 @@ class DocumentArchieveFormAdded extends DocumentArchieveEvent {
 class DocumentArchieveFormDeleted extends DocumentArchieveEvent {
   final dynamic form;
   const DocumentArchieveFormDeleted({required this.form});
+}
+
+class DocumentArchieveFormSyncRequested extends DocumentArchieveEvent {
+  final List<Map<String, dynamic>> data;
+  const DocumentArchieveFormSyncRequested({required this.data});
 }

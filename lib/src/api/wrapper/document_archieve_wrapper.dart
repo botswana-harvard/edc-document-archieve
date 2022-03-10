@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:edc_document_archieve/src/api/repository/offline/document_archieve_offline_repository.dart';
 import 'package:edc_document_archieve/src/api/repository/online/base_online_repository.dart';
 import 'package:edc_document_archieve/src/api/repository/online/document_archieve_online_repository.dart';
@@ -6,6 +7,7 @@ import 'package:edc_document_archieve/src/core/models/participant_crf.dart';
 import 'package:edc_document_archieve/src/core/models/participant_non_crf.dart';
 import 'package:edc_document_archieve/src/core/models/study_document.dart';
 import 'package:edc_document_archieve/src/providers/document_archieve_provider.dart';
+import 'package:edc_document_archieve/src/utils/debugLog.dart';
 
 class DocumentArchieveWrapper implements DocumentArchieveProvider {
   DocumentArchieveWrapper() {
@@ -98,5 +100,16 @@ class DocumentArchieveWrapper implements DocumentArchieveProvider {
   @override
   Future<List<StudyDocument>> getCaregiverForms(String studyName) async {
     return await _offlineRepository.getCaregiverForms(studyName);
+  }
+
+  @override
+  Future synchData(List<Map<String, dynamic>> data) async {
+    String url = BaseOnlineRepository.flourishUrl + 'projects/';
+    for (Map<String, dynamic> params in data) {
+      FormData formData = FormData.fromMap(params);
+      Response? response =
+          await _onlineRepository.pushDataToServer(url: url, data: formData);
+      logger.e(response?.data);
+    }
   }
 }

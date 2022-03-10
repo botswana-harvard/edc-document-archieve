@@ -21,11 +21,19 @@ class ParticipantNonCrf extends HiveObject with EquatableMixin {
   @HiveField(4)
   late String id;
 
+  @HiveField(5)
+  String appName;
+
+  @HiveField(6)
+  String created;
+
   ParticipantNonCrf({
     required this.pid,
     required this.document,
     required this.uploads,
     required this.id,
+    required this.appName,
+    required this.created,
   });
 
   factory ParticipantNonCrf.fromJson(Map<String, dynamic> data) =>

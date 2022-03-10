@@ -7,8 +7,8 @@ abstract class BaseOnlineRepository {
   late Dio _dio;
 
   ///http://flourish-dev.bhp.org.bw/
-  static const String flourishUrl =
-      'http://flourish-dev.bhp.org.bw/edc_da_api/';
+  static const String flourishUrl = 'http://192.168.8.102:8000/edc_da_api/';
+  //'http://flourish-dev.bhp.org.bw/edc_da_api/';
   static const String tdUrl = 'http://td-test.bhp.org.bw/edc_da_api/';
   static const String devUrl = 'http://10.113.201.239:8000/edc_da_api/';
 
@@ -54,7 +54,7 @@ abstract class BaseOnlineRepository {
   @protected
   Future<Response> postRequest(
     String path, {
-    Map<String, dynamic>? data,
+    dynamic data,
     Map<String, dynamic>? headers,
     String? contentType,
     // bool setFormUrlEncodedContentType = false,
@@ -72,7 +72,6 @@ abstract class BaseOnlineRepository {
       response = await _dio.post(
         path,
         data: data,
-        options: _options..contentType = contentType,
       );
 
       /// this is out here because of [validateStatus < 500]

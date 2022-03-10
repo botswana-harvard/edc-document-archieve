@@ -21,13 +21,15 @@ class ParticipantNonCrfAdapter extends TypeAdapter<ParticipantNonCrf> {
       document: fields[2] as StudyDocument,
       uploads: (fields[3] as List).cast<GalleryItem>(),
       id: fields[4] as String,
+      appName: fields[5] as String,
+      created: fields[6] as String,
     );
   }
 
   @override
   void write(BinaryWriter writer, ParticipantNonCrf obj) {
     writer
-      ..writeByte(4)
+      ..writeByte(5)
       ..writeByte(1)
       ..write(obj.pid)
       ..writeByte(2)
@@ -35,7 +37,11 @@ class ParticipantNonCrfAdapter extends TypeAdapter<ParticipantNonCrf> {
       ..writeByte(3)
       ..write(obj.uploads)
       ..writeByte(4)
-      ..write(obj.id);
+      ..write(obj.id)
+      ..writeByte(5)
+      ..write(obj.appName)
+      ..writeByte(6)
+      ..write(obj.created);
   }
 
   @override
@@ -55,19 +61,20 @@ class ParticipantNonCrfAdapter extends TypeAdapter<ParticipantNonCrf> {
 
 ParticipantNonCrf _$ParticipantNonCrfFromJson(Map<String, dynamic> json) =>
     ParticipantNonCrf(
-      pid: json['pid'] as String,
-      id: const Uuid().v4(),
-      document:
-          StudyDocument.fromJson(json['document'] as Map<String, dynamic>),
-      uploads: (json['uploads'] as List<dynamic>)
-          .map((e) => e as GalleryItem)
-          .toList(),
-    );
+        pid: json['pid'] as String,
+        document:
+            StudyDocument.fromJson(json['document'] as Map<String, dynamic>),
+        uploads: json['uploads'] as List<GalleryItem>,
+        id: const Uuid().v4().toString(),
+        appName: json['appName'] as String,
+        created: DateTime.now().toString());
 
 Map<String, dynamic> _$ParticipantNonCrfToJson(ParticipantNonCrf instance) =>
     <String, dynamic>{
       'pid': instance.pid,
       'document': instance.document.toJson(),
-      'uploads': instance.uploads,
+      'uploads': instance.uploads.map((e) => e.toJson()).toList(),
       'id': instance.id,
+      'appName': instance.appName,
+      'created': instance.created,
     };

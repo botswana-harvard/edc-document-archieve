@@ -1,4 +1,5 @@
 import 'package:edc_document_archieve/src/config/injector.dart';
+import 'package:edc_document_archieve/src/services/app_service.dart';
 import 'package:edc_document_archieve/src/services/bloc/authentication_bloc.dart';
 import 'package:edc_document_archieve/src/ui/widgets/custom_text.dart';
 import 'package:edc_document_archieve/src/ui/widgets/custom_text_field.dart';
@@ -40,6 +41,13 @@ class _LoginScreenState extends State<LoginScreen> {
     _usernameFocusNode = FocusNode();
     _passwordFocusNode = FocusNode();
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    usernameController.dispose();
+    passwordController.dispose();
+    super.dispose();
   }
 
   @override
@@ -116,6 +124,8 @@ class _LoginScreenState extends State<LoginScreen> {
             Dialogs.showLoadingDialog(context, message: 'Logging in...');
             break;
           case AuthenticationStatus.authenticated:
+            context.read<AppService>().currentUser =
+                usernameController.text.trim();
             Get.toNamed(kBaseRoute);
             break;
           case AuthenticationStatus.unauthenticated:
