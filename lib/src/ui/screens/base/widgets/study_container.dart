@@ -1,4 +1,5 @@
 import 'package:edc_document_archieve/src/ui/widgets/custom_text.dart';
+import 'package:edc_document_archieve/src/utils/constants/constants.dart';
 import 'package:flutter/material.dart';
 
 class CustomStudyCard extends StatelessWidget {

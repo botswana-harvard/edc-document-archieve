@@ -53,10 +53,18 @@ class DocumentArchieveFormDeleted extends DocumentArchieveEvent {
 
 class DocumentArchieveCrfFormSyncRequested extends DocumentArchieveEvent {
   final List<ParticipantCrf> crfs;
-  const DocumentArchieveCrfFormSyncRequested({required this.crfs});
+  final String selectedStudy;
+  const DocumentArchieveCrfFormSyncRequested({
+    required this.crfs,
+    required this.selectedStudy,
+  });
 }
 
 class DocumentArchieveNonCrfFormSyncRequested extends DocumentArchieveEvent {
   final ParticipantNonCrf nonCrf;
-  const DocumentArchieveNonCrfFormSyncRequested({required this.nonCrf});
+  final String selectedStudy;
+  const DocumentArchieveNonCrfFormSyncRequested({
+    required this.nonCrf,
+    required this.selectedStudy,
+  });
 }

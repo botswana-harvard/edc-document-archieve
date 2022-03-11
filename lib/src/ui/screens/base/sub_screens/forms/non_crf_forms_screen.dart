@@ -135,7 +135,9 @@ class _NonCRFormScreenState extends State<NonCRFormScreen> {
                                         title: _documentForm.name.titleCase);
                                   } else {
                                     _archieveBloc.syncNonCrfData(
-                                        nonCrf: _participantNonCrf!);
+                                      nonCrf: _participantNonCrf!,
+                                      selectedStudy: _appService.selectedStudy,
+                                    );
                                   }
                                 },
                                 child: const Text('Sync Data')),

@@ -44,7 +44,13 @@ abstract class DocumentArchieveProvider {
 
   Future<List<ParticipantNonCrf>> getNonCrForms({required String pid});
 
-  Future<List<ParticipantCrf>> synchCrfData(List<ParticipantCrf> data);
+  Future<List<ParticipantCrf>> synchCrfData({
+    required List<ParticipantCrf> crfs,
+    required String selectedStudy,
+  });
 
-  Future<String> synchNonCrfData(ParticipantNonCrf data);
+  Future<String> synchNonCrfData({
+    required ParticipantNonCrf nonCrf,
+    required String selectedStudy,
+  });
 }

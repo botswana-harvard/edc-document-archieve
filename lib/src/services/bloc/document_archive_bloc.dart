@@ -158,8 +158,12 @@ class DocumentArchieveBloc
       Emitter<DocumentArchieveState> emit) async {
     emit(const DocumentArchieveState.loading(data: 'sync'));
     List<ParticipantCrf> data = event.crfs;
+    String selectedStudy = event.selectedStudy;
     List<ParticipantCrf> response =
-        await documentArchieveRepository.synchCrfData(data);
+        await documentArchieveRepository.synchCrfData(
+      crfs: data,
+      selectedStudy: selectedStudy,
+    );
     String? message = documentArchieveRepository.message;
     if (message != 'Success') {
       emit(DocumentArchieveState<String>.error(data: message));
@@ -172,8 +176,12 @@ class DocumentArchieveBloc
       DocumentArchieveNonCrfFormSyncRequested event,
       Emitter<DocumentArchieveState> emit) async {
     ParticipantNonCrf data = event.nonCrf;
+    String selectedStudy = event.selectedStudy;
     emit(const DocumentArchieveState.loading(data: 'sync'));
-    String response = await documentArchieveRepository.synchNonCrfData(data);
+    String response = await documentArchieveRepository.synchNonCrfData(
+      nonCrf: data,
+      selectedStudy: selectedStudy,
+    );
     if (response != 'Success') {
       emit(DocumentArchieveState<String>.error(data: response));
     } else {
@@ -254,14 +262,22 @@ class DocumentArchieveBloc
 
   Future<void> syncCrfsData({
     required List<ParticipantCrf> partcipantCrfs,
+    required String selectedStudy,
   }) async {
-    add(DocumentArchieveCrfFormSyncRequested(crfs: partcipantCrfs));
+    add(DocumentArchieveCrfFormSyncRequested(
+      crfs: partcipantCrfs,
+      selectedStudy: selectedStudy,
+    ));
   }
 
   Future<void> syncNonCrfData({
     required ParticipantNonCrf nonCrf,
+    required String selectedStudy,
   }) async {
-    add(DocumentArchieveNonCrfFormSyncRequested(nonCrf: nonCrf));
+    add(DocumentArchieveNonCrfFormSyncRequested(
+      nonCrf: nonCrf,
+      selectedStudy: selectedStudy,
+    ));
   }
 
   Future<void> addPid({

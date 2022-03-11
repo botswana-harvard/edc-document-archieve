@@ -108,8 +108,21 @@ class DocumentArchieveWrapper implements DocumentArchieveProvider {
   }
 
   @protected
-  Future<String> synchData(Map<String, dynamic> data) async {
-    String url = BaseOnlineRepository.flourishUrl + 'projects/';
+  Future<String> synchData({
+    required String selectedStudy,
+    required Map<String, dynamic> data,
+  }) async {
+    String url;
+    switch (selectedStudy) {
+      case kFlourish:
+        url = BaseOnlineRepository.flourishUrl + 'projects/';
+        break;
+      case kTshiloDikotla:
+        url = BaseOnlineRepository.tdUrl + 'projects/';
+        break;
+      default:
+        url = '';
+    }
     FormData formData = FormData.fromMap(data);
     Response response =
         await _onlineRepository.pushDataToServer(url: url, data: formData);
@@ -133,7 +146,10 @@ class DocumentArchieveWrapper implements DocumentArchieveProvider {
   }
 
   @override
-  Future<List<ParticipantCrf>> synchCrfData(List<ParticipantCrf> crfs) async {
+  Future<List<ParticipantCrf>> synchCrfData({
+    required List<ParticipantCrf> crfs,
+    required String selectedStudy,
+  }) async {
     List<ParticipantCrf> crfForms = crfs.map((e) => e).toList();
     message = '';
     for (var crf in crfForms) {
@@ -156,7 +172,7 @@ class DocumentArchieveWrapper implements DocumentArchieveProvider {
         'username': _offlineRepository.appStorageBox.get(kLastUserLoggedIn),
       };
       if (uploads.isNotEmpty) {
-        message = await synchData(data);
+        message = await synchData(data: data, selectedStudy: selectedStudy);
         if (message == 'Success') {
           await _offlineRepository.deleteParticipantCrfForm(crf: crf);
           crfs.remove(crf);
@@ -167,7 +183,10 @@ class DocumentArchieveWrapper implements DocumentArchieveProvider {
   }
 
   @override
-  Future<String> synchNonCrfData(ParticipantNonCrf nonCrf) async {
+  Future<String> synchNonCrfData({
+    required ParticipantNonCrf nonCrf,
+    required String selectedStudy,
+  }) async {
     String modelName = nonCrf.document.name.constantCase.toLowerCase();
     List<MultipartFile> uploads = [];
     for (GalleryItem upload in nonCrf.uploads) {
@@ -186,7 +205,7 @@ class DocumentArchieveWrapper implements DocumentArchieveProvider {
     if (nonCrf.uploads.isEmpty) {
       return 'No data available to sync';
     }
-    String response = await synchData(data);
+    String response = await synchData(data: data, selectedStudy: selectedStudy);
     if (response == 'Success') {
       await _offlineRepository.deleteParticipantNonCrfForm(nonCrf: nonCrf);
     }

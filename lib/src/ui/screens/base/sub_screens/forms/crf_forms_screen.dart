@@ -130,7 +130,9 @@ class _CRFormScreenState extends State<CRFormScreen> {
                                     );
                                   } else {
                                     _archieveBloc.syncCrfsData(
-                                        partcipantCrfs: _partcipantCrfs);
+                                      partcipantCrfs: _partcipantCrfs,
+                                      selectedStudy: _appService.selectedStudy,
+                                    );
                                   }
                                 },
                                 child: const Text('Sync Data')),
