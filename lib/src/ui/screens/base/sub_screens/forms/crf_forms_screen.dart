@@ -120,8 +120,19 @@ class _CRFormScreenState extends State<CRFormScreen> {
                             const SizedBox(width: 10),
                             CustomText(text: _pid, fontSize: 16),
                             TextButton(
-                                onPressed: () => _archieveBloc.syncCrfsData(
-                                    partcipantCrfs: _partcipantCrfs),
+                                onPressed: () async {
+                                  if (_partcipantCrfs.isEmpty) {
+                                    await CoolAlert.show(
+                                      context: context,
+                                      type: CoolAlertType.info,
+                                      text: 'No records to sync',
+                                      title: _documentForm.name.titleCase,
+                                    );
+                                  } else {
+                                    _archieveBloc.syncCrfsData(
+                                        partcipantCrfs: _partcipantCrfs);
+                                  }
+                                },
                                 child: const Text('Sync Data')),
                           ],
                         ),

@@ -7,10 +7,10 @@ abstract class BaseOnlineRepository {
   late Dio _dio;
 
   ///http://flourish-dev.bhp.org.bw/
-  static const String flourishUrl = 'http://192.168.8.102:8000/edc_da_api/';
+  static const String flourishUrl = 'http://10.113.201.239:8000/edc_da_api/';
   //'http://flourish-dev.bhp.org.bw/edc_da_api/';
-  static const String tdUrl = 'http://td-test.bhp.org.bw/edc_da_api/';
-  static const String devUrl = 'http://10.113.201.239:8000/edc_da_api/';
+  static const String tdUrl = 'http://10.113.201.239:8001/edc_da_api/';
+  // 'http://td-test.bhp.org.bw/edc_da_api/';
 
   ///10.113.201.239
 
@@ -30,6 +30,7 @@ abstract class BaseOnlineRepository {
   Future<Response> getRequest(
     String path, {
     Map<String, dynamic>? headers,
+    Map<String, dynamic>? queryParameters,
   }) async {
     late Response response;
 
@@ -39,6 +40,7 @@ abstract class BaseOnlineRepository {
       response = await _dio.get(
         path,
         options: _options,
+        queryParameters: queryParameters,
       );
 
       return response;
@@ -78,7 +80,7 @@ abstract class BaseOnlineRepository {
       return response;
     } on DioError catch (error) {
       // logger.e(error.message);
-      logger.w("${error.message} \n${error.response?.statusCode}");
+      logger.w("${error.message} \n${error.response?.realUri}");
 
       return Response(
           statusMessage: error.message,

@@ -126,9 +126,17 @@ class _NonCRFormScreenState extends State<NonCRFormScreen> {
                               ),
                             ),
                             TextButton(
-                                onPressed: () {
-                                  _archieveBloc.syncNonCrfData(
-                                      nonCrf: _participantNonCrf!);
+                                onPressed: () async {
+                                  if (_participantNonCrf == null) {
+                                    await CoolAlert.show(
+                                        context: context,
+                                        type: CoolAlertType.info,
+                                        text: 'No records to sync',
+                                        title: _documentForm.name.titleCase);
+                                  } else {
+                                    _archieveBloc.syncNonCrfData(
+                                        nonCrf: _participantNonCrf!);
+                                  }
                                 },
                                 child: const Text('Sync Data')),
                           ],

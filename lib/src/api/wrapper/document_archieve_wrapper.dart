@@ -134,7 +134,8 @@ class DocumentArchieveWrapper implements DocumentArchieveProvider {
 
   @override
   Future<List<ParticipantCrf>> synchCrfData(List<ParticipantCrf> crfs) async {
-    List<ParticipantCrf> crfForms = crfs;
+    List<ParticipantCrf> crfForms = crfs.map((e) => e).toList();
+    message = '';
     for (var crf in crfForms) {
       String modelName = crf.document.name.constantCase.toLowerCase();
       List<MultipartFile> uploads = [];

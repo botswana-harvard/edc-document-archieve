@@ -69,29 +69,34 @@ class AuthenticationWrapper implements AuthenticationProvider {
 
   Future<AuthenticationStatus> authenticateOnline(
       {required String username, required String password}) async {
-    Response? response = await _onlineRepository.login(
-        BaseOnlineRepository.flourishUrl,
-        username: username,
-        password: password);
-    switch (response!.statusCode) {
-      case 200:
-        //lets encrypt the input password and compare with the users password
-        List<int> bytes = utf8.encode(password);
-        Digest hashedPassword = hasher.convert(bytes);
-        //
-        Map<String, dynamic> results = response.data;
-        results['password'] = hashedPassword.toString();
-        UserAccount userAccount = UserAccount.fromJson(results);
-        //
-        await _offlineRepository.userAccountsBox.put(username, userAccount);
-        await _offlineRepository
-            .addLastUserAccountLoggedIn(userAccount.username);
-        await _offlineRepository.addToken(userAccount.token);
-        await saveDataLocalStorage();
-        return AuthenticationStatus.authenticated;
-      default:
-        error = response.data['non_field_errors'][0];
-        return AuthenticationStatus.unauthenticated;
+    List<Response<dynamic>?> responses = await Future.wait([
+      _onlineRepository.login(BaseOnlineRepository.flourishUrl,
+          username: username, password: password),
+      _onlineRepository.login(BaseOnlineRepository.tdUrl,
+          username: username, password: password)
+    ]);
+
+    Response? response = responses.firstWhere(
+        (response) => response?.statusCode == 200,
+        orElse: () => null);
+
+    if (response == null) {
+      error = 'Unable to Login with provided Credentials';
+      return AuthenticationStatus.unauthenticated;
+    } else {
+      //lets encrypt the input password and compare with the users password
+      List<int> bytes = utf8.encode(password);
+      Digest hashedPassword = hasher.convert(bytes);
+      //
+      Map<String, dynamic> results = response.data;
+      results['password'] = hashedPassword.toString();
+      UserAccount userAccount = UserAccount.fromJson(results);
+      //
+      await _offlineRepository.userAccountsBox.put(username, userAccount);
+      await _offlineRepository.addLastUserAccountLoggedIn(userAccount.username);
+      await _offlineRepository.addToken(userAccount.token);
+      await saveDataLocalStorage();
+      return AuthenticationStatus.authenticated;
     }
   }
 
@@ -103,24 +108,36 @@ class AuthenticationWrapper implements AuthenticationProvider {
 
   Future<void> saveDataLocalStorage() async {
     String tdUrl = BaseOnlineRepository.tdUrl;
-    data =
-        await _onlineRepository.getProjects(BaseOnlineRepository.flourishUrl);
+    String flourishUrl = BaseOnlineRepository.flourishUrl;
+
+    List<dynamic> response = await Future.wait([
+      _onlineRepository.getProjects(flourishUrl, study: kFlourish),
+      _onlineRepository.getProjects(tdUrl, study: kTshiloDikotla)
+    ]);
+    //get flourish data from flourish edc
+    saveProjectDataLocalStorage(data: response[0], project: kFlourish);
+    saveProjectDataLocalStorage(data: response[1], project: kTshiloDikotla);
+
+    //save projects to loval storage
+    await _offlineRepository.appStorageBox
+        .put(kProjects, [kFlourish, kTshiloDikotla]);
+  }
+
+  saveProjectDataLocalStorage({
+    required String project,
+    required Map<String, dynamic> data,
+  }) async {
     if (data.isNotEmpty) {
-      data.forEach((key, value) async {
-        String projectName = key;
-        if (value.isNotEmpty) {
-          Map<String, dynamic> pids = value['pids'];
-          await _offlineRepository.appStorageBox
-              .put('${projectName}_pids', pids);
-          Map<String, dynamic> careGiverForms = value['caregiver_forms'];
-          await _offlineRepository.appStorageBox
-              .put('${projectName}_caregiver_forms', careGiverForms);
-          Map<String, dynamic> childForms = value['child_forms'];
-          await _offlineRepository.appStorageBox
-              .put('${projectName}_child_forms', childForms);
-        }
-      });
-      await _offlineRepository.appStorageBox.put(kProjects, data.keys.toList());
+      if (data.isNotEmpty) {
+        Map<String, dynamic> pids = data['pids'];
+        await _offlineRepository.appStorageBox.put('${project}_pids', pids);
+        Map<String, dynamic> careGiverForms = data['caregiver_forms'];
+        await _offlineRepository.appStorageBox
+            .put('${project}_caregiver_forms', careGiverForms);
+        Map<String, dynamic> childForms = data['child_forms'];
+        await _offlineRepository.appStorageBox
+            .put('${project}_child_forms', childForms);
+      }
     }
   }
 }
