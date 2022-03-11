@@ -69,11 +69,11 @@ class AuthenticationWrapper implements AuthenticationProvider {
 
   Future<AuthenticationStatus> authenticateOnline(
       {required String username, required String password}) async {
-    Response response = await _onlineRepository.login(
+    Response? response = await _onlineRepository.login(
         BaseOnlineRepository.flourishUrl,
         username: username,
         password: password);
-    switch (response.statusCode) {
+    switch (response!.statusCode) {
       case 200:
         //lets encrypt the input password and compare with the users password
         List<int> bytes = utf8.encode(password);
@@ -84,7 +84,9 @@ class AuthenticationWrapper implements AuthenticationProvider {
         UserAccount userAccount = UserAccount.fromJson(results);
         //
         await _offlineRepository.userAccountsBox.put(username, userAccount);
-        await _offlineRepository.addLastUserAccountLoggedIn(userAccount.token);
+        await _offlineRepository
+            .addLastUserAccountLoggedIn(userAccount.username);
+        await _offlineRepository.addToken(userAccount.token);
         await saveDataLocalStorage();
         return AuthenticationStatus.authenticated;
       default:

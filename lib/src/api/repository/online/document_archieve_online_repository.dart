@@ -10,11 +10,7 @@ class DocumentArchieveOnLineRepository extends BaseOnlineRepository {
     return null;
   }
 
-  Future<Response?> pushDataToServer({required url, dynamic data}) async {
-    Response response = await postRequest(url, data: data);
-    if (response.statusCode == 200) {
-      return response;
-    }
-    return null;
+  Future<Response> pushDataToServer({required url, dynamic data}) async {
+    return await postRequest(url, data: data);
   }
 }

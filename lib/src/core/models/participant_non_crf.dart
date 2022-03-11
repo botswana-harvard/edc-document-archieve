@@ -42,5 +42,5 @@ class ParticipantNonCrf extends HiveObject with EquatableMixin {
   Map<String, dynamic> toJson() => _$ParticipantNonCrfToJson(this);
 
   @override
-  List<Object?> get props => [id, pid, document];
+  List<Object?> get props => [pid, document];
 }

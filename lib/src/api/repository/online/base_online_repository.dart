@@ -59,15 +59,15 @@ abstract class BaseOnlineRepository {
     String? contentType,
     // bool setFormUrlEncodedContentType = false,
   }) async {
-    late Response response;
+    late Response? response;
+    Options _options = Options(
+      validateStatus: (status) {
+        return status! < 500;
+      },
+      headers: headers,
+    );
     try {
       // set for requests with custom headers
-      Options _options = Options(
-        validateStatus: (status) {
-          return status! < 500;
-        },
-        headers: headers,
-      );
 
       response = await _dio.post(
         path,
@@ -78,9 +78,12 @@ abstract class BaseOnlineRepository {
       return response;
     } on DioError catch (error) {
       // logger.e(error.message);
-      logger.w("${error.message} \n${error.requestOptions.uri}");
+      logger.w("${error.message} \n${error.response?.statusCode}");
 
-      return response;
+      return Response(
+          statusMessage: error.message,
+          statusCode: error.response?.statusCode,
+          requestOptions: error.requestOptions);
     }
   }
 }

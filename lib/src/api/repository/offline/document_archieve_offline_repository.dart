@@ -37,9 +37,8 @@ class DocumentArchieveOffLineRepository extends LocalStorageRepository {
           nonCrfs.firstWhere((form) => nonCrf == form);
       //remove it from list of non crfs
       nonCrfs.remove(filteredForm);
-    } on StateError catch (e) {
-      logger.e(e);
-    }
+      // ignore: empty_catches
+    } on StateError {}
     nonCrfs.add(nonCrf);
     await appStorageBox.delete(key);
     await appStorageBox.put(key, nonCrfs);

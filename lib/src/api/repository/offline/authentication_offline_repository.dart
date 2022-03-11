@@ -44,6 +44,7 @@ class AuthenticationOfflineRepository extends LocalStorageRepository
     // check if the user exists in Hive database, if exists verify password
     if (user != null && user.password == hashedPassword.toString()) {
       await addLastUserAccountLoggedIn(user.token);
+      await addLastUserAccountLoggedIn(user.username);
       authStatus = AuthenticationStatus.authenticated;
       logger.wtf('Authenticated...');
     } else {
@@ -66,15 +67,20 @@ class AuthenticationOfflineRepository extends LocalStorageRepository
   @override
   String lastUserAccountLoggedIn() {
     //Get last logged in user from Hive database
-    String token = appStorageBox.get(kLastUserLoggedIn, defaultValue: '');
-    return token;
+    String username = appStorageBox.get(kLastUserLoggedIn, defaultValue: '');
+    return username;
   }
 
   @override
   String error = '';
 
-  addLastUserAccountLoggedIn(String token) async {
+  addLastUserAccountLoggedIn(String username) async {
     await appStorageBox.delete(kLastUserLoggedIn);
-    await appStorageBox.put(kLastUserLoggedIn, token);
+    await appStorageBox.put(kLastUserLoggedIn, username);
+  }
+
+  addToken(String token) async {
+    await appStorageBox.delete(kToken);
+    await appStorageBox.put(kToken, token);
   }
 }

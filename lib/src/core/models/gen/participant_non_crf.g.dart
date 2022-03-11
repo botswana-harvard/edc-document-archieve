@@ -29,7 +29,7 @@ class ParticipantNonCrfAdapter extends TypeAdapter<ParticipantNonCrf> {
   @override
   void write(BinaryWriter writer, ParticipantNonCrf obj) {
     writer
-      ..writeByte(5)
+      ..writeByte(6)
       ..writeByte(1)
       ..write(obj.pid)
       ..writeByte(2)

@@ -60,7 +60,13 @@ class _CRFormScreenState extends State<CRFormScreen> {
       listener: (BuildContext context, DocumentArchieveState state) {
         switch (state.status) {
           case DocumentArchieveStatus.loading:
-            Dialogs.showLoadingDialog(context);
+            String message = '';
+            if (state.data == 'sync') {
+              message = 'Synchronizing data...';
+            } else {
+              message = 'Please Wait...';
+            }
+            Dialogs.showLoadingDialog(context, message: message);
             break;
           case DocumentArchieveStatus.success:
             Dialogs.closeLoadingDialog(context);
@@ -107,9 +113,7 @@ class _CRFormScreenState extends State<CRFormScreen> {
                             CustomText(text: _pid, fontSize: 16),
                             TextButton(
                                 onPressed: () => _archieveBloc.syncCrfsData(
-                                      partcipantCrfs: _partcipantCrfs,
-                                      currentUser: _appService.currentUser,
-                                    ),
+                                    partcipantCrfs: _partcipantCrfs),
                                 child: const Text('Sync Data')),
                           ],
                         ),

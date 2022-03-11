@@ -1,9 +1,9 @@
-import 'package:dio/dio.dart';
 import 'package:edc_document_archieve/src/core/models/participant_crf.dart';
 import 'package:edc_document_archieve/src/core/models/participant_non_crf.dart';
 import 'package:edc_document_archieve/src/core/models/study_document.dart';
 
 abstract class DocumentArchieveProvider {
+  late String? message;
   //Get all available studies to choose from
   Future<List<String>> getAllStudies();
 
@@ -44,7 +44,7 @@ abstract class DocumentArchieveProvider {
 
   Future<List<ParticipantNonCrf>> getNonCrForms({required String pid});
 
-  Future synchCrfData(List<Map<String, dynamic>> data);
+  Future<List<ParticipantCrf>> synchCrfData(List<ParticipantCrf> data);
 
-  Future synchNonCrfData(Map<String, dynamic> data);
+  Future<String> synchNonCrfData(ParticipantNonCrf data);
 }

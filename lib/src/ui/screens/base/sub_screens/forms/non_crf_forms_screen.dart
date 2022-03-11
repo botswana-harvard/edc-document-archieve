@@ -58,7 +58,14 @@ class _NonCRFormScreenState extends State<NonCRFormScreen> {
           listener: (BuildContext context, DocumentArchieveState state) {
             switch (state.status) {
               case DocumentArchieveStatus.loading:
-                Dialogs.showLoadingDialog(context);
+                String message = '';
+                if (state.data == 'sync') {
+                  message = 'Synchronizing data...';
+                } else {
+                  message = 'Please Wait...';
+                }
+                Dialogs.showLoadingDialog(context, message: message);
+                break;
                 break;
               case DocumentArchieveStatus.success:
                 Dialogs.closeLoadingDialog(context);
@@ -114,9 +121,7 @@ class _NonCRFormScreenState extends State<NonCRFormScreen> {
                             TextButton(
                                 onPressed: () {
                                   _archieveBloc.syncNonCrfData(
-                                    nonCrf: _participantNonCrf!,
-                                    currentUser: _appService.currentUser,
-                                  );
+                                      nonCrf: _participantNonCrf!);
                                 },
                                 child: const Text('Sync Data')),
                           ],

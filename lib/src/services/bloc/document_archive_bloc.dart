@@ -156,19 +156,20 @@ class DocumentArchieveBloc
   Future<FutureOr<void>> _onDocumentArchieveCrfFormSyncRequested(
       DocumentArchieveCrfFormSyncRequested event,
       Emitter<DocumentArchieveState> emit) async {
-    emit(const DocumentArchieveState.loading());
-    List<Map<String, dynamic>> data = event.data;
-    await documentArchieveRepository.synchCrfData(data);
-    emit(const DocumentArchieveState.loaded());
+    emit(const DocumentArchieveState.loading(data: 'sync'));
+    List<ParticipantCrf> data = event.crfs;
+    List<ParticipantCrf> response =
+        await documentArchieveRepository.synchCrfData(data);
+    emit(DocumentArchieveState<List<ParticipantCrf>>.loaded(data: response));
   }
 
   Future<FutureOr<void>> _onDocumentArchieveNonCrfFormSyncRequested(
       DocumentArchieveNonCrfFormSyncRequested event,
       Emitter<DocumentArchieveState> emit) async {
-    Map<String, dynamic> data = event.data;
-    emit(const DocumentArchieveState.loading());
-    await documentArchieveRepository.synchNonCrfData(data);
-    emit(const DocumentArchieveState.loaded());
+    ParticipantNonCrf data = event.nonCrf;
+    emit(const DocumentArchieveState.loading(data: 'sync'));
+    String response = await documentArchieveRepository.synchNonCrfData(data);
+    emit(const DocumentArchieveState<String>.loaded(data: null));
   }
 
   void getDocumentArchievePids({required String selectedStudy}) {
@@ -244,54 +245,14 @@ class DocumentArchieveBloc
 
   Future<void> syncCrfsData({
     required List<ParticipantCrf> partcipantCrfs,
-    required String currentUser,
   }) async {
-    List<Map<String, dynamic>> results = [];
-    for (var crf in partcipantCrfs) {
-      String modelName = crf.document.name.constantCase.toLowerCase();
-      List<MultipartFile> uploads = [];
-      for (GalleryItem upload in crf.uploads) {
-        MultipartFile multipart =
-            await MultipartFile.fromFile(upload.imageUrl, filename: upload.id);
-        uploads.add(multipart);
-      }
-
-      Map<String, dynamic> data = {
-        'subject_identifier': crf.pid,
-        'app_label': crf.appName,
-        'model_name': modelName,
-        'visit_code': crf.visit.substring(1),
-        'timepoint': crf.timepoint,
-        'files': uploads,
-        'date_captured': convertDateTimeDisplay(crf.created),
-        'username': currentUser,
-      };
-      results.add(data);
-    }
-    logger.e(results);
-    add(DocumentArchieveCrfFormSyncRequested(data: results));
+    add(DocumentArchieveCrfFormSyncRequested(crfs: partcipantCrfs));
   }
 
   Future<void> syncNonCrfData({
     required ParticipantNonCrf nonCrf,
-    required String currentUser,
   }) async {
-    String modelName = nonCrf.document.name.constantCase.toLowerCase();
-    List<MultipartFile> uploads = [];
-    for (GalleryItem upload in nonCrf.uploads) {
-      MultipartFile multipart =
-          await MultipartFile.fromFile(upload.imageUrl, filename: upload.id);
-      uploads.add(multipart);
-    }
-    Map<String, dynamic> data = {
-      'subject_identifier': nonCrf.pid,
-      'app_label': nonCrf.appName,
-      'model_name': modelName,
-      'files': uploads,
-      'date_captured': convertDateTimeDisplay(nonCrf.created),
-      'username': currentUser,
-    };
-    add(DocumentArchieveNonCrfFormSyncRequested(data: data));
+    add(DocumentArchieveNonCrfFormSyncRequested(nonCrf: nonCrf));
   }
 
   Future<void> addPid({
@@ -323,13 +284,5 @@ class DocumentArchieveBloc
       kChildPid: results[kChildPid]
     };
     return data;
-  }
-
-  String convertDateTimeDisplay(String date) {
-    final DateFormat displayFormater = DateFormat('yyyy-MM-dd HH:mm');
-    final DateFormat serverFormater = DateFormat('dd-MM-yyyy HH:mm');
-    final DateTime displayDate = displayFormater.parse(date);
-    final String formatted = serverFormater.format(displayDate);
-    return formatted;
   }
 }

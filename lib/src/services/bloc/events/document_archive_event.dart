@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:edc_document_archieve/src/core/models/participant_crf.dart';
+import 'package:edc_document_archieve/src/core/models/participant_non_crf.dart';
 import 'package:edc_document_archieve/src/core/models/study_document.dart';
 import 'package:equatable/equatable.dart';
 
@@ -51,11 +52,11 @@ class DocumentArchieveFormDeleted extends DocumentArchieveEvent {
 }
 
 class DocumentArchieveCrfFormSyncRequested extends DocumentArchieveEvent {
-  final List<Map<String, dynamic>> data;
-  const DocumentArchieveCrfFormSyncRequested({required this.data});
+  final List<ParticipantCrf> crfs;
+  const DocumentArchieveCrfFormSyncRequested({required this.crfs});
 }
 
 class DocumentArchieveNonCrfFormSyncRequested extends DocumentArchieveEvent {
-  final Map<String, dynamic> data;
-  const DocumentArchieveNonCrfFormSyncRequested({required this.data});
+  final ParticipantNonCrf nonCrf;
+  const DocumentArchieveNonCrfFormSyncRequested({required this.nonCrf});
 }
