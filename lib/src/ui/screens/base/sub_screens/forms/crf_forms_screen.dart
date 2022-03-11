@@ -57,7 +57,7 @@ class _CRFormScreenState extends State<CRFormScreen> {
   Widget build(BuildContext context) {
     return BlocConsumer<DocumentArchieveBloc, DocumentArchieveState>(
       bloc: _archieveBloc,
-      listener: (BuildContext context, DocumentArchieveState state) {
+      listener: (BuildContext context, DocumentArchieveState state) async {
         switch (state.status) {
           case DocumentArchieveStatus.loading:
             String message = '';
@@ -73,6 +73,14 @@ class _CRFormScreenState extends State<CRFormScreen> {
             if (state.data != null) {
               _partcipantCrfs = state.data;
             }
+            break;
+          case DocumentArchieveStatus.error:
+            Dialogs.closeLoadingDialog(context);
+            await CoolAlert.show(
+              context: context,
+              type: CoolAlertType.error,
+              text: state.data,
+            );
             break;
           default:
         }

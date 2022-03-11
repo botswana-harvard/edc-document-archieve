@@ -160,7 +160,12 @@ class DocumentArchieveBloc
     List<ParticipantCrf> data = event.crfs;
     List<ParticipantCrf> response =
         await documentArchieveRepository.synchCrfData(data);
-    emit(DocumentArchieveState<List<ParticipantCrf>>.loaded(data: response));
+    String? message = documentArchieveRepository.message;
+    if (message != 'Success') {
+      emit(DocumentArchieveState<String>.error(data: message));
+    } else {
+      emit(DocumentArchieveState<List<ParticipantCrf>>.loaded(data: response));
+    }
   }
 
   Future<FutureOr<void>> _onDocumentArchieveNonCrfFormSyncRequested(
@@ -169,7 +174,11 @@ class DocumentArchieveBloc
     ParticipantNonCrf data = event.nonCrf;
     emit(const DocumentArchieveState.loading(data: 'sync'));
     String response = await documentArchieveRepository.synchNonCrfData(data);
-    emit(const DocumentArchieveState<String>.loaded(data: null));
+    if (response != 'Success') {
+      emit(DocumentArchieveState<String>.error(data: response));
+    } else {
+      emit(const DocumentArchieveState<String>.loaded(data: null));
+    }
   }
 
   void getDocumentArchievePids({required String selectedStudy}) {

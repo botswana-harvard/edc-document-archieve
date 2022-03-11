@@ -55,7 +55,7 @@ class _NonCRFormScreenState extends State<NonCRFormScreen> {
         double parentWidth = constraints.maxWidth;
         return BlocConsumer<DocumentArchieveBloc, DocumentArchieveState>(
           bloc: _archieveBloc,
-          listener: (BuildContext context, DocumentArchieveState state) {
+          listener: (BuildContext context, DocumentArchieveState state) async {
             switch (state.status) {
               case DocumentArchieveStatus.loading:
                 String message = '';
@@ -66,7 +66,6 @@ class _NonCRFormScreenState extends State<NonCRFormScreen> {
                 }
                 Dialogs.showLoadingDialog(context, message: message);
                 break;
-                break;
               case DocumentArchieveStatus.success:
                 Dialogs.closeLoadingDialog(context);
                 _participantNonCrf = state.data;
@@ -75,6 +74,14 @@ class _NonCRFormScreenState extends State<NonCRFormScreen> {
                 } else {
                   uploads = [];
                 }
+                break;
+              case DocumentArchieveStatus.error:
+                Dialogs.closeLoadingDialog(context);
+                await CoolAlert.show(
+                  context: context,
+                  type: CoolAlertType.error,
+                  text: state.data,
+                );
                 break;
               default:
             }
