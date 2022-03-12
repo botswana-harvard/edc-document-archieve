@@ -17,6 +17,8 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
+import 'package:recase/recase.dart';
 
 // ignore: must_be_immutable
 class PidsScreen extends StatefulWidget {
@@ -44,6 +46,10 @@ class _PidsScreenState extends State<PidsScreen> {
   bool isNavbarHidden = false;
   int previousIndex = 0;
   int currentIndex = 0;
+  final RefreshController _caregiverRefreshController =
+      RefreshController(initialRefresh: false);
+  final RefreshController _childRefreshController =
+      RefreshController(initialRefresh: false);
 
   @override
   void initState() {
@@ -142,7 +148,7 @@ class _PidsScreenState extends State<PidsScreen> {
         return Scaffold(
           backgroundColor: Theme.of(context).cardColor,
           appBar: CustomAppBar(
-            titleName: _appService.selectedStudy,
+            titleName: _appService.selectedStudy.titleCase,
             implyLeading: true,
             actionButtons: [
               IconButton(
@@ -162,17 +168,25 @@ class _PidsScreenState extends State<PidsScreen> {
                   color: kDarkBlue,
                 ),
               ),
+
+              // TODO: list of pending pids to sync
+              // IconButton(
+              //     onPressed: () {}, icon: const Icon(Icons.pending_actions))
             ],
           ),
           body: PersistentTabView(
             context,
             screens: [
               ListPids(
-                  scrollController: _caregiverScrollController,
-                  pids: caregiverPids,
-                  onFolderButtonTapped: onFolderButtonTapped,
-                  studyDocuments: caregiverDocuments,
-                  cardKeyList: caregiverCardKeyList),
+                scrollController: _caregiverScrollController,
+                pids: caregiverPids,
+                onFolderButtonTapped: onFolderButtonTapped,
+                studyDocuments: caregiverDocuments,
+                cardKeyList: caregiverCardKeyList,
+                onLoading: _onLoading,
+                onRefresh: _onRefresh,
+                refreshController: _caregiverRefreshController,
+              ),
               CreatePidScreen(previousIndex: previousIndex),
               ListPids(
                 scrollController: _childScrollController,
@@ -180,6 +194,9 @@ class _PidsScreenState extends State<PidsScreen> {
                 onFolderButtonTapped: onFolderButtonTapped,
                 studyDocuments: childDocuments,
                 cardKeyList: childCardKeyList,
+                onLoading: _onLoading,
+                onRefresh: _onRefresh,
+                refreshController: _childRefreshController,
               )
             ],
             controller: _controller,
@@ -250,5 +267,20 @@ class _PidsScreenState extends State<PidsScreen> {
       previousIndex = currentIndex;
       currentIndex = value;
     });
+  }
+
+  void _onRefresh() async {
+    // monitor network fetch
+    await Future.delayed(const Duration(milliseconds: 1000));
+    // if failed,use refreshFailed()
+    _caregiverRefreshController.refreshCompleted();
+  }
+
+  void _onLoading() async {
+    // monitor network fetch
+    await Future.delayed(const Duration(milliseconds: 1000));
+    // if failed,use loadFailed(),if no data return,use LoadNodata()
+    setState(() {});
+    _caregiverRefreshController.loadComplete();
   }
 }

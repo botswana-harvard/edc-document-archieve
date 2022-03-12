@@ -310,7 +310,7 @@ class _CreateCRFormScreenState extends State<CreateCRFormScreen> {
 
   void onDropdownConsentChanged(String? value) {
     setState(() {
-      selectedTimePoint = value;
+      selectedConsentVersion = value;
       FocusScope.of(context).unfocus();
     });
   }

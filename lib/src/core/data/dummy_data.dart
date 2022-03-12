@@ -59,10 +59,10 @@ const List<Map<String, dynamic>> pidChoice = [
 ];
 
 const List<Map<String, dynamic>> tdMaternalVisitCodeChoice = [
-  {'display': 'Antenatal Enrollment V1', 'value': 'x1000M'},
+  {'display': 'Antenatal Enrollment', 'value': 'x1000M'},
   {'display': 'Antenatal Visit 1', 'value': 'x1010M'},
   {'display': 'Antenatal Visit 2', 'value': 'x1020M'},
-  {'display': 'Antenatal Visit Membership 1 v3', 'value': 'y1010M'},
+  {'display': 'Antenatal Visit Membership 1', 'value': 'y1010M'},
   {'display': 'Delivery Visit', 'value': 'x2000M'},
   {'display': '1 Month Visit', 'value': 'x2010M'},
   {'display': '2 Month Visit', 'value': 'x2020M'},
@@ -75,7 +75,7 @@ const List<Map<String, dynamic>> tdMaternalVisitCodeChoice = [
 ];
 
 const List<Map<String, dynamic>> tdChildVisitCodeChoice = [
-  {'display': 'Birth V1', 'value': 'x2000'},
+  {'display': 'Birth Visit', 'value': 'x2000'},
   {'display': 'Infant 1 Month Visit', 'value': 'x2010'},
   {'display': 'Infant 2 Month Visit', 'value': 'x2020'},
   {'display': 'Infant 6 Month Visit', 'value': 'x2060'},
