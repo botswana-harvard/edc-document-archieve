@@ -151,6 +151,7 @@ class DocumentArchieveWrapper implements DocumentArchieveProvider {
     required String selectedStudy,
   }) async {
     List<ParticipantCrf> crfForms = crfs.map((e) => e).toList();
+    Map<String, dynamic> data = {};
     message = '';
     for (var crf in crfForms) {
       String modelName = crf.document.name.constantCase.toLowerCase();
@@ -161,16 +162,32 @@ class DocumentArchieveWrapper implements DocumentArchieveProvider {
         uploads.add(multipart);
       }
 
-      Map<String, dynamic> data = {
-        'subject_identifier': crf.pid,
-        'app_label': crf.appName,
-        'model_name': modelName,
-        'visit_code': crf.visit.substring(1),
-        'timepoint': crf.timepoint,
-        'files': uploads,
-        'date_captured': convertDateTimeDisplay(crf.created),
-        'username': _offlineRepository.appStorageBox.get(kLastUserLoggedIn),
-      };
+      if (selectedStudy == kTshiloDikotla) {
+        String consentVersion = crf.visit.substring(0, 1) == 'x' ? '1' : '3';
+        data = {
+          'subject_identifier': crf.pid,
+          'app_label': crf.appName,
+          'model_name': modelName,
+          'visit_code': crf.visit.substring(1),
+          'timepoint': crf.timepoint,
+          'consent_version': consentVersion,
+          'files': uploads,
+          'date_captured': convertDateTimeDisplay(crf.created),
+          'username': _offlineRepository.appStorageBox.get(kLastUserLoggedIn),
+        };
+      } else {
+        data = {
+          'subject_identifier': crf.pid,
+          'app_label': crf.appName,
+          'model_name': modelName,
+          'visit_code': crf.visit.substring(1),
+          'timepoint': crf.timepoint,
+          'files': uploads,
+          'date_captured': convertDateTimeDisplay(crf.created),
+          'username': _offlineRepository.appStorageBox.get(kLastUserLoggedIn),
+        };
+      }
+
       if (uploads.isNotEmpty) {
         message = await synchData(data: data, selectedStudy: selectedStudy);
         if (message == 'Success') {

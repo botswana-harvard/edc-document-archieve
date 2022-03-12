@@ -17,6 +17,7 @@ const String kUpload = 'upload';
 const String kUpdate = 'update';
 const String kVisitCode = 'visit code';
 const String kTimePoint = 'timepoint';
+const String kConsentVersion = 'consent version';
 
 const String kAppStorageBox = 'appStorageBox';
 const String kUserAccountsBox = 'userAccountsBox';

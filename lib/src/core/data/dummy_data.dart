@@ -57,3 +57,37 @@ const List<Map<String, dynamic>> pidChoice = [
   {'display': 'Caregiver', 'value': 'caregiver'},
   {'display': 'Child', 'value': 'child'},
 ];
+
+const List<Map<String, dynamic>> tdMaternalVisitCodeChoice = [
+  {'display': 'Antenatal Enrollment V1', 'value': 'x1000M'},
+  {'display': 'Antenatal Visit 1', 'value': 'x1010M'},
+  {'display': 'Antenatal Visit 2', 'value': 'x1020M'},
+  {'display': 'Antenatal Visit Membership 1 v3', 'value': 'y1010M'},
+  {'display': 'Delivery Visit', 'value': 'x2000M'},
+  {'display': '1 Month Visit', 'value': 'x2010M'},
+  {'display': '2 Month Visit', 'value': 'x2020M'},
+  {'display': '6 Month Visit', 'value': 'x2060M'},
+  {'display': '12 Month Visit', 'value': 'x2120M'},
+  {'display': '18 Month Visit', 'value': 'x2180M'},
+  {'display': '24 Month Visit', 'value': 'x2240M'},
+  {'display': '30 Month Visit', 'value': 'x2300M'},
+  {'display': '36 Month Visit', 'value': 'x2360M'},
+];
+
+const List<Map<String, dynamic>> tdChildVisitCodeChoice = [
+  {'display': 'Birth V1', 'value': 'x2000'},
+  {'display': 'Infant 1 Month Visit', 'value': 'x2010'},
+  {'display': 'Infant 2 Month Visit', 'value': 'x2020'},
+  {'display': 'Infant 6 Month Visit', 'value': 'x2060'},
+  {'display': 'Infant 12 Month Visit', 'value': 'x2120'},
+  {'display': 'Infant 18 Month Visit', 'value': 'x2180'},
+  {'display': 'Infant 24 Month Visit', 'value': 'x2240'},
+  {'display': 'Infant 30 Month Visit', 'value': 'x2300'},
+  {'display': 'Infant 36 Month Visit', 'value': 'x2360'},
+];
+
+const List<Map<String, dynamic>> consentVersionChoice = [
+  {'display': '1', 'value': '1'},
+  {'display': '2', 'value': '2'},
+  {'display': '3', 'value': '3'},
+];

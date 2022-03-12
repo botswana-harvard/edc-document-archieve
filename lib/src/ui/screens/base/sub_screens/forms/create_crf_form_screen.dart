@@ -40,10 +40,12 @@ class _CreateCRFormScreenState extends State<CreateCRFormScreen> {
   late String selectedPid;
   String? selectedVisitCode;
   String? selectedTimePoint;
+  String? selectedConsentVersion;
   final ImagePicker _picker = ImagePicker();
   final GlobalKey<FormState> _key = GlobalKey<FormState>();
   List<GalleryItem> uploads = [];
   ParticipantCrf? crf = Get.arguments;
+  List<Map<String, dynamic>> visitCodeChoice = [];
 
   @override
   void initState() {
@@ -52,6 +54,7 @@ class _CreateCRFormScreenState extends State<CreateCRFormScreen> {
       selectedVisitCode = crf!.visit;
       selectedTimePoint = crf!.timepoint;
       uploads = crf!.uploads;
+      selectedConsentVersion = crf!.consentVersion;
     }
     super.initState();
   }
@@ -63,6 +66,21 @@ class _CreateCRFormScreenState extends State<CreateCRFormScreen> {
     selectedPid = _appService.selectedPid;
     if (_appService.selectedImages.isNotEmpty) {
       uploads = _appService.selectedImages;
+    }
+    String pidType = _appService.selectedStudyDocument.pidType;
+
+    if (_appService.selectedStudy == kFlourish) {
+      if (pidType == kCaregiverPid) {
+        visitCodeChoice = flourishCaregiverVisitCodeChoice;
+      } else {
+        visitCodeChoice = flourishChildVisitCodeChoice;
+      }
+    } else if (_appService.selectedStudy == kTshiloDikotla) {
+      if (pidType == kCaregiverPid) {
+        visitCodeChoice = tdMaternalVisitCodeChoice;
+      } else {
+        visitCodeChoice = tdChildVisitCodeChoice;
+      }
     }
     super.didChangeDependencies();
   }
@@ -101,7 +119,6 @@ class _CreateCRFormScreenState extends State<CreateCRFormScreen> {
             builder: (context, state) {
               String title =
                   '${kVisitCode.titleCase}: ${selectedVisitCode?.substring(1) ?? ''}';
-              String pidType = _appService.selectedStudyDocument.pidType;
 
               return SingleChildScrollView(
                 child: Container(
@@ -127,9 +144,7 @@ class _CreateCRFormScreenState extends State<CreateCRFormScreen> {
                         child: Column(
                           children: [
                             DropDownFormField(
-                              dataSource: pidType == kCaregiverPid
-                                  ? flourishCaregiverVisitCodeChoice
-                                  : flourishChildVisitCodeChoice,
+                              dataSource: visitCodeChoice,
                               onChanged: onDropdownVisitCodeChanged,
                               titleText: title,
                               value: selectedVisitCode,
@@ -140,6 +155,13 @@ class _CreateCRFormScreenState extends State<CreateCRFormScreen> {
                               onChanged: onDropdownTimePointChanged,
                               titleText: kTimePoint.titleCase,
                               value: selectedTimePoint,
+                            ),
+                            const SizedBox(height: 30),
+                            DropDownFormField(
+                              dataSource: consentVersionChoice,
+                              onChanged: onDropdownConsentChanged,
+                              titleText: kConsentVersion.titleCase,
+                              value: selectedConsentVersion,
                             ),
                           ],
                         ),
@@ -228,6 +250,7 @@ class _CreateCRFormScreenState extends State<CreateCRFormScreen> {
           timePoint: selectedTimePoint!,
           uploads: uploads,
           crf: crf!,
+          consentVersion: selectedConsentVersion!,
         );
       } else {
         _archieveBloc.addCrfDocument(
@@ -236,6 +259,7 @@ class _CreateCRFormScreenState extends State<CreateCRFormScreen> {
           timePoint: selectedTimePoint!,
           uploads: uploads,
           studyDocument: _appService.selectedStudyDocument,
+          consentVersion: selectedConsentVersion!,
         );
       }
     }
@@ -278,6 +302,13 @@ class _CreateCRFormScreenState extends State<CreateCRFormScreen> {
   }
 
   void onDropdownTimePointChanged(String? value) {
+    setState(() {
+      selectedTimePoint = value;
+      FocusScope.of(context).unfocus();
+    });
+  }
+
+  void onDropdownConsentChanged(String? value) {
     setState(() {
       selectedTimePoint = value;
       FocusScope.of(context).unfocus();
