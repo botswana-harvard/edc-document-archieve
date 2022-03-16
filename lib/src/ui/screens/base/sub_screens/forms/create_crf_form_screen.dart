@@ -40,7 +40,6 @@ class _CreateCRFormScreenState extends State<CreateCRFormScreen> {
   late String selectedPid;
   String? selectedVisitCode;
   String? selectedTimePoint;
-  String? selectedConsentVersion;
   final ImagePicker _picker = ImagePicker();
   final GlobalKey<FormState> _key = GlobalKey<FormState>();
   List<GalleryItem> uploads = [];
@@ -54,7 +53,6 @@ class _CreateCRFormScreenState extends State<CreateCRFormScreen> {
       selectedVisitCode = crf!.visit;
       selectedTimePoint = crf!.timepoint;
       uploads = crf!.uploads;
-      selectedConsentVersion = crf!.consentVersion;
     }
     super.initState();
   }
@@ -156,13 +154,6 @@ class _CreateCRFormScreenState extends State<CreateCRFormScreen> {
                               titleText: kTimePoint.titleCase,
                               value: selectedTimePoint,
                             ),
-                            const SizedBox(height: 30),
-                            DropDownFormField(
-                              dataSource: consentVersionChoice,
-                              onChanged: onDropdownConsentChanged,
-                              titleText: kConsentVersion.titleCase,
-                              value: selectedConsentVersion,
-                            ),
                           ],
                         ),
                       ),
@@ -250,7 +241,6 @@ class _CreateCRFormScreenState extends State<CreateCRFormScreen> {
           timePoint: selectedTimePoint!,
           uploads: uploads,
           crf: crf!,
-          consentVersion: selectedConsentVersion!,
         );
       } else {
         _archieveBloc.addCrfDocument(
@@ -259,7 +249,6 @@ class _CreateCRFormScreenState extends State<CreateCRFormScreen> {
           timePoint: selectedTimePoint!,
           uploads: uploads,
           studyDocument: _appService.selectedStudyDocument,
-          consentVersion: selectedConsentVersion!,
         );
       }
     }
@@ -304,13 +293,6 @@ class _CreateCRFormScreenState extends State<CreateCRFormScreen> {
   void onDropdownTimePointChanged(String? value) {
     setState(() {
       selectedTimePoint = value;
-      FocusScope.of(context).unfocus();
-    });
-  }
-
-  void onDropdownConsentChanged(String? value) {
-    setState(() {
-      selectedConsentVersion = value;
       FocusScope.of(context).unfocus();
     });
   }

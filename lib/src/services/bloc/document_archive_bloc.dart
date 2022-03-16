@@ -208,7 +208,6 @@ class DocumentArchieveBloc
     required String timePoint,
     required List<GalleryItem> uploads,
     required StudyDocument studyDocument,
-    required String consentVersion,
   }) {
     ParticipantCrf crf = ParticipantCrf.fromJson({
       'pid': pid,
@@ -218,7 +217,6 @@ class DocumentArchieveBloc
       'document': studyDocument.toJson(),
       'appName': studyDocument.appName,
       'created': DateTime.now().toString(),
-      'consentVersion': consentVersion,
     });
     add(DocumentArchieveFormAdded(form: crf));
   }
@@ -243,12 +241,10 @@ class DocumentArchieveBloc
     required String timePoint,
     required List<GalleryItem> uploads,
     required ParticipantCrf crf,
-    required String consentVersion,
   }) {
     crf.visit = visitCode;
     crf.timepoint = timePoint;
     crf.uploads = uploads;
-    crf.consentVersion = consentVersion;
     add(DocumentArchieveFormAdded(form: crf));
   }
 

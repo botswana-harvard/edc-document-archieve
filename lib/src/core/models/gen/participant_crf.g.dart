@@ -25,14 +25,13 @@ class ParticipantCrfAdapter extends TypeAdapter<ParticipantCrf> {
       id: fields[6] as String,
       appName: fields[7] as String,
       created: fields[8] as String,
-      consentVersion: fields[9] as String,
     );
   }
 
   @override
   void write(BinaryWriter writer, ParticipantCrf obj) {
     writer
-      ..writeByte(9)
+      ..writeByte(8)
       ..writeByte(1)
       ..write(obj.pid)
       ..writeByte(2)
@@ -48,9 +47,7 @@ class ParticipantCrfAdapter extends TypeAdapter<ParticipantCrf> {
       ..writeByte(7)
       ..write(obj.appName)
       ..writeByte(8)
-      ..write(obj.created)
-      ..writeByte(9)
-      ..write(obj.consentVersion);
+      ..write(obj.created);
   }
 
   @override
@@ -79,7 +76,6 @@ ParticipantCrf _$ParticipantCrfFromJson(Map<String, dynamic> json) =>
       id: const Uuid().v4().toString(),
       appName: json['appName'] as String,
       created: DateTime.now().toString(),
-      consentVersion: json['consentVersion'] as String,
     );
 
 Map<String, dynamic> _$ParticipantCrfToJson(ParticipantCrf instance) =>
@@ -92,5 +88,4 @@ Map<String, dynamic> _$ParticipantCrfToJson(ParticipantCrf instance) =>
       'id': instance.id,
       'appName': instance.appName,
       'created': instance.created,
-      'consentVersion': instance.consentVersion,
     };

@@ -33,9 +33,6 @@ class ParticipantCrf extends HiveObject with EquatableMixin {
   @HiveField(8)
   String created;
 
-  @HiveField(8)
-  String consentVersion;
-
   ParticipantCrf({
     required this.pid,
     required this.visit,
@@ -45,7 +42,6 @@ class ParticipantCrf extends HiveObject with EquatableMixin {
     required this.id,
     required this.appName,
     required this.created,
-    required this.consentVersion,
   });
 
   factory ParticipantCrf.fromJson(Map<String, dynamic> data) =>

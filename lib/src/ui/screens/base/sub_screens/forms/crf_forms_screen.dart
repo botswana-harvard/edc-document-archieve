@@ -184,7 +184,8 @@ class _CRFormScreenState extends State<CRFormScreen> {
                               Column(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: <Widget>[
-                                  const Text("Tap to show image"),
+                                  if (uploads.isNotEmpty)
+                                    const Text("Tap to show image"),
                                   GalleryImage(
                                     titleGallery: 'Uploaded Images',
                                     imageUrls: uploads,
@@ -199,7 +200,7 @@ class _CRFormScreenState extends State<CRFormScreen> {
                                     onPressed: () => onUpdateButtonPressed(
                                         _partcipantCrfs[index]),
                                     child: const Text(
-                                      'Update',
+                                      'Edit',
                                       style: TextStyle(
                                         fontFamily: FontFamily.robotoSlab,
                                         fontWeight: FontWeight.bold,

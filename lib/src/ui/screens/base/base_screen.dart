@@ -1,7 +1,6 @@
 import 'package:edc_document_archieve/src/config/injector.dart';
 import 'package:edc_document_archieve/src/services/app_service.dart';
 import 'package:edc_document_archieve/src/services/bloc/document_archive_bloc.dart';
-import 'package:edc_document_archieve/src/services/bloc/events/document_archive_event.dart';
 import 'package:edc_document_archieve/src/services/bloc/states/document_archive_state.dart';
 import 'package:edc_document_archieve/src/ui/screens/base/widgets/study_container.dart';
 import 'package:edc_document_archieve/src/ui/widgets/custom_appbar.dart';

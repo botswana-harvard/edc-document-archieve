@@ -1,5 +1,6 @@
 import 'package:cool_alert/cool_alert.dart';
 import 'package:edc_document_archieve/src/config/injector.dart';
+import 'package:edc_document_archieve/src/core/data/dummy_data.dart';
 import 'package:edc_document_archieve/src/core/models/gallery_item.dart';
 import 'package:edc_document_archieve/src/core/models/participant_non_crf.dart';
 import 'package:edc_document_archieve/src/core/models/study_document.dart';
@@ -11,6 +12,7 @@ import 'package:edc_document_archieve/src/ui/widgets/custom_appbar.dart';
 import 'package:edc_document_archieve/src/ui/widgets/custom_text.dart';
 import 'package:edc_document_archieve/src/ui/widgets/custom_text_field.dart';
 import 'package:edc_document_archieve/src/ui/widgets/default_button.dart';
+import 'package:edc_document_archieve/src/ui/widgets/dropdown_field.dart';
 import 'package:edc_document_archieve/src/utils/constants/back.dart';
 import 'package:edc_document_archieve/src/utils/constants/colors.dart';
 import 'package:edc_document_archieve/src/utils/constants/constants.dart';
@@ -40,6 +42,7 @@ class _CreateNonCRFormScreenState extends State<CreateNonCRFormScreen> {
   List<GalleryItem> uploads = [];
   final ImagePicker _picker = ImagePicker();
   ParticipantNonCrf? nonCrf = Get.arguments;
+  String? selectedConsentVersion;
 
   @override
   void didChangeDependencies() {
@@ -112,6 +115,13 @@ class _CreateNonCRFormScreenState extends State<CreateNonCRFormScreen> {
                           text: 'Upload ${_documentForm.name} From',
                           fontSize: 16,
                         ),
+                      ),
+                      const SizedBox(height: 10),
+                      DropDownFormField(
+                        dataSource: consentVersionChoice,
+                        onChanged: onDropdownConsentChanged,
+                        titleText: kConsentVersion.titleCase,
+                        value: selectedConsentVersion,
                       ),
                       const SizedBox(height: 10),
                       Row(
@@ -221,5 +231,12 @@ class _CreateNonCRFormScreenState extends State<CreateNonCRFormScreen> {
         break;
       default:
     }
+  }
+
+  void onDropdownConsentChanged(String? value) {
+    setState(() {
+      selectedConsentVersion = value;
+      FocusScope.of(context).unfocus();
+    });
   }
 }

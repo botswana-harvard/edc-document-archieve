@@ -155,7 +155,8 @@ class _NonCRFormScreenState extends State<NonCRFormScreen> {
                             ? Column(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: <Widget>[
-                                  const Text("Tap to show image"),
+                                  if (uploads.isNotEmpty)
+                                    const Text("Tap to show image"),
                                   GalleryImage(
                                     titleGallery: 'Uploaded Images',
                                     imageUrls: uploads,

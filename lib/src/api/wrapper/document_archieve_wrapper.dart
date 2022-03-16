@@ -163,14 +163,12 @@ class DocumentArchieveWrapper implements DocumentArchieveProvider {
       }
 
       if (selectedStudy == kTshiloDikotla) {
-        String consentVersion = crf.visit.substring(0, 1) == 'x' ? '1' : '3';
         data = {
           'subject_identifier': crf.pid,
           'app_label': crf.appName,
           'model_name': modelName,
           'visit_code': crf.visit.substring(1),
           'timepoint': crf.timepoint,
-          'consent_version': consentVersion,
           'files': uploads,
           'date_captured': convertDateTimeDisplay(crf.created),
           'username': _offlineRepository.appStorageBox.get(kLastUserLoggedIn),
