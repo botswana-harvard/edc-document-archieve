@@ -44,13 +44,13 @@ class _CRFormScreenState extends State<CRFormScreen> {
 
   @override
   void didChangeDependencies() {
+    super.didChangeDependencies();
     _appService = context.watch<AppService>();
     _studyName = _appService.selectedStudy;
     _documentForm = _appService.selectedStudyDocument;
     _pid = _appService.selectedPid;
     _archieveBloc = Injector.resolve<DocumentArchieveBloc>();
     _archieveBloc.getParticipantForms(pid: _pid, documentForm: _documentForm);
-    super.didChangeDependencies();
   }
 
   @override
@@ -171,7 +171,7 @@ class _CRFormScreenState extends State<CRFormScreen> {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 CustomText(
-                                  text: 'Visit: ${visit.substring(1)}',
+                                  text: 'Visit: $visit',
                                   fontSize: 18,
                                 ),
                                 CustomText(
@@ -247,7 +247,7 @@ class _CRFormScreenState extends State<CRFormScreen> {
   }
 
   void onFolderButtonTapped() {
-    _appService.clear();
+    _appService.selectedImages = [];
     Get.toNamed(kCreateCRFormRoute);
   }
 

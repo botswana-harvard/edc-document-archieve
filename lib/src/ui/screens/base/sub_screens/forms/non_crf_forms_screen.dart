@@ -157,6 +157,11 @@ class _NonCRFormScreenState extends State<NonCRFormScreen> {
                                 children: <Widget>[
                                   if (uploads.isNotEmpty)
                                     const Text("Tap to show image"),
+                                  if (_participantNonCrf!.version != null)
+                                    Chip(
+                                      label: Text(
+                                          'Consent Version: ${_participantNonCrf!.version}'),
+                                    ),
                                   GalleryImage(
                                     titleGallery: 'Uploaded Images',
                                     imageUrls: uploads,
@@ -168,7 +173,7 @@ class _NonCRFormScreenState extends State<NonCRFormScreen> {
                                       TextButton(
                                         onPressed: onUpdateButtonPressed,
                                         child: const Text(
-                                          'Update',
+                                          'Edit',
                                           style: TextStyle(
                                             fontFamily: FontFamily.robotoSlab,
                                             fontWeight: FontWeight.bold,
@@ -214,7 +219,7 @@ class _NonCRFormScreenState extends State<NonCRFormScreen> {
   }
 
   void onFolderButtonTapped() {
-    _appService.clear();
+    _appService.selectedImages = [];
     Get.toNamed(kCreateNonCRFormRoute);
   }
 

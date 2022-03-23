@@ -1,5 +1,4 @@
 import 'package:edc_document_archieve/src/api/repository/offline/local_storage_repository.dart';
-import 'package:edc_document_archieve/src/core/models/gallery_item.dart';
 import 'package:edc_document_archieve/src/core/models/participant_crf.dart';
 import 'package:edc_document_archieve/src/core/models/participant_non_crf.dart';
 import 'package:edc_document_archieve/src/core/models/study_document.dart';
@@ -31,14 +30,14 @@ class DocumentArchieveOffLineRepository extends LocalStorageRepository {
     //get all participant's non crfs
     List<ParticipantNonCrf> nonCrfs = appStorageBox.get(key,
         defaultValue: <ParticipantNonCrf>[]).cast<ParticipantNonCrf>();
-    try {
-      //Get existing participant non crf form
-      ParticipantNonCrf filteredForm =
-          nonCrfs.firstWhere((form) => nonCrf == form);
-      //remove it from list of non crfs
-      nonCrfs.remove(filteredForm);
-      // ignore: empty_catches
-    } on StateError {}
+    // try {
+    //   //Get existing participant non crf form
+    //   ParticipantNonCrf filteredForm =
+    //       nonCrfs.firstWhere((form) => nonCrf == form);
+    //   //remove it from list of non crfs
+    //   nonCrfs.remove(filteredForm);
+    //   // ignore: empty_catches
+    // } on StateError {}
     nonCrfs.add(nonCrf);
     await appStorageBox.delete(key);
     await appStorageBox.put(key, nonCrfs);
@@ -121,8 +120,9 @@ class DocumentArchieveOffLineRepository extends LocalStorageRepository {
 
   Future<List<ParticipantCrf>> getCrForms({required String pid}) async {
     String key = '${pid}_crfs';
-    return appStorageBox
+    List<ParticipantCrf> crfs = appStorageBox
         .get(key, defaultValue: <ParticipantCrf>[]).cast<ParticipantCrf>();
+    return crfs;
   }
 
   Future<List<ParticipantNonCrf>> getNonCrForms({required String pid}) async {
@@ -200,7 +200,6 @@ class DocumentArchieveOffLineRepository extends LocalStorageRepository {
       crfs = caregiverForms['${kCrfForm}s'];
       nonCrfs = caregiverForms['${kNonCrfForm}s'];
       for (var crf in crfs) {
-        logger.e(crf);
         documents.add(StudyDocument.fromJson({
           'name': crf['model_name'],
           'appName': crf['app_label'],

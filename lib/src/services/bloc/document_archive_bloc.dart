@@ -113,6 +113,7 @@ class DocumentArchieveBloc
   ) async {
     emit(const DocumentArchieveState<Map<String, dynamic>>.loading());
     String documentType = event.form.document.type;
+
     switch (documentType) {
       case kCrfForm:
         ParticipantCrf crf = event.form;
@@ -121,7 +122,8 @@ class DocumentArchieveBloc
       case kNonCrfForm:
         ParticipantNonCrf nonCrf = event.form;
         await documentArchieveRepository.addParticipantNonCrfForm(
-            nonCrf: nonCrf);
+          nonCrf: nonCrf,
+        );
         break;
       default:
     }
@@ -225,13 +227,15 @@ class DocumentArchieveBloc
     required String pid,
     required List<GalleryItem> uploads,
     required StudyDocument studyDocument,
+    String? consentVersion,
   }) {
     ParticipantNonCrf nonCrf = ParticipantNonCrf.fromJson({
       'pid': pid,
       'uploads': uploads,
       'document': studyDocument.toJson(),
       'appName': studyDocument.appName,
-      'created': DateTime.now().toString()
+      'created': DateTime.now().toString(),
+      'version': consentVersion,
     });
     add(DocumentArchieveFormAdded(form: nonCrf));
   }
@@ -274,10 +278,12 @@ class DocumentArchieveBloc
     required ParticipantNonCrf nonCrf,
     required String selectedStudy,
   }) async {
-    add(DocumentArchieveNonCrfFormSyncRequested(
-      nonCrf: nonCrf,
-      selectedStudy: selectedStudy,
-    ));
+    add(
+      DocumentArchieveNonCrfFormSyncRequested(
+        nonCrf: nonCrf,
+        selectedStudy: selectedStudy,
+      ),
+    );
   }
 
   Future<void> addPid({

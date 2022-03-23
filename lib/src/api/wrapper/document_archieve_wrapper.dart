@@ -9,6 +9,7 @@ import 'package:edc_document_archieve/src/core/models/participant_non_crf.dart';
 import 'package:edc_document_archieve/src/core/models/study_document.dart';
 import 'package:edc_document_archieve/src/providers/document_archieve_provider.dart';
 import 'package:edc_document_archieve/src/utils/constants/constants.dart';
+import 'package:edc_document_archieve/src/utils/debugLog.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:recase/recase.dart';
@@ -50,7 +51,9 @@ class DocumentArchieveWrapper implements DocumentArchieveProvider {
   Future<void> addParticipantNonCrfForm({
     required ParticipantNonCrf nonCrf,
   }) async {
-    await _offlineRepository.addParticipantNonCrfForm(nonCrf: nonCrf);
+    await _offlineRepository.addParticipantNonCrfForm(
+      nonCrf: nonCrf,
+    );
   }
 
   @override
@@ -167,7 +170,7 @@ class DocumentArchieveWrapper implements DocumentArchieveProvider {
           'subject_identifier': crf.pid,
           'app_label': crf.appName,
           'model_name': modelName,
-          'visit_code': crf.visit.substring(1),
+          'visit_code': crf.visit,
           'timepoint': crf.timepoint,
           'files': uploads,
           'date_captured': convertDateTimeDisplay(crf.created),
@@ -178,7 +181,7 @@ class DocumentArchieveWrapper implements DocumentArchieveProvider {
           'subject_identifier': crf.pid,
           'app_label': crf.appName,
           'model_name': modelName,
-          'visit_code': crf.visit.substring(1),
+          'visit_code': crf.visit,
           'timepoint': crf.timepoint,
           'files': uploads,
           'date_captured': convertDateTimeDisplay(crf.created),
@@ -187,6 +190,7 @@ class DocumentArchieveWrapper implements DocumentArchieveProvider {
       }
 
       if (uploads.isNotEmpty) {
+        logger.e(data);
         message = await synchData(data: data, selectedStudy: selectedStudy);
         if (message == 'Success') {
           await _offlineRepository.deleteParticipantCrfForm(crf: crf);
@@ -209,6 +213,7 @@ class DocumentArchieveWrapper implements DocumentArchieveProvider {
           await MultipartFile.fromFile(upload.imageUrl, filename: upload.id);
       uploads.add(multipart);
     }
+
     Map<String, dynamic> data = {
       'subject_identifier': nonCrf.pid,
       'app_label': nonCrf.appName,
@@ -217,9 +222,15 @@ class DocumentArchieveWrapper implements DocumentArchieveProvider {
       'date_captured': convertDateTimeDisplay(nonCrf.created),
       'username': _offlineRepository.appStorageBox.get(kLastUserLoggedIn),
     };
+
+    if (nonCrf.version != null) {
+      data['consent_version'] = nonCrf.version;
+    }
     if (nonCrf.uploads.isEmpty) {
       return 'No data available to sync';
     }
+
+    logger.e(data);
     String response = await synchData(data: data, selectedStudy: selectedStudy);
     if (response == 'Success') {
       await _offlineRepository.deleteParticipantNonCrfForm(nonCrf: nonCrf);

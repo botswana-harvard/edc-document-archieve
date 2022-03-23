@@ -109,19 +109,20 @@ class _CreateNonCRFormScreenState extends State<CreateNonCRFormScreen> {
                         focusNode: FocusNode(),
                       ),
                       const SizedBox(height: 30),
+                      if (_documentForm.name == 'Consent Copies')
+                        DropDownFormField(
+                          dataSource: consentVersionChoice,
+                          onChanged: onDropdownConsentChanged,
+                          titleText: kConsentVersion.titleCase,
+                          value: selectedConsentVersion,
+                        ),
+                      const SizedBox(height: 10),
                       Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: CustomText(
                           text: 'Upload ${_documentForm.name} From',
                           fontSize: 16,
                         ),
-                      ),
-                      const SizedBox(height: 10),
-                      DropDownFormField(
-                        dataSource: consentVersionChoice,
-                        onChanged: onDropdownConsentChanged,
-                        titleText: kConsentVersion.titleCase,
-                        value: selectedConsentVersion,
                       ),
                       const SizedBox(height: 10),
                       Row(
@@ -198,6 +199,7 @@ class _CreateNonCRFormScreenState extends State<CreateNonCRFormScreen> {
         pid: _pid,
         uploads: uploads,
         studyDocument: _documentForm,
+        consentVersion: selectedConsentVersion,
       );
     } else if (nonCrf != null) {
       _archieveBloc.updateNonCrfDocument(uploads: uploads, nonCrf: nonCrf!);

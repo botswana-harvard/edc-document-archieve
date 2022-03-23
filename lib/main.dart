@@ -13,8 +13,8 @@ import 'package:provider/provider.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 
 Future<void> main() async {
-  Injector.setup();
   await LocalStorageRepository.setupLocalStorage();
+  Injector.setup();
   runApp(const MyApp());
 }
 

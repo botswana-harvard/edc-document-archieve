@@ -7,7 +7,6 @@ import 'package:edc_document_archieve/src/config/index.dart';
 import 'package:edc_document_archieve/src/config/injector.dart';
 import 'package:edc_document_archieve/src/core/models/user_account.dart';
 import 'package:edc_document_archieve/src/utils/constants/constants.dart';
-import 'package:edc_document_archieve/src/utils/debugLog.dart';
 import 'package:edc_document_archieve/src/utils/enums.dart';
 
 class AuthenticationWrapper implements AuthenticationProvider {

@@ -68,6 +68,7 @@ class _PidsScreenState extends State<PidsScreen> {
   void dispose() {
     _caregiverScrollController.removeListener(listenToScrollDirection);
     _childScrollController.removeListener(listenToScrollDirection);
+    // _appService.clear();
     super.dispose();
   }
 
@@ -123,7 +124,9 @@ class _PidsScreenState extends State<PidsScreen> {
           case DocumentArchieveStatus.success:
             if (state.data != null) {
               caregiverPids = state.data[kCaregiverPid].reversed.toList();
+              caregiverPids.sort(((a, b) => a.compareTo(b)));
               childPids = state.data[kChildPid].reversed.toList();
+              childPids.sort(((a, b) => a.compareTo(b)));
               caregiverDocuments = state.data[kCaregiverForms];
               childDocuments = state.data[kChildForms];
 

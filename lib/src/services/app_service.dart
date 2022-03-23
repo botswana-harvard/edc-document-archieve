@@ -8,7 +8,7 @@ import 'package:uuid/uuid.dart';
 
 class AppService with ChangeNotifier {
   late String _selectedStudy;
-  late StudyDocument _studyDocument;
+  late StudyDocument? _studyDocument;
   late String _selectedPid;
   late String _currentUser;
   List<GalleryItem> _selectedImages = [];
@@ -17,7 +17,7 @@ class AppService with ChangeNotifier {
   String get selectedStudy => _selectedStudy;
   String get selectedPid => _selectedPid;
   String get currentUser => _currentUser;
-  StudyDocument get selectedStudyDocument => _studyDocument;
+  StudyDocument get selectedStudyDocument => _studyDocument!;
   List<GalleryItem> get selectedImages => _selectedImages;
 
   //define Setters
@@ -58,6 +58,9 @@ class AppService with ChangeNotifier {
   }
 
   void clear() {
+    _selectedPid = '';
+    _selectedStudy = '';
+    _studyDocument = null;
     _selectedImages.clear();
   }
 

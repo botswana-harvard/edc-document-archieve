@@ -62,7 +62,6 @@ class ListPids extends StatelessWidget {
               key: cardKeyList[index],
               onExpansionChanged: (value) {
                 if (value) {
-                  _appService.selectedPid = pids[index];
                   Future.delayed(const Duration(milliseconds: 100), () {
                     for (var i = 0; i < cardKeyList.length; i++) {
                       if (index != i) {
@@ -111,7 +110,10 @@ class ListPids extends StatelessWidget {
                           Icons.arrow_forward_ios,
                           size: 16,
                         ),
-                        onTap: () => onFolderButtonTapped(studyDocument),
+                        onTap: () {
+                          _appService.selectedPid = pids[index];
+                          onFolderButtonTapped(studyDocument);
+                        },
                       ),
                     )),
               ],
