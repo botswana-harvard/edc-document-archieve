@@ -1,3 +1,4 @@
+import 'package:cool_alert/cool_alert.dart';
 import 'package:edc_document_archieve/src/config/injector.dart';
 import 'package:edc_document_archieve/src/services/app_service.dart';
 import 'package:edc_document_archieve/src/services/bloc/document_archive_bloc.dart';
@@ -76,7 +77,10 @@ class BaseScreen extends StatelessWidget {
                                 children: [
                                   CustomStudyCard(
                                     cardColor: Colors.lightBlue[300],
-                                    onTap: () => onStudySeleted(studyName),
+                                    onTap: () => onStudySeleted(
+                                      context: context,
+                                      studySelected: studyName,
+                                    ),
                                     studyName: studyName.titleCase,
                                   ),
                                   const SizedBox(height: 30),
@@ -112,8 +116,17 @@ class BaseScreen extends StatelessWidget {
     );
   }
 
-  void onStudySeleted(String studySelected) {
-    _appService.selectedStudy = studySelected;
-    Get.toNamed(kPidsRoute);
+  void onStudySeleted(
+      {required BuildContext context, required String studySelected}) {
+    if (studySelected == kFlourish) {
+      CoolAlert.show(
+          context: context,
+          type: CoolAlertType.info,
+          title: 'Flourish Study',
+          text: 'This study is currently under development');
+    } else {
+      _appService.selectedStudy = studySelected;
+      Get.toNamed(kPidsRoute);
+    }
   }
 }

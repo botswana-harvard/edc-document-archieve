@@ -23,7 +23,7 @@ class ParticipantNonCrfAdapter extends TypeAdapter<ParticipantNonCrf> {
       id: fields[4] as String,
       appName: fields[5] as String,
       created: fields[6] as String,
-      version: fields[7] as String,
+      version: fields[7],
     );
   }
 
