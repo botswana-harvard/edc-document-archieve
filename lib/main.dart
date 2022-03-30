@@ -26,6 +26,7 @@ class MyApp extends StatelessWidget {
     return ChangeNotifierProvider(
       create: (context) => AppService(),
       child: GetMaterialApp(
+        debugShowCheckedModeBanner: false,
         title: 'EDC Document Archiving',
         theme: ThemeData(
           primarySwatch: Colors.lightBlue,
