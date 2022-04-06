@@ -116,17 +116,20 @@ class BaseScreen extends StatelessWidget {
     );
   }
 
-  void onStudySeleted(
-      {required BuildContext context, required String studySelected}) {
-    if (studySelected == kFlourish) {
-      CoolAlert.show(
-          context: context,
-          type: CoolAlertType.info,
-          title: 'Flourish Study',
-          text: 'This study is currently under development');
-    } else {
-      _appService.selectedStudy = studySelected;
-      Get.toNamed(kPidsRoute);
-    }
+  void onStudySeleted({
+    required BuildContext context,
+    required String studySelected,
+  }) {
+    _appService.selectedStudy = studySelected;
+    Get.toNamed(kPidsRoute);
+    // if (studySelected == kFlourish) {
+    //   CoolAlert.show(
+    //       context: context,
+    //       type: CoolAlertType.info,
+    //       title: 'Flourish Study',
+    //       text: 'This study is currently under development');
+    // } else {
+
+    // }
   }
 }

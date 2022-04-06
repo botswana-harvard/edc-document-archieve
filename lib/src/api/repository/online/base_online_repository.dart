@@ -7,8 +7,7 @@ abstract class BaseOnlineRepository {
   late Dio _dio;
 
   ///http://flourish-dev.bhp.org.bw/
-  static const String flourishUrl =
-      'http://flourish-dev.bhp.org.bw/edc_da_api/';
+  static const String flourishUrl = 'http://10.113.201.239:8000/edc_da_api/';
   //'http://flourish-dev.bhp.org.bw/edc_da_api/';
   static const String tdUrl = 'https://td-live.bhp.org.bw/edc_da_api/';
 
