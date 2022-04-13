@@ -10,7 +10,8 @@ abstract class BaseOnlineRepository {
   static const String flourishUrl =
       'http://flourish-dev.bhp.org.bw/edc_da_api/';
   //'http://flourish-dev.bhp.org.bw/edc_da_api/';
-  static const String tdUrl = 'https://td-live.bhp.org.bw/edc_da_api/';
+  static const String tdUrl = 'https://td-test.bhp.org.bw/edc_da_api/';
+  //'https://td-test.bhp.org.bw/edc_da_api/';
 
   ///10.113.201.239
 

@@ -12,10 +12,6 @@ import 'package:edc_document_archieve/src/services/bloc/events/document_archive_
 import 'package:edc_document_archieve/src/services/bloc/states/document_archive_state.dart';
 import 'package:edc_document_archieve/src/utils/constants/constants.dart';
 import 'package:edc_document_archieve/src/utils/debugLog.dart';
-import 'package:get/get.dart' as Get;
-import "package:dio/dio.dart";
-import 'package:intl/intl.dart';
-import 'package:recase/recase.dart';
 
 class DocumentArchieveBloc
     extends Bloc<DocumentArchieveEvent, DocumentArchieveState> {
