@@ -110,7 +110,6 @@ const List<Map<String, dynamic>> tdMaternalVisitCodeChoice = [
   {'display': '1000M', 'value': '1000M'},
   {'display': '1010M', 'value': '1010M'},
   {'display': '1020M', 'value': '1020M'},
-  {'display': '1010M', 'value': '1010M'},
   {'display': '2000M', 'value': '2000M'},
   {'display': '2010M', 'value': '2010M'},
   {'display': '2020M', 'value': '2020M'},
