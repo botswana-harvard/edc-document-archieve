@@ -9,6 +9,7 @@ import 'package:edc_document_archieve/src/ui/screens/base/sub_screens/pids/sub_s
 import 'package:edc_document_archieve/src/ui/widgets/custom_appbar.dart';
 import 'package:edc_document_archieve/src/utils/constants/colors.dart';
 import 'package:edc_document_archieve/src/utils/constants/constants.dart';
+import 'package:edc_document_archieve/src/utils/debugLog.dart';
 import 'package:edc_document_archieve/src/utils/dialogs.dart';
 import 'package:edc_document_archieve/src/utils/enums.dart';
 import 'package:expansion_tile_card/expansion_tile_card.dart';
@@ -122,6 +123,7 @@ class _PidsScreenState extends State<PidsScreen> {
             Dialogs.showLoadingDialog(context, message: 'Loading PIDs...');
             break;
           case DocumentArchieveStatus.success:
+            Dialogs.closeLoadingDialog(context);
             if (state.data != null) {
               caregiverPids = state.data[kCaregiverPid].reversed.toList();
               caregiverPids.sort(((a, b) => a.compareTo(b)));
@@ -139,7 +141,7 @@ class _PidsScreenState extends State<PidsScreen> {
                     .add(GlobalKey<ExpansionTileCardState>(debugLabel: '$i'));
               }
             }
-            Dialogs.closeLoadingDialog(context);
+
             break;
           case DocumentArchieveStatus.error:
             Dialogs.closeLoadingDialog(context);

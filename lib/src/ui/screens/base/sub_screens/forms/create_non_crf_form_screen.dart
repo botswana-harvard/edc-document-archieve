@@ -109,14 +109,6 @@ class _CreateNonCRFormScreenState extends State<CreateNonCRFormScreen> {
                         focusNode: FocusNode(),
                       ),
                       const SizedBox(height: 30),
-                      if (_documentForm.name == 'Consent Copies')
-                        DropDownFormField(
-                          dataSource: consentVersionChoice,
-                          onChanged: onDropdownConsentChanged,
-                          titleText: kConsentVersion.titleCase,
-                          value: selectedConsentVersion,
-                        ),
-                      const SizedBox(height: 10),
                       Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: CustomText(

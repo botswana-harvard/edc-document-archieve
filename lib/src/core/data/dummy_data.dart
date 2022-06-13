@@ -3,6 +3,7 @@ const List<Map<String, dynamic>> flourishCaregiverVisitCodeChoice = [
   {'value': '1000M', 'display': '1000M'},
   {'value': '2000D', 'display': '2000D'},
   {'value': '2000M', 'display': '2000M'},
+  {'value': '2100T', 'display': '2100T'},
   {'value': '2001M', 'display': '2001M'},
   {'value': '2002M', 'display': '2002M'},
   {'value': '2003M', 'display': '2003M'},
