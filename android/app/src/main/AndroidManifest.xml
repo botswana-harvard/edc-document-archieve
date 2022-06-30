@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="bw.org.bhp.edc_document_archieve">
+    package="bw.org.bhp.live_app">
 
     <uses-permission android:name="android.permission.INTERNET"/>
     
