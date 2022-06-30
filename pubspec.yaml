@@ -59,6 +59,7 @@ dependencies:
   intl: ^0.17.0
   pull_to_refresh: ^2.0.0
   flutter_dotenv: ^5.0.2
+  
 
 dev_dependencies:
   flutter_test:
@@ -76,6 +77,7 @@ dev_dependencies:
   hive_generator:
   json_serializable: ^6.1.4
   kiwi_generator: ^4.0.2
+  change_app_package_name: ^1.1.0
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

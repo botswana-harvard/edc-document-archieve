@@ -11,6 +11,7 @@ class CustomAppBar extends AppBar {
   final Color? appbackgroundColor;
   final List<Widget> actionButtons;
   final bool implyLeading;
+  final bool centerAppBarTitle;
 
   CustomAppBar({
     Key? key,
@@ -18,13 +19,14 @@ class CustomAppBar extends AppBar {
     this.appbackgroundColor = Colors.white,
     this.actionButtons = const [],
     this.implyLeading = false,
+    this.centerAppBarTitle = true,
   }) : super(key: key);
 
   @override
   Widget? get title => Text(titleName);
 
   @override
-  bool? get centerTitle => true;
+  bool? get centerTitle => centerAppBarTitle;
 
   @override
   TextStyle? get titleTextStyle => const TextStyle(

@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:bloc_concurrency/bloc_concurrency.dart';
-import 'package:dio/dio.dart' as dio;
 import 'package:edc_document_archieve/src/core/models/gallery_item.dart';
 import 'package:edc_document_archieve/src/core/models/participant_crf.dart';
 import 'package:edc_document_archieve/src/core/models/participant_non_crf.dart';
@@ -11,7 +10,6 @@ import 'package:edc_document_archieve/src/providers/document_archieve_provider.d
 import 'package:edc_document_archieve/src/services/bloc/events/document_archive_event.dart';
 import 'package:edc_document_archieve/src/services/bloc/states/document_archive_state.dart';
 import 'package:edc_document_archieve/src/utils/constants/constants.dart';
-import 'package:edc_document_archieve/src/utils/debugLog.dart';
 
 class DocumentArchieveBloc
     extends Bloc<DocumentArchieveEvent, DocumentArchieveState> {
@@ -48,6 +46,11 @@ class DocumentArchieveBloc
 
     on<DocumentArchieveNonCrfFormSyncRequested>(
       _onDocumentArchieveNonCrfFormSyncRequested,
+      transformer: sequential(),
+    );
+
+    on<DocumentArchieveDataRefreshed>(
+      _onDocumentArchieveDataRefreshed,
       transformer: sequential(),
     );
   }
@@ -187,6 +190,16 @@ class DocumentArchieveBloc
     }
   }
 
+  Future<void> _onDocumentArchieveDataRefreshed(
+    DocumentArchieveDataRefreshed event,
+    Emitter<DocumentArchieveState> emit,
+  ) async {
+    emit(const DocumentArchieveState<List<String>>.loading());
+
+    await documentArchieveRepository.loadDataFromApi();
+    emit(const DocumentArchieveState<void>.loaded());
+  }
+
   void getDocumentArchievePids({required String selectedStudy}) {
     add(DocumentArchievePidsRequested(studySelected: selectedStudy));
   }
@@ -311,5 +324,9 @@ class DocumentArchieveBloc
       kChildPid: results[kChildPid]
     };
     return data;
+  }
+
+  void refreshData() {
+    add(DocumentArchieveDataRefreshed());
   }
 }

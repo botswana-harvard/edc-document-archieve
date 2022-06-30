@@ -14,10 +14,6 @@ abstract class DocumentArchieveProvider {
   Future<List<StudyDocument>> getCaregiverForms(String studyName);
   Future<List<StudyDocument>> getChildForms(String studyName);
 
-  Future<List<String>> getAllVisits(String studyName);
-
-  Future<List<String>> getAllTimePoints(String studyName);
-
   Future<void> addParticipantIdentifier({
     required String studyName,
     required String pid,
@@ -53,4 +49,6 @@ abstract class DocumentArchieveProvider {
     required ParticipantNonCrf nonCrf,
     required String selectedStudy,
   });
+
+  Future<void> loadDataFromApi();
 }

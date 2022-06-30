@@ -1,4 +1,3 @@
-import 'package:cool_alert/cool_alert.dart';
 import 'package:edc_document_archieve/src/config/injector.dart';
 import 'package:edc_document_archieve/src/services/app_service.dart';
 import 'package:edc_document_archieve/src/services/bloc/document_archive_bloc.dart';
@@ -122,14 +121,5 @@ class BaseScreen extends StatelessWidget {
   }) {
     _appService.selectedStudy = studySelected;
     Get.toNamed(kPidsRoute);
-    // if (studySelected == kFlourish) {
-    //   CoolAlert.show(
-    //       context: context,
-    //       type: CoolAlertType.info,
-    //       title: 'Flourish Study',
-    //       text: 'This study is currently under development');
-    // } else {
-
-    // }
   }
 }

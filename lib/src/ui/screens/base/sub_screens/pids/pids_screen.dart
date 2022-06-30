@@ -3,13 +3,11 @@ import 'package:edc_document_archieve/src/core/models/study_document.dart';
 import 'package:edc_document_archieve/src/services/app_service.dart';
 import 'package:edc_document_archieve/src/services/bloc/document_archive_bloc.dart';
 import 'package:edc_document_archieve/src/services/bloc/states/document_archive_state.dart';
-import 'package:edc_document_archieve/src/ui/screens/base/sub_screens/pids/sub_screens/create_pid_screen.dart';
 import 'package:edc_document_archieve/src/ui/screens/base/sub_screens/pids/sub_screens/list_pids.dart';
 import 'package:edc_document_archieve/src/ui/screens/base/sub_screens/pids/sub_screens/search_pid_screen.dart';
 import 'package:edc_document_archieve/src/ui/widgets/custom_appbar.dart';
 import 'package:edc_document_archieve/src/utils/constants/colors.dart';
 import 'package:edc_document_archieve/src/utils/constants/constants.dart';
-import 'package:edc_document_archieve/src/utils/debugLog.dart';
 import 'package:edc_document_archieve/src/utils/dialogs.dart';
 import 'package:edc_document_archieve/src/utils/enums.dart';
 import 'package:expansion_tile_card/expansion_tile_card.dart';
@@ -59,9 +57,6 @@ class _PidsScreenState extends State<PidsScreen> {
     _controller = PersistentTabController(initialIndex: previousIndex);
     _caregiverScrollController = ScrollController();
     _childScrollController = ScrollController();
-
-    // _caregiverScrollController.addListener(listenToScrollDirection);
-    // _childScrollController.addListener(listenToScrollDirection);
     super.initState();
   }
 
@@ -69,7 +64,6 @@ class _PidsScreenState extends State<PidsScreen> {
   void dispose() {
     _caregiverScrollController.removeListener(listenToScrollDirection);
     _childScrollController.removeListener(listenToScrollDirection);
-    // _appService.clear();
     super.dispose();
   }
 
@@ -155,6 +149,7 @@ class _PidsScreenState extends State<PidsScreen> {
           appBar: CustomAppBar(
             titleName: _appService.selectedStudy.titleCase,
             implyLeading: true,
+            centerAppBarTitle: false,
             actionButtons: [
               IconButton(
                 onPressed: () {
@@ -168,13 +163,11 @@ class _PidsScreenState extends State<PidsScreen> {
                     ),
                   );
                 },
-                icon: const Icon(
-                  Icons.search,
-                  color: kDarkBlue,
-                ),
+                icon: const Icon(Icons.search, color: kDarkBlue),
               ),
-
-              // TODO: list of pending pids to sync
+              IconButton(
+                  onPressed: _onRefresh,
+                  icon: const Icon(Icons.refresh, color: kDarkBlue))
               // IconButton(
               //     onPressed: () {}, icon: const Icon(Icons.pending_actions))
             ],
@@ -192,7 +185,6 @@ class _PidsScreenState extends State<PidsScreen> {
                 onRefresh: _onRefresh,
                 refreshController: _caregiverRefreshController,
               ),
-              CreatePidScreen(previousIndex: previousIndex),
               ListPids(
                 scrollController: _childScrollController,
                 pids: childPids,
@@ -206,7 +198,7 @@ class _PidsScreenState extends State<PidsScreen> {
             ],
             controller: _controller,
             items: _navBarsItems(),
-            navBarStyle: NavBarStyle.style15,
+            navBarStyle: NavBarStyle.style14,
             confineInSafeArea: true,
             backgroundColor: Colors.white,
             handleAndroidBackButtonPress: true,
@@ -239,13 +231,6 @@ class _PidsScreenState extends State<PidsScreen> {
         inactiveColorSecondary: Colors.purple,
       ),
       PersistentBottomNavBarItem(
-        icon: const Icon(Icons.person_add, color: Colors.black87),
-        title: ("Add PID"),
-        activeColorPrimary: Colors.blueAccent,
-        activeColorSecondary: Colors.black,
-        inactiveColorPrimary: Colors.grey,
-      ),
-      PersistentBottomNavBarItem(
         icon: const Icon(Icons.child_care),
         title: ("Child"),
         activeColorPrimary: Colors.red,
@@ -276,16 +261,18 @@ class _PidsScreenState extends State<PidsScreen> {
 
   void _onRefresh() async {
     // monitor network fetch
-    await Future.delayed(const Duration(milliseconds: 1000));
+    _archieveBloc.refreshData();
     // if failed,use refreshFailed()
+    _archieveBloc.getDocumentArchievePids(
+        selectedStudy: _appService.selectedStudy);
     _caregiverRefreshController.refreshCompleted();
+    _childRefreshController.refreshCompleted();
   }
 
   void _onLoading() async {
-    // monitor network fetch
-    await Future.delayed(const Duration(milliseconds: 1000));
     // if failed,use loadFailed(),if no data return,use LoadNodata()
     setState(() {});
     _caregiverRefreshController.loadComplete();
+    _childRefreshController.loadComplete();
   }
 }
