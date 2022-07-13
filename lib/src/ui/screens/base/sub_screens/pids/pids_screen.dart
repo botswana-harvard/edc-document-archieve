@@ -3,6 +3,7 @@ import 'package:edc_document_archieve/src/core/models/study_document.dart';
 import 'package:edc_document_archieve/src/services/app_service.dart';
 import 'package:edc_document_archieve/src/services/bloc/document_archive_bloc.dart';
 import 'package:edc_document_archieve/src/services/bloc/states/document_archive_state.dart';
+import 'package:edc_document_archieve/src/ui/screens/base/sub_screens/pids/sub_screens/create_pid_screen.dart';
 import 'package:edc_document_archieve/src/ui/screens/base/sub_screens/pids/sub_screens/list_pids.dart';
 import 'package:edc_document_archieve/src/ui/screens/base/sub_screens/pids/sub_screens/search_pid_screen.dart';
 import 'package:edc_document_archieve/src/ui/widgets/custom_appbar.dart';
@@ -185,6 +186,7 @@ class _PidsScreenState extends State<PidsScreen> {
                 onRefresh: _onRefresh,
                 refreshController: _caregiverRefreshController,
               ),
+              CreatePidScreen(previousIndex: previousIndex),
               ListPids(
                 scrollController: _childScrollController,
                 pids: childPids,
@@ -198,7 +200,7 @@ class _PidsScreenState extends State<PidsScreen> {
             ],
             controller: _controller,
             items: _navBarsItems(),
-            navBarStyle: NavBarStyle.style14,
+            navBarStyle: NavBarStyle.style15,
             confineInSafeArea: true,
             backgroundColor: Colors.white,
             handleAndroidBackButtonPress: true,
@@ -227,6 +229,16 @@ class _PidsScreenState extends State<PidsScreen> {
         icon: const Icon(Icons.group),
         title: "Caregiver",
         activeColorPrimary: Colors.blue,
+        inactiveColorPrimary: Colors.grey,
+        inactiveColorSecondary: Colors.purple,
+      ),
+      PersistentBottomNavBarItem(
+        icon: const Icon(
+          Icons.add,
+          color: Colors.black,
+        ),
+        title: "Add",
+        activeColorPrimary: Colors.grey,
         inactiveColorPrimary: Colors.grey,
         inactiveColorSecondary: Colors.purple,
       ),
