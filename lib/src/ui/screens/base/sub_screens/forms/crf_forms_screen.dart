@@ -26,7 +26,6 @@ import 'package:get/get.dart';
 import 'package:recase/recase.dart';
 
 class CRFormScreen extends StatefulWidget {
-  static const String routeName = kCrfformRoute;
   const CRFormScreen({Key? key}) : super(key: key);
 
   @override

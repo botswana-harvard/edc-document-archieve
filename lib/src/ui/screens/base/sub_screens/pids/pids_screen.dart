@@ -9,6 +9,7 @@ import 'package:edc_document_archieve/src/ui/screens/base/sub_screens/pids/sub_s
 import 'package:edc_document_archieve/src/ui/widgets/custom_appbar.dart';
 import 'package:edc_document_archieve/src/utils/constants/colors.dart';
 import 'package:edc_document_archieve/src/utils/constants/constants.dart';
+import 'package:edc_document_archieve/src/utils/debugLog.dart';
 import 'package:edc_document_archieve/src/utils/dialogs.dart';
 import 'package:edc_document_archieve/src/utils/enums.dart';
 import 'package:expansion_tile_card/expansion_tile_card.dart';
@@ -22,8 +23,6 @@ import 'package:recase/recase.dart';
 
 // ignore: must_be_immutable
 class PidsScreen extends StatefulWidget {
-  static const String routeName = kPidsRoute;
-
   const PidsScreen({Key? key}) : super(key: key);
 
   @override
@@ -152,6 +151,13 @@ class _PidsScreenState extends State<PidsScreen> {
             implyLeading: true,
             centerAppBarTitle: false,
             actionButtons: [
+              IconButton(
+                onPressed: () {
+                  logger.e('Sent items...');
+                  Navigator.pushNamed(context, kSentItemsRoute);
+                },
+                icon: const Icon(Icons.receipt_rounded, color: kDarkBlue),
+              ),
               IconButton(
                 onPressed: () {
                   showSearch(

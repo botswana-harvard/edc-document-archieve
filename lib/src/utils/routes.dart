@@ -6,23 +6,21 @@ import 'package:edc_document_archieve/src/ui/screens/base/sub_screens/forms/crea
 import 'package:edc_document_archieve/src/ui/screens/base/sub_screens/forms/crf_forms_screen.dart';
 import 'package:edc_document_archieve/src/ui/screens/base/sub_screens/forms/non_crf_forms_screen.dart';
 import 'package:edc_document_archieve/src/ui/screens/base/sub_screens/pids/pids_screen.dart';
+import 'package:edc_document_archieve/src/ui/screens/base/sub_screens/pids/sub_screens/sent_items.dart';
 import 'package:edc_document_archieve/src/ui/screens/welcome/welcome_screen.dart';
+import 'package:edc_document_archieve/src/utils/constants/constants.dart';
 import 'package:get/get.dart';
 
 List<GetPage<dynamic>> pages = [
-  GetPage(name: LoginScreen.routeName, page: () => const LoginScreen()),
-  GetPage(name: BaseScreen.routeName, page: () => BaseScreen()),
-  GetPage(name: PidsScreen.routeName, page: () => PidsScreen()),
-  GetPage(name: CRFormScreen.routeName, page: () => const CRFormScreen()),
-  GetPage(name: NonCRFormScreen.routeName, page: () => const NonCRFormScreen()),
-  GetPage(name: WelcomeScreen.routeName, page: () => const WelcomeScreen()),
-  GetPage(name: AuthWrapperScreen.routeName, page: () => AuthWrapperScreen()),
+  GetPage(name: kLoginRoute, page: () => const LoginScreen()),
+  GetPage(name: kBaseRoute, page: () => BaseScreen()),
+  GetPage(name: kPidsRoute, page: () => const PidsScreen()),
+  GetPage(name: kCrfformRoute, page: () => const CRFormScreen()),
+  GetPage(name: kNonCrfformRoute, page: () => const NonCRFormScreen()),
+  GetPage(name: kWelcomeRoute, page: () => const WelcomeScreen()),
+  GetPage(name: kAuthWrapperRoute, page: () => const AuthWrapperScreen()),
+  GetPage(name: kCreateCRFormRoute, page: () => const CreateCRFormScreen()),
   GetPage(
-    name: CreateCRFormScreen.routeName,
-    page: () => const CreateCRFormScreen(),
-  ),
-  GetPage(
-    name: CreateNonCRFormScreen.routeName,
-    page: () => const CreateNonCRFormScreen(),
-  ),
+      name: kCreateNonCRFormRoute, page: () => const CreateNonCRFormScreen()),
+  GetPage(name: kSentItemsRoute, page: () => const SentItemScreen()),
 ];

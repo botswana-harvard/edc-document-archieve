@@ -20,7 +20,6 @@ import 'package:get/get.dart';
 import 'package:recase/recase.dart';
 
 class NonCRFormScreen extends StatefulWidget {
-  static const String routeName = kNonCrfformRoute;
   const NonCRFormScreen({Key? key}) : super(key: key);
 
   @override

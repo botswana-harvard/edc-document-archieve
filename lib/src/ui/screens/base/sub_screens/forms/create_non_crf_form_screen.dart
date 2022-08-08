@@ -1,6 +1,5 @@
 import 'package:cool_alert/cool_alert.dart';
 import 'package:edc_document_archieve/src/config/injector.dart';
-import 'package:edc_document_archieve/src/core/data/dummy_data.dart';
 import 'package:edc_document_archieve/src/core/models/gallery_item.dart';
 import 'package:edc_document_archieve/src/core/models/participant_non_crf.dart';
 import 'package:edc_document_archieve/src/core/models/study_document.dart';
@@ -12,7 +11,6 @@ import 'package:edc_document_archieve/src/ui/widgets/custom_appbar.dart';
 import 'package:edc_document_archieve/src/ui/widgets/custom_text.dart';
 import 'package:edc_document_archieve/src/ui/widgets/custom_text_field.dart';
 import 'package:edc_document_archieve/src/ui/widgets/default_button.dart';
-import 'package:edc_document_archieve/src/ui/widgets/dropdown_field.dart';
 import 'package:edc_document_archieve/src/utils/constants/back.dart';
 import 'package:edc_document_archieve/src/utils/constants/colors.dart';
 import 'package:edc_document_archieve/src/utils/constants/constants.dart';
@@ -26,8 +24,6 @@ import 'package:image_picker/image_picker.dart';
 import 'package:recase/recase.dart';
 
 class CreateNonCRFormScreen extends StatefulWidget {
-  static const String routeName = kCreateNonCRFormRoute;
-
   const CreateNonCRFormScreen({Key? key}) : super(key: key);
 
   @override

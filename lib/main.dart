@@ -27,7 +27,7 @@ class MyApp extends StatelessWidget {
       create: (context) => AppService(),
       child: GetMaterialApp(
         debugShowCheckedModeBanner: true,
-        title: 'EDC Document Archiving',
+        title: 'EDC Document Archive',
         theme: ThemeData(
           primarySwatch: Colors.lightBlue,
           visualDensity: VisualDensity.adaptivePlatformDensity,
