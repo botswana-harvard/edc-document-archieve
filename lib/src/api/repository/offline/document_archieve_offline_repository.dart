@@ -1,4 +1,5 @@
 import 'package:edc_document_archieve/src/api/repository/offline/local_storage_repository.dart';
+import 'package:edc_document_archieve/src/core/models/item.dart';
 import 'package:edc_document_archieve/src/core/models/participant_crf.dart';
 import 'package:edc_document_archieve/src/core/models/participant_non_crf.dart';
 import 'package:edc_document_archieve/src/core/models/study_document.dart';
@@ -78,7 +79,7 @@ class DocumentArchieveOffLineRepository extends LocalStorageRepository {
     }
     Map<String, dynamic> data = {
       kCaregiverPid: caregiverPids,
-      kChildPid: childPids
+      kChildPid: childPids,
     };
 
     await appStorageBox.delete(pidsKey);
@@ -218,5 +219,42 @@ class DocumentArchieveOffLineRepository extends LocalStorageRepository {
       }
     }
     return documents;
+  }
+
+  Future<void> saveItems({
+    required String pid,
+    required String form,
+    required String dateCaptured,
+  }) async {
+    //Key to retrieve our items
+    String key = 'items';
+
+    //get all items
+    List<Item> items =
+        appStorageBox.get(key, defaultValue: <Item>[]).cast<Item>();
+
+    // Sent items (data)
+    Map<String, dynamic> data = {
+      'pid': pid,
+      'form': form,
+      'status': 'sent',
+      'created': dateCaptured,
+    };
+
+    // add item to list of items
+    items.add(Item.fromJson(data));
+
+    // Update storage box with sent items
+    await appStorageBox.delete(key);
+    await appStorageBox.put(key, items);
+  }
+
+  List<Item> getSentForms() {
+    String key = 'items';
+
+    //get all items
+    List<Item> items =
+        appStorageBox.get(key, defaultValue: <Item>[]).cast<Item>();
+    return items;
   }
 }

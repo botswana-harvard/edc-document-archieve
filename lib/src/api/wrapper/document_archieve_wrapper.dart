@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:edc_document_archieve/src/api/repository/online/base_online_repository.dart';
 import 'package:edc_document_archieve/src/api/wrapper/base_storage_wrapper.dart';
 import 'package:edc_document_archieve/src/core/models/gallery_item.dart';
+import 'package:edc_document_archieve/src/core/models/item.dart';
 import 'package:edc_document_archieve/src/core/models/participant_crf.dart';
 import 'package:edc_document_archieve/src/core/models/participant_non_crf.dart';
 import 'package:edc_document_archieve/src/core/models/study_document.dart';
@@ -112,6 +113,11 @@ class DocumentArchieveWrapper extends BaseStorageWrapper
 
     switch (response.statusCode) {
       case 200:
+        archieveOffLineRepository.saveItems(
+          pid: data['subject_identifier'],
+          form: data['model_name'],
+          dateCaptured: data['date_captured'],
+        );
         return 'Success';
       case 400:
         return 'Bad Request';
@@ -233,5 +239,10 @@ class DocumentArchieveWrapper extends BaseStorageWrapper
   @override
   Future<void> loadDataFromApi() async {
     await saveDataLocalStorage();
+  }
+
+  @override
+  List<Item> getSentForms() {
+    return archieveOffLineRepository.getSentForms();
   }
 }

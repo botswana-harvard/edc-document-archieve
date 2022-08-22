@@ -153,7 +153,6 @@ class _PidsScreenState extends State<PidsScreen> {
             actionButtons: [
               IconButton(
                 onPressed: () {
-                  logger.e('Sent items...');
                   Navigator.pushNamed(context, kSentItemsRoute);
                 },
                 icon: const Icon(Icons.receipt_rounded, color: kDarkBlue),

@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:bloc_concurrency/bloc_concurrency.dart';
 import 'package:edc_document_archieve/src/core/models/gallery_item.dart';
+import 'package:edc_document_archieve/src/core/models/item.dart';
 import 'package:edc_document_archieve/src/core/models/participant_crf.dart';
 import 'package:edc_document_archieve/src/core/models/participant_non_crf.dart';
 import 'package:edc_document_archieve/src/core/models/study_document.dart';
@@ -328,5 +329,13 @@ class DocumentArchieveBloc
 
   void refreshData() {
     add(DocumentArchieveDataRefreshed());
+  }
+
+  List<Item> get sentItems {
+    return documentArchieveRepository.getSentForms();
+  }
+
+  List<Item> get pendingItems {
+    return [];
   }
 }

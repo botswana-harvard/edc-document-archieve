@@ -22,5 +22,5 @@ List<GetPage<dynamic>> pages = [
   GetPage(name: kCreateCRFormRoute, page: () => const CreateCRFormScreen()),
   GetPage(
       name: kCreateNonCRFormRoute, page: () => const CreateNonCRFormScreen()),
-  GetPage(name: kSentItemsRoute, page: () => const SentItemScreen()),
+  GetPage(name: kSentItemsRoute, page: () => SentItemScreen()),
 ];

@@ -12,8 +12,6 @@ abstract class BaseOnlineRepository {
   static const String tdUrl = 'https://td-test.bhp.org.bw/edc_da_api/';
   //td test url ---> 'https://td-test.bhp.org.bw/edc_da_api/';
 
-  ///10.113.201.239
-
   BaseOnlineRepository() {
     /// dio base settings
     BaseOptions options = BaseOptions(
