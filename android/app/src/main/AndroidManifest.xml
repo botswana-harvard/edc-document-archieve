@@ -1,5 +1,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+<<<<<<< HEAD
     package="bw.org.bhp.test_app">
+=======
+    package="bw.org.bhp.document_archieve_test">
+>>>>>>> ed8b5e73eaa7b56b1a24b2bf70db20d5ab338112
 
     <uses-permission android:name="android.permission.INTERNET"/>
     
