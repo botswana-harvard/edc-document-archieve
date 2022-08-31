@@ -2,7 +2,6 @@ import 'package:edc_document_archieve/src/config/injector.dart';
 import 'package:edc_document_archieve/src/core/models/gallery_item.dart';
 import 'package:edc_document_archieve/src/core/models/study_document.dart';
 import 'package:edc_document_archieve/src/services/bloc/document_archive_bloc.dart';
-import 'package:edc_document_archieve/src/ui/screens/base/sub_screens/forms/widgets/gallery_image.dart';
 import 'package:flutter/material.dart';
 import 'package:uuid/uuid.dart';
 
@@ -91,20 +90,4 @@ class AppService with ChangeNotifier {
     _selectedImages.addAll(temp);
     notifyWidgetListeners();
   }
-
-  // Future<void> onUploadButtonTapped({
-  //   required String pid,
-  //   required String visitCode,
-  //   required String timePoint,
-  //   required List<String> uploads,
-  //   required StudyDocument studyDocument,
-  // }) async {
-  //   Injector.resolve<DocumentArchieveBloc>().addCrfDocument(
-  //     pid: selectedPid,
-  //     visitCode: visitCode,
-  //     timePoint: timePoint,
-  //     uploads: uploads,
-  //     studyDocument: selectedStudyDocument,
-  //   );
-  // }
 }

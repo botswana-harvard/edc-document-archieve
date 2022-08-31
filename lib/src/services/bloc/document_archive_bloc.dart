@@ -209,8 +209,10 @@ class DocumentArchieveBloc
     add(DocumentArchieveStudiesRequested());
   }
 
-  void getParticipantForms(
-      {required String pid, required StudyDocument documentForm}) {
+  void getParticipantForms({
+    required String pid,
+    required StudyDocument documentForm,
+  }) {
     add(DocumentArchieveFormRequested(pid: pid, documentForm: documentForm));
   }
 
@@ -336,6 +338,6 @@ class DocumentArchieveBloc
   }
 
   List<Item> get pendingItems {
-    return [];
+    return documentArchieveRepository.getPendingForms();
   }
 }

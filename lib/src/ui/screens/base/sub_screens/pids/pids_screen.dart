@@ -4,7 +4,7 @@ import 'package:edc_document_archieve/src/services/app_service.dart';
 import 'package:edc_document_archieve/src/services/bloc/document_archive_bloc.dart';
 import 'package:edc_document_archieve/src/services/bloc/states/document_archive_state.dart';
 import 'package:edc_document_archieve/src/ui/screens/base/sub_screens/pids/sub_screens/create_pid_screen.dart';
-import 'package:edc_document_archieve/src/ui/screens/base/sub_screens/pids/sub_screens/list_pids.dart';
+import 'package:edc_document_archieve/src/ui/screens/base/sub_screens/pids/sub_screens/list_pids_screen.dart';
 import 'package:edc_document_archieve/src/ui/screens/base/sub_screens/pids/sub_screens/search_pid_screen.dart';
 import 'package:edc_document_archieve/src/ui/widgets/custom_appbar.dart';
 import 'package:edc_document_archieve/src/utils/constants/colors.dart';

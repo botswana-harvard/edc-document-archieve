@@ -6,7 +6,7 @@ import 'package:edc_document_archieve/src/ui/screens/base/sub_screens/forms/crea
 import 'package:edc_document_archieve/src/ui/screens/base/sub_screens/forms/crf_forms_screen.dart';
 import 'package:edc_document_archieve/src/ui/screens/base/sub_screens/forms/non_crf_forms_screen.dart';
 import 'package:edc_document_archieve/src/ui/screens/base/sub_screens/pids/pids_screen.dart';
-import 'package:edc_document_archieve/src/ui/screens/base/sub_screens/pids/sub_screens/sent_items.dart';
+import 'package:edc_document_archieve/src/ui/screens/base/sub_screens/pids/sub_screens/sent_item_screen.dart';
 import 'package:edc_document_archieve/src/ui/screens/welcome/welcome_screen.dart';
 import 'package:edc_document_archieve/src/utils/constants/constants.dart';
 import 'package:get/get.dart';

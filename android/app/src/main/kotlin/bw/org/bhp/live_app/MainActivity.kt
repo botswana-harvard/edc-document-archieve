@@ -1,4 +1,4 @@
-package bw.org.bhp.test_app
+package bw.org.bhp.live_app
 
 import io.flutter.embedding.android.FlutterActivity
 

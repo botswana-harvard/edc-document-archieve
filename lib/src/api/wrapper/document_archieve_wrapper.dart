@@ -25,6 +25,13 @@ class DocumentArchieveWrapper extends BaseStorageWrapper
     required ParticipantCrf crf,
   }) async {
     await archieveOffLineRepository.addParticipantCrfForm(crf: crf);
+    archieveOffLineRepository.saveItems(
+      pid: crf.pid,
+      form: crf.document.name,
+      dateCaptured: crf.created,
+      status: 'pending',
+      document: crf.document,
+    );
   }
 
   @override
@@ -46,6 +53,13 @@ class DocumentArchieveWrapper extends BaseStorageWrapper
   }) async {
     await archieveOffLineRepository.addParticipantNonCrfForm(
       nonCrf: nonCrf,
+    );
+    archieveOffLineRepository.saveItems(
+      pid: nonCrf.pid,
+      form: nonCrf.document.name,
+      dateCaptured: nonCrf.created,
+      status: 'pending',
+      document: nonCrf.document,
     );
   }
 
@@ -117,6 +131,8 @@ class DocumentArchieveWrapper extends BaseStorageWrapper
           pid: data['subject_identifier'],
           form: data['model_name'],
           dateCaptured: data['date_captured'],
+          status: 'sent',
+          document: data['document'],
         );
         return 'Success';
       case 400:
@@ -160,6 +176,7 @@ class DocumentArchieveWrapper extends BaseStorageWrapper
           'timepoint': crf.timepoint,
           'files': uploads,
           'date_captured': convertDateTimeDisplay(crf.created),
+          'document': crf.document,
           'username':
               archieveOffLineRepository.appStorageBox.get(kLastUserLoggedIn),
         };
@@ -174,6 +191,7 @@ class DocumentArchieveWrapper extends BaseStorageWrapper
           'date_captured': convertDateTimeDisplay(crf.created),
           'username':
               archieveOffLineRepository.appStorageBox.get(kLastUserLoggedIn),
+          'document': crf.document,
         };
       }
 
@@ -208,6 +226,7 @@ class DocumentArchieveWrapper extends BaseStorageWrapper
       'model_name': modelName,
       'files': uploads,
       'date_captured': convertDateTimeDisplay(nonCrf.created),
+      'document': nonCrf.document,
       'username':
           archieveOffLineRepository.appStorageBox.get(kLastUserLoggedIn),
     };
@@ -244,5 +263,10 @@ class DocumentArchieveWrapper extends BaseStorageWrapper
   @override
   List<Item> getSentForms() {
     return archieveOffLineRepository.getSentForms();
+  }
+
+  @override
+  List<Item> getPendingForms() {
+    return archieveOffLineRepository.getPendingForms();
   }
 }

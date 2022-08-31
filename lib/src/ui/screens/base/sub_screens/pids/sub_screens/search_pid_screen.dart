@@ -120,38 +120,42 @@ class CustomSearchDelegate extends SearchDelegate {
             title: query.isNotEmpty
                 ? RichText(
                     text: TextSpan(
-                        text: suggestions[index].substring(0, query.length),
-                        style: const TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.black),
-                        children: [
-                          TextSpan(
-                              text: suggestions[index].substring(query.length),
-                              style: const TextStyle(
-                                  color: Colors.grey, fontSize: 18))
-                        ]),
+                      text: suggestions[index].substring(0, query.length),
+                      style: const TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black),
+                      children: [
+                        TextSpan(
+                          text: suggestions[index].substring(query.length),
+                          style:
+                              const TextStyle(color: Colors.grey, fontSize: 18),
+                        )
+                      ],
+                    ),
                   )
                 : Text(suggestions[index]),
             children: [
-              ...studyDocuments!.map((studyDocument) => Container(
-                    padding: const EdgeInsets.all(10),
-                    height: 80,
-                    child: ListTile(
-                      tileColor: Theme.of(context).canvasColor,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20.0),
-                      ),
-                      focusColor: Colors.white,
-                      style: ListTileStyle.list,
-                      title: Text(studyDocument.name),
-                      trailing: const Icon(
-                        Icons.arrow_forward_ios,
-                        size: 16,
-                      ),
-                      onTap: () => onFolderButtonTapped(studyDocument),
+              ...studyDocuments!.map(
+                (studyDocument) => Container(
+                  padding: const EdgeInsets.all(10),
+                  height: 80,
+                  child: ListTile(
+                    tileColor: Theme.of(context).canvasColor,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20.0),
                     ),
-                  )),
+                    focusColor: Colors.white,
+                    style: ListTileStyle.list,
+                    title: Text(studyDocument.name),
+                    trailing: const Icon(
+                      Icons.arrow_forward_ios,
+                      size: 16,
+                    ),
+                    onTap: () => onFolderButtonTapped(studyDocument),
+                  ),
+                ),
+              ),
             ],
           ),
         );

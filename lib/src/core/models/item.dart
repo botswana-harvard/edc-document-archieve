@@ -1,3 +1,4 @@
+import 'package:edc_document_archieve/src/core/models/study_document.dart';
 import 'package:hive/hive.dart';
 import 'package:json_annotation/json_annotation.dart';
 
@@ -8,9 +9,10 @@ part 'gen/item.g.dart';
 class Item {
   Item({
     required this.pid,
-    required this.form,
+    required this.modelName,
     required this.status,
     required this.created,
+    required this.document,
   });
 
   // id image (image url) to use in hero animation
@@ -18,13 +20,16 @@ class Item {
   final String pid;
   // image url
   @HiveField(2)
-  final String form;
+  final String modelName;
 
   @HiveField(3)
   final String created;
 
   @HiveField(4)
   final String status;
+
+  @HiveField(5)
+  final StudyDocument document;
 
   factory Item.fromJson(Map<String, dynamic> data) => _$ItemFromJson(data);
 

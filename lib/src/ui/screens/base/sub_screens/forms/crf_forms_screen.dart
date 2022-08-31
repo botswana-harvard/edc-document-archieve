@@ -10,6 +10,7 @@ import 'package:edc_document_archieve/src/core/models/study_document.dart';
 import 'package:edc_document_archieve/src/services/app_service.dart';
 import 'package:edc_document_archieve/src/services/bloc/document_archive_bloc.dart';
 import 'package:edc_document_archieve/src/services/bloc/states/document_archive_state.dart';
+import 'package:edc_document_archieve/src/services/sent_item_service.dart';
 import 'package:edc_document_archieve/src/ui/screens/base/sub_screens/forms/widgets/gallery_image.dart';
 import 'package:edc_document_archieve/src/ui/widgets/custom_appbar.dart';
 import 'package:edc_document_archieve/src/ui/widgets/custom_text.dart';
@@ -40,11 +41,13 @@ class _CRFormScreenState extends State<CRFormScreen> {
   late DocumentArchieveBloc _archieveBloc;
   List<ParticipantCrf> _partcipantCrfs = [];
   List<GlobalKey<ExpansionTileCardState>> cardKeyList = [];
+  late SentItemService _sentItemsService;
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
     _appService = context.watch<AppService>();
+    _sentItemsService = context.read<SentItemService>();
     _studyName = _appService.selectedStudy;
     _documentForm = _appService.selectedStudyDocument;
     _pid = _appService.selectedPid;
@@ -72,6 +75,7 @@ class _CRFormScreenState extends State<CRFormScreen> {
             if (state.data != null) {
               _partcipantCrfs = state.data;
             }
+            _sentItemsService.notifyWidgetListeners();
             break;
           case DocumentArchieveStatus.error:
             Dialogs.closeLoadingDialog(context);

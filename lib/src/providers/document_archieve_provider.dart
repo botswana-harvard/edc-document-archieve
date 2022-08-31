@@ -54,4 +54,6 @@ abstract class DocumentArchieveProvider {
   Future<void> loadDataFromApi();
 
   List<Item> getSentForms();
+
+  List<Item> getPendingForms();
 }

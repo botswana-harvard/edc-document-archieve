@@ -18,24 +18,27 @@ class ItemAdapter extends TypeAdapter<Item> {
     };
     return Item(
       pid: fields[1] as String,
-      form: fields[2] as String,
+      modelName: fields[2] as String,
       status: fields[4] as String,
       created: fields[3] as String,
+      document: fields[5] as StudyDocument,
     );
   }
 
   @override
   void write(BinaryWriter writer, Item obj) {
     writer
-      ..writeByte(4)
+      ..writeByte(5)
       ..writeByte(1)
       ..write(obj.pid)
       ..writeByte(2)
-      ..write(obj.form)
+      ..write(obj.modelName)
       ..writeByte(3)
       ..write(obj.created)
       ..writeByte(4)
-      ..write(obj.status);
+      ..write(obj.status)
+      ..writeByte(5)
+      ..write(obj.document);
   }
 
   @override
@@ -55,14 +58,17 @@ class ItemAdapter extends TypeAdapter<Item> {
 
 Item _$ItemFromJson(Map<String, dynamic> json) => Item(
       pid: json['pid'] as String,
-      form: json['form'] as String,
+      modelName: json['modelName'] as String,
       status: json['status'] as String,
       created: json['created'] as String,
+      document:
+          StudyDocument.fromJson(json['document'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$ItemToJson(Item instance) => <String, dynamic>{
       'pid': instance.pid,
-      'form': instance.form,
+      'modelName': instance.modelName,
       'created': instance.created,
       'status': instance.status,
+      'document': instance.document.toJson(),
     };
