@@ -49,7 +49,7 @@ const List<Map<String, dynamic>> flourishCaregiverVisitCodeChoice = [
 const List<Map<String, dynamic>> flourishChildVisitCodeChoice = [
   {'value': '2000', 'display': '2000'},
   {'value': '2000D', 'display': '2000D'},
-  {'value': '2100A', 'display': '2200A'},
+  {'value': '2100A', 'display': '2100A'},
   {'value': '2001', 'display': '2001'},
   {'value': '2002', 'display': '2002'},
   {'value': '2003', 'display': '2003'},
