@@ -12,7 +12,7 @@ class DocumentArchieveOnLineRepository extends BaseOnlineRepository {
       logger.w(response.data);
       return response.data;
     }
-    return {};
+    return <String, dynamic>{};
   }
 
   Future<Response> pushDataToServer({required url, dynamic data}) async {

@@ -22,6 +22,6 @@ class AuthenticationOnlineRepository extends BaseOnlineRepository {
       logger.w(response.data);
       return response.data;
     }
-    return {};
+    return <String, dynamic>{};
   }
 }
