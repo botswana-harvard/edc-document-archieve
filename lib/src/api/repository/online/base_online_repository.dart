@@ -2,15 +2,18 @@ import 'package:dio/dio.dart';
 import 'package:edc_document_archieve/src/api/repository/online/interceptor/api_interceptor.dart';
 import 'package:edc_document_archieve/src/utils/debugLog.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart' as Foundation;
 
 abstract class BaseOnlineRepository {
   late Dio _dio;
 
-  ///flourish test url ----> http://flourish-dev.bhp.org.bw/
-  static const String flourishUrl =
-      'http://flourish-dev.bhp.org.bw/edc_da_api/';
-  static const String tdUrl = 'https://td-test.bhp.org.bw/edc_da_api/';
-  //td test url ---> 'https://td-test.bhp.org.bw/edc_da_api/';
+  static const String flourishUrl = Foundation.kReleaseMode
+      ? 'https://flourish.bhp.org.bw/edc_da_api/'
+      : 'http://flourish-dev.bhp.org.bw/';
+
+  static const String tdUrl = Foundation.kReleaseMode
+      ? 'https://td-live.bhp.org.bw/edc_da_api/'
+      : 'https://td-test.bhp.org.bw/edc_da_api/';
 
   BaseOnlineRepository() {
     /// dio base settings
