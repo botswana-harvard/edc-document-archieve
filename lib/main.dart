@@ -1,4 +1,6 @@
+import 'dart:io';
 import 'package:edc_document_archieve/gen/assets.gen.dart';
+import 'package:edc_document_archieve/http_overrides.dart';
 import 'package:edc_document_archieve/src/config/injector.dart';
 import 'package:edc_document_archieve/src/api/repository/offline/local_storage_repository.dart';
 import 'package:edc_document_archieve/src/services/app_service.dart';
@@ -14,6 +16,7 @@ import 'package:provider/provider.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 
 Future<void> main() async {
+   HttpOverrides.global = MyHttpOverrides();
   await LocalStorageRepository.setupLocalStorage();
   Injector.setup();
   runApp(const MyApp());

@@ -9,7 +9,7 @@ abstract class BaseOnlineRepository {
 
   static const String flourishUrl = Foundation.kReleaseMode
       ? 'https://flourish.bhp.org.bw/edc_da_api/'
-      : 'http://flourish-dev.bhp.org.bw/';
+      : 'http://flourish-dev.bhp.org.bw/edc_da_api/';
 
   static const String tdUrl = Foundation.kReleaseMode
       ? 'https://td-live.bhp.org.bw/edc_da_api/'
