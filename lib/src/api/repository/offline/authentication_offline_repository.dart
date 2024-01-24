@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:crypto/crypto.dart';
 import 'package:edc_document_archieve/src/api/repository/offline/local_storage_repository.dart';
+import 'package:edc_document_archieve/src/core/models/item.dart';
 import 'package:edc_document_archieve/src/core/models/user_account.dart';
 import 'package:edc_document_archieve/src/providers/authentication_provider.dart';
 import 'package:edc_document_archieve/src/utils/constants/constants.dart';

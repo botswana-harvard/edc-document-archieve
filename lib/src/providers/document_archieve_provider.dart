@@ -1,3 +1,4 @@
+import 'package:edc_document_archieve/src/core/models/item.dart';
 import 'package:edc_document_archieve/src/core/models/participant_crf.dart';
 import 'package:edc_document_archieve/src/core/models/participant_non_crf.dart';
 import 'package:edc_document_archieve/src/core/models/study_document.dart';
@@ -13,10 +14,6 @@ abstract class DocumentArchieveProvider {
   //
   Future<List<StudyDocument>> getCaregiverForms(String studyName);
   Future<List<StudyDocument>> getChildForms(String studyName);
-
-  Future<List<String>> getAllVisits(String studyName);
-
-  Future<List<String>> getAllTimePoints(String studyName);
 
   Future<void> addParticipantIdentifier({
     required String studyName,
@@ -53,4 +50,10 @@ abstract class DocumentArchieveProvider {
     required ParticipantNonCrf nonCrf,
     required String selectedStudy,
   });
+
+  Future<void> loadDataFromApi();
+
+  List<Item> getSentForms();
+
+  List<Item> getPendingForms();
 }

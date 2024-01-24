@@ -1,9 +1,11 @@
 import 'package:edc_document_archieve/src/api/repository/offline/local_storage_repository.dart';
+import 'package:edc_document_archieve/src/core/models/item.dart';
 import 'package:edc_document_archieve/src/core/models/participant_crf.dart';
 import 'package:edc_document_archieve/src/core/models/participant_non_crf.dart';
 import 'package:edc_document_archieve/src/core/models/study_document.dart';
 import 'package:edc_document_archieve/src/utils/constants/constants.dart';
 import 'package:edc_document_archieve/src/utils/debugLog.dart';
+import 'package:recase/recase.dart';
 
 class DocumentArchieveOffLineRepository extends LocalStorageRepository {
   Future<void> addParticipantCrfForm({
@@ -30,14 +32,6 @@ class DocumentArchieveOffLineRepository extends LocalStorageRepository {
     //get all participant's non crfs
     List<ParticipantNonCrf> nonCrfs = appStorageBox.get(key,
         defaultValue: <ParticipantNonCrf>[]).cast<ParticipantNonCrf>();
-    // try {
-    //   //Get existing participant non crf form
-    //   ParticipantNonCrf filteredForm =
-    //       nonCrfs.firstWhere((form) => nonCrf == form);
-    //   //remove it from list of non crfs
-    //   nonCrfs.remove(filteredForm);
-    //   // ignore: empty_catches
-    // } on StateError {}
     nonCrfs.add(nonCrf);
     await appStorageBox.delete(key);
     await appStorageBox.put(key, nonCrfs);
@@ -78,7 +72,7 @@ class DocumentArchieveOffLineRepository extends LocalStorageRepository {
     }
     Map<String, dynamic> data = {
       kCaregiverPid: caregiverPids,
-      kChildPid: childPids
+      kChildPid: childPids,
     };
 
     await appStorageBox.delete(pidsKey);
@@ -108,15 +102,6 @@ class DocumentArchieveOffLineRepository extends LocalStorageRepository {
         .get(kProjects, defaultValue: <String>[]).cast<String>();
   }
 
-  Future<List<String>> getAllTimePoints(String studyName) {
-    // TODO: implement getAllTimePoints
-    throw UnimplementedError();
-  }
-
-  Future<List<String>> getAllVisits(String studyName) {
-    // TODO: implement getAllVisits
-    throw UnimplementedError();
-  }
 
   Future<List<ParticipantCrf>> getCrForms({required String pid}) async {
     String key = '${pid}_crfs';
@@ -218,5 +203,64 @@ class DocumentArchieveOffLineRepository extends LocalStorageRepository {
       }
     }
     return documents;
+  }
+
+  Future<void> saveItems({
+    required String pid,
+    required String form,
+    required String dateCaptured,
+    required String status,
+    required StudyDocument document,
+  }) async {
+    //Key to retrieve our items
+    String key = 'items';
+
+    //get all items
+    List<Item> items =
+        appStorageBox.get(key, defaultValue: <Item>[]).cast<Item>();
+
+    // Sent items (data)
+    Map<String, dynamic> _document = {
+      'id': document.id,
+      'appName': document.appName,
+      'pidType': document.pidType,
+      'type': document.type,
+      'name': document.name,
+    };
+    Map<String, dynamic> data = {
+      'pid': pid,
+      'modelName': form.titleCase,
+      'status': status,
+      'created': dateCaptured,
+      'document': _document,
+    };
+
+    items.removeWhere((item) =>
+        item.pid == pid &&
+        item.modelName == form.titleCase &&
+        item.status == 'pending');
+    items.add(Item.fromJson(data));
+
+    // Update storage box with sent items
+    await appStorageBox.delete(key);
+    await appStorageBox.put(key, items);
+  }
+
+  List<Item> getSentForms() {
+    return getFormsByStatus('sent');
+  }
+
+  List<Item> getPendingForms() {
+    return getFormsByStatus('pending');
+  }
+
+  List<Item> getFormsByStatus(String status) {
+    String key = 'items';
+    //get all items
+    List<Item> items =
+        appStorageBox.get(key, defaultValue: <Item>[]).cast<Item>();
+
+    items = items.where((item) => item.status == status).toList();
+    return items;
   }
 }

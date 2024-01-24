@@ -1,4 +1,4 @@
-package bw.org.bhp.edc_document_archieve
+package bw.org.bhp.live_app
 
 import io.flutter.embedding.android.FlutterActivity
 

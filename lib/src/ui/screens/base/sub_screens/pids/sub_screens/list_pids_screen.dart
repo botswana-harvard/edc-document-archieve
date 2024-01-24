@@ -84,14 +84,6 @@ class ListPids extends StatelessWidget {
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  // if (true)
-                  //   IconButton(
-                  //     onPressed: () {},
-                  //     icon: const Icon(
-                  //       Icons.pending_actions,
-                  //       color: Colors.deepOrangeAccent,
-                  //     ),
-                  //   )
                 ],
               ),
               children: [

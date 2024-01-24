@@ -1,9 +1,8 @@
 import 'package:dio/dio.dart';
-import 'package:edc_document_archieve/src/api/repository/offline/document_archieve_offline_repository.dart';
 import 'package:edc_document_archieve/src/api/repository/online/base_online_repository.dart';
-import 'package:edc_document_archieve/src/api/repository/online/document_archieve_online_repository.dart';
-import 'package:edc_document_archieve/src/config/injector.dart';
+import 'package:edc_document_archieve/src/api/wrapper/base_storage_wrapper.dart';
 import 'package:edc_document_archieve/src/core/models/gallery_item.dart';
+import 'package:edc_document_archieve/src/core/models/item.dart';
 import 'package:edc_document_archieve/src/core/models/participant_crf.dart';
 import 'package:edc_document_archieve/src/core/models/participant_non_crf.dart';
 import 'package:edc_document_archieve/src/core/models/study_document.dart';
@@ -14,14 +13,8 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:recase/recase.dart';
 
-class DocumentArchieveWrapper implements DocumentArchieveProvider {
-  DocumentArchieveWrapper() {
-    _offlineRepository = Injector.resolve<DocumentArchieveOffLineRepository>();
-    _onlineRepository = Injector.resolve<DocumentArchieveOnLineRepository>();
-  }
-
-  late DocumentArchieveOffLineRepository _offlineRepository;
-  late DocumentArchieveOnLineRepository _onlineRepository;
+class DocumentArchieveWrapper extends BaseStorageWrapper
+    implements DocumentArchieveProvider {
   late List<String>? participants;
   late List<String>? forms;
   late List<String>? studies;
@@ -31,7 +24,14 @@ class DocumentArchieveWrapper implements DocumentArchieveProvider {
   Future<void> addParticipantCrfForm({
     required ParticipantCrf crf,
   }) async {
-    await _offlineRepository.addParticipantCrfForm(crf: crf);
+    await archieveOffLineRepository.addParticipantCrfForm(crf: crf);
+    archieveOffLineRepository.saveItems(
+      pid: crf.pid,
+      form: crf.document.name,
+      dateCaptured: crf.created,
+      status: 'pending',
+      document: crf.document,
+    );
   }
 
   @override
@@ -40,7 +40,7 @@ class DocumentArchieveWrapper implements DocumentArchieveProvider {
     required String pid,
     required String type,
   }) async {
-    await _offlineRepository.addParticipantIdentifier(
+    await archieveOffLineRepository.addParticipantIdentifier(
       studyName: studyName,
       pid: pid,
       type: type,
@@ -51,63 +51,58 @@ class DocumentArchieveWrapper implements DocumentArchieveProvider {
   Future<void> addParticipantNonCrfForm({
     required ParticipantNonCrf nonCrf,
   }) async {
-    await _offlineRepository.addParticipantNonCrfForm(
+    await archieveOffLineRepository.addParticipantNonCrfForm(
       nonCrf: nonCrf,
+    );
+    archieveOffLineRepository.saveItems(
+      pid: nonCrf.pid,
+      form: nonCrf.document.name,
+      dateCaptured: nonCrf.created,
+      status: 'pending',
+      document: nonCrf.document,
     );
   }
 
   @override
   Future<Map<String, dynamic>> getAllParticipants(String studyName) async {
-    return await _offlineRepository.getAllParticipants(studyName);
+    return await archieveOffLineRepository.getAllParticipants(studyName);
   }
 
   @override
   Future<List<String>> getAllStudies() async {
-    return await _offlineRepository.getAllStudies();
-  }
-
-  @override
-  Future<List<String>> getAllTimePoints(String studyName) {
-    // TODO: implement getAllTimePoints
-    throw UnimplementedError();
-  }
-
-  @override
-  Future<List<String>> getAllVisits(String studyName) {
-    // TODO: implement getAllVisits
-    throw UnimplementedError();
+    return await archieveOffLineRepository.getAllStudies();
   }
 
   @override
   Future<List<ParticipantCrf>> getCrForms({required String pid}) async {
-    return await _offlineRepository.getCrForms(pid: pid);
+    return await archieveOffLineRepository.getCrForms(pid: pid);
   }
 
   @override
   Future<List<ParticipantNonCrf>> getNonCrForms({required String pid}) async {
-    return await _offlineRepository.getNonCrForms(pid: pid);
+    return await archieveOffLineRepository.getNonCrForms(pid: pid);
   }
 
   @override
   Future<List<ParticipantCrf>> deleteParticipantCrfForm(
       {required ParticipantCrf crf}) async {
-    return await _offlineRepository.deleteParticipantCrfForm(crf: crf);
+    return await archieveOffLineRepository.deleteParticipantCrfForm(crf: crf);
   }
 
   @override
   Future<void> deleteParticipantNonCrfForm(
       {required ParticipantNonCrf nonCrf}) async {
-    await _offlineRepository.deleteParticipantNonCrfForm(nonCrf: nonCrf);
+    await archieveOffLineRepository.deleteParticipantNonCrfForm(nonCrf: nonCrf);
   }
 
   @override
   Future<List<StudyDocument>> getChildForms(String studyName) async {
-    return await _offlineRepository.getChildForms(studyName);
+    return await archieveOffLineRepository.getChildForms(studyName);
   }
 
   @override
   Future<List<StudyDocument>> getCaregiverForms(String studyName) async {
-    return await _offlineRepository.getCaregiverForms(studyName);
+    return await archieveOffLineRepository.getCaregiverForms(studyName);
   }
 
   @protected
@@ -127,11 +122,18 @@ class DocumentArchieveWrapper implements DocumentArchieveProvider {
         url = '';
     }
     FormData formData = FormData.fromMap(data);
-    Response response =
-        await _onlineRepository.pushDataToServer(url: url, data: formData);
+    Response response = await archieveOnLineRepository.pushDataToServer(
+        url: url, data: formData);
 
     switch (response.statusCode) {
       case 200:
+        archieveOffLineRepository.saveItems(
+          pid: data['subject_identifier'],
+          form: data['model_name'],
+          dateCaptured: data['date_captured'],
+          status: 'sent',
+          document: data['document'],
+        );
         return 'Success';
       case 400:
         return 'Bad Request';
@@ -174,7 +176,9 @@ class DocumentArchieveWrapper implements DocumentArchieveProvider {
           'timepoint': crf.timepoint,
           'files': uploads,
           'date_captured': convertDateTimeDisplay(crf.created),
-          'username': _offlineRepository.appStorageBox.get(kLastUserLoggedIn),
+          'document': crf.document,
+          'username':
+              archieveOffLineRepository.appStorageBox.get(kLastUserLoggedIn),
         };
       } else {
         data = {
@@ -185,7 +189,9 @@ class DocumentArchieveWrapper implements DocumentArchieveProvider {
           'timepoint': crf.timepoint,
           'files': uploads,
           'date_captured': convertDateTimeDisplay(crf.created),
-          'username': _offlineRepository.appStorageBox.get(kLastUserLoggedIn),
+          'username':
+              archieveOffLineRepository.appStorageBox.get(kLastUserLoggedIn),
+          'document': crf.document,
         };
       }
 
@@ -193,7 +199,7 @@ class DocumentArchieveWrapper implements DocumentArchieveProvider {
         logger.e(data);
         message = await synchData(data: data, selectedStudy: selectedStudy);
         if (message == 'Success') {
-          await _offlineRepository.deleteParticipantCrfForm(crf: crf);
+          await archieveOffLineRepository.deleteParticipantCrfForm(crf: crf);
           crfs.remove(crf);
         }
       }
@@ -220,7 +226,9 @@ class DocumentArchieveWrapper implements DocumentArchieveProvider {
       'model_name': modelName,
       'files': uploads,
       'date_captured': convertDateTimeDisplay(nonCrf.created),
-      'username': _offlineRepository.appStorageBox.get(kLastUserLoggedIn),
+      'document': nonCrf.document,
+      'username':
+          archieveOffLineRepository.appStorageBox.get(kLastUserLoggedIn),
     };
 
     if (nonCrf.version != null) {
@@ -233,7 +241,8 @@ class DocumentArchieveWrapper implements DocumentArchieveProvider {
     logger.e(data);
     String response = await synchData(data: data, selectedStudy: selectedStudy);
     if (response == 'Success') {
-      await _offlineRepository.deleteParticipantNonCrfForm(nonCrf: nonCrf);
+      await archieveOffLineRepository.deleteParticipantNonCrfForm(
+          nonCrf: nonCrf);
     }
     return response;
   }
@@ -244,5 +253,20 @@ class DocumentArchieveWrapper implements DocumentArchieveProvider {
     final DateTime displayDate = displayFormater.parse(date);
     final String formatted = serverFormater.format(displayDate);
     return formatted;
+  }
+
+  @override
+  Future<void> loadDataFromApi() async {
+    await saveDataLocalStorage();
+  }
+
+  @override
+  List<Item> getSentForms() {
+    return archieveOffLineRepository.getSentForms();
+  }
+
+  @override
+  List<Item> getPendingForms() {
+    return archieveOffLineRepository.getPendingForms();
   }
 }

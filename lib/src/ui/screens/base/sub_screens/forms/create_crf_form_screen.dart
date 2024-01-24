@@ -25,8 +25,6 @@ import 'package:image_picker/image_picker.dart';
 import 'package:recase/recase.dart';
 
 class CreateCRFormScreen extends StatefulWidget {
-  static const String routeName = kCreateCRFormRoute;
-
   const CreateCRFormScreen({Key? key}) : super(key: key);
 
   @override

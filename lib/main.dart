@@ -2,6 +2,7 @@ import 'package:edc_document_archieve/gen/assets.gen.dart';
 import 'package:edc_document_archieve/src/config/injector.dart';
 import 'package:edc_document_archieve/src/api/repository/offline/local_storage_repository.dart';
 import 'package:edc_document_archieve/src/services/app_service.dart';
+import 'package:edc_document_archieve/src/services/sent_item_service.dart';
 
 import 'package:edc_document_archieve/src/ui/screens/auth/auth_wrapper_screen.dart';
 import 'package:edc_document_archieve/src/ui/widgets/splash_screen.dart';
@@ -23,11 +24,14 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (context) => AppService(),
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (context) => AppService()),
+        ChangeNotifierProvider(create: (context) => SentItemService())
+      ],
       child: GetMaterialApp(
         debugShowCheckedModeBanner: true,
-        title: 'EDC Document Archiving',
+        title: 'EDC Document Archive',
         theme: ThemeData(
           primarySwatch: Colors.lightBlue,
           visualDensity: VisualDensity.adaptivePlatformDensity,
@@ -52,7 +56,7 @@ class MyApp extends StatelessWidget {
           routeName: kAuthWrapperRoute,
           seconds: 2,
           navigateAfterSeconds: const AuthWrapperScreen(),
-          title: 'Document Archive Mobile',
+          title: 'Document Archieve Mobile',
           image: Image.asset(Assets.images.logo.path),
           backgroundColor: Colors.white,
           styleTextUnderTheLoader: const TextStyle(),

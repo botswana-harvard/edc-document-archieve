@@ -1,4 +1,5 @@
 import 'package:edc_document_archieve/src/core/models/gallery_item.dart';
+import 'package:edc_document_archieve/src/core/models/item.dart';
 import 'package:edc_document_archieve/src/core/models/participant_crf.dart';
 import 'package:edc_document_archieve/src/core/models/participant_non_crf.dart';
 import 'package:edc_document_archieve/src/core/models/study_document.dart';
@@ -19,13 +20,13 @@ abstract class LocalStorageRepository {
   static Future<void> setupLocalStorage() async {
     await Hive.initFlutter();
     var appDir = await getApplicationDocumentsDirectory();
-    // Hive.registerAdapter(AppColorsAdapter());
-    // Hive.registerAdapter(ThemesAdapter());
+
     Hive.registerAdapter(UserAccountAdapter());
     Hive.registerAdapter(StudyDocumentAdapter());
     Hive.registerAdapter(ParticipantCrfAdapter());
     Hive.registerAdapter(ParticipantNonCrfAdapter());
     Hive.registerAdapter(GalleryItemAdapter());
+    Hive.registerAdapter(ItemAdapter());
     await Hive.openBox(kAppStorageBox, path: appDir.path, crashRecovery: true);
     await Hive.openBox(kUserAccountsBox,
         path: appDir.path, crashRecovery: true);
